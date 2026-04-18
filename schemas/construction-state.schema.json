@@ -5,14 +5,91 @@
   "type": "object",
   "required": ["system", "intent", "decision_context", "arbitrariness", "closure", "task_graph", "evidence", "review_predicates"],
   "properties": {
-    "system": { "type": "object" },
-    "intent": { "type": "object" },
-    "decision_context": { "type": "object" },
-    "arbitrariness": { "type": "array", "items": { "type": "object" } },
-    "closure": { "type": "array", "items": { "type": "object" } },
+    "system": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "required": ["principal", "statement"],
+      "properties": {
+        "principal": { "type": "string" },
+        "statement": { "type": "string" },
+        "success_criteria": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "decision_context": {
+      "type": "object",
+      "properties": {
+        "matters": { "type": "array", "items": { "type": "string" } },
+        "stakes": { "type": "string" }
+      }
+    },
+    "arbitrariness": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "status": { "enum": ["open", "closed", "deferred", "inert"] },
+          "closure_id": { "type": "string" },
+          "rationale": { "type": "string" }
+        }
+      }
+    },
+    "closure": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "decision", "authority", "rationale"],
+        "properties": {
+          "id": { "type": "string" },
+          "decision": { "type": "string" },
+          "authority": { "type": "string" },
+          "rationale": { "type": "string" },
+          "reversibility": { "enum": ["reversible", "sunk", "permanent"] },
+          "reopening_conditions": { "type": "string" }
+        }
+      }
+    },
     "task_graph": { "$ref": "./task-graph.schema.json" },
-    "evidence": { "type": "array", "items": { "type": "object" } },
-    "review_predicates": { "type": "array", "items": { "type": "object" } }
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "task_id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "task_id": { "type": "string" },
+          "description": { "type": "string" },
+          "artifacts": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "review_predicates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement"],
+        "properties": {
+          "id": { "type": "string" },
+          "task_id": { "type": "string" },
+          "statement": { "type": "string" }
+        }
+      }
+    },
+    "residuals": {
+      "type": "array",
+      "items": { "$ref": "./residual.schema.json" }
+    }
   },
   "additionalProperties": false
 }

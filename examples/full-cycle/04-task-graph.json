@@ -1,0 +1,82 @@
+{
+  "$schema": "../../schemas/task-graph.schema.json",
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Bootstrap VitePress documentation site",
+      "intent": "Create the doc site skeleton with VitePress, including config, homepage, and navigation.",
+      "scope": "Repository root and /docs directory",
+      "authority_locus": "execution",
+      "dependencies": [],
+      "transformation": "Add VitePress dependency, create docs/ directory with config, homepage, and sidebar. Add npm script `docs:dev` and `docs:build`.",
+      "output_artifact": [
+        "docs/.vitepress/config.ts",
+        "docs/index.md",
+        "docs/guide/getting-started.md",
+        "package.json (updated scripts)"
+      ],
+      "evidence_requirement": "Running `npm run docs:dev` serves the site locally without errors.",
+      "review_predicate": "A reviewer can clone the repo, run `npm install && npm run docs:dev`, and see the homepage.",
+      "residual_handling": "If VitePress fails to install or run on Node 18+, create a residual to evaluate alternative static site generators.",
+      "status": "open"
+    },
+    {
+      "id": "T2",
+      "title": "Document the three main widgets",
+      "intent": "Write usage documentation for Button, Card, and Modal with code examples.",
+      "scope": "docs/guide/widgets/",
+      "authority_locus": "execution",
+      "dependencies": ["T1"],
+      "transformation": "Create three MDX pages with installation, props tables, and live code examples for Button, Card, and Modal.",
+      "output_artifact": [
+        "docs/guide/widgets/button.md",
+        "docs/guide/widgets/card.md",
+        "docs/guide/widgets/modal.md"
+      ],
+      "evidence_requirement": "Each page contains at least one runnable code example.",
+      "review_predicate": "A new developer can read the three pages and understand how to render each widget without reading source code.",
+      "residual_handling": "If widget APIs are undocumented or ambiguous, create a residual to audit the public API surface.",
+      "status": "open"
+    },
+    {
+      "id": "T3",
+      "title": "Add CI validation for doc examples",
+      "intent": "Prevent documentation drift by validating code examples in CI.",
+      "scope": ".github/workflows/ and test/",
+      "authority_locus": "execution",
+      "dependencies": ["T2"],
+      "transformation": "Add a GitHub Actions workflow that extracts code examples from docs/ and runs them against the built library.",
+      "output_artifact": [
+        ".github/workflows/docs-validate.yml",
+        "scripts/validate-doc-examples.js"
+      ],
+      "evidence_requirement": "A deliberate invalid example in a test PR fails the CI check.",
+      "review_predicate": "Invalid examples are caught; valid examples pass; the workflow completes in < 2 minutes.",
+      "residual_handling": "If extraction or validation is too complex, create a residual to evaluate external doc-test tools.",
+      "status": "open"
+    },
+    {
+      "id": "T4",
+      "title": "Deploy to GitHub Pages",
+      "intent": "Make the documentation site publicly accessible.",
+      "scope": ".github/workflows/ and repository settings",
+      "authority_locus": "execution",
+      "dependencies": ["T1"],
+      "transformation": "Add a GitHub Actions workflow that builds the docs on every push to main and deploys to GitHub Pages.",
+      "output_artifact": [
+        ".github/workflows/docs-deploy.yml",
+        "Live site URL in repo settings"
+      ],
+      "evidence_requirement": "Pushing to main triggers a successful deploy; the site is reachable at the published URL.",
+      "review_predicate": "The site loads without errors; the homepage displays correctly.",
+      "residual_handling": "If GitHub Pages fails or is unavailable, create a residual to evaluate Netlify or Vercel.",
+      "status": "open"
+    }
+  ],
+  "edges": [
+    { "from": "T1", "to": "T2", "type": "blocks" },
+    { "from": "T2", "to": "T3", "type": "blocks" },
+    { "from": "T1", "to": "T4", "type": "blocks" },
+    { "from": "T3", "to": "T4", "type": "validates" }
+  ]
+}

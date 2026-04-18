@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/residual.schema.json",
+  "title": "USC Residual",
+  "type": "object",
+  "required": ["residual_id", "source_task_id", "class", "description", "blocking"],
+  "properties": {
+    "residual_id": { "type": "string" },
+    "source_task_id": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "class": {
+      "enum": [
+        "unresolved_principal_decision",
+        "missing_policy",
+        "missing_effector",
+        "failed_review",
+        "blocked_dependency",
+        "reopened_closure",
+        "out_of_calculus_target",
+        "declared_non_goal",
+        "decision_inert_distinction"
+      ]
+    },
+    "description": { "type": "string" },
+    "blocking": { "type": "boolean" },
+    "resolution_path": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": { "type": "string" },
+          "authority": { "type": "string" },
+          "estimated_effort": { "type": "string" }
+        }
+      }
+    },
+    "derived_task_id": { "type": "string" }
+  },
+  "additionalProperties": false
+}

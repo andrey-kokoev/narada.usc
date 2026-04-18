@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/session.schema.json",
+  "title": "USC Session",
+  "type": "object",
+  "required": ["session_id", "started_at", "principal", "authority_locus"],
+  "properties": {
+    "session_id": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "ended_at": { "type": "string", "format": "date-time" },
+    "principal": { "type": "string" },
+    "authority_locus": { "type": "array", "items": { "type": "string" } },
+    "principal_intent": { "type": "string" },
+    "decision_context": { "type": "string" },
+    "ambiguity_localization": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "arbitrariness": { "type": "string" },
+          "governing": { "type": "boolean" },
+          "options": { "type": "array", "items": { "type": "string" } },
+          "authority": { "type": "string" },
+          "resolution": { "enum": ["closed", "deferred", "residual"] }
+        }
+      }
+    },
+    "decisions_made": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string" },
+          "authority": { "type": "string" },
+          "rationale": { "type": "string" }
+        }
+      }
+    },
+    "task_graph_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "string" },
+          "change": { "enum": ["created", "claimed", "executed", "reviewed", "residualized", "accepted", "rejected"] }
+        }
+      }
+    },
+    "execution_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "string" },
+          "artifacts": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "review_outcomes": {
+      "type": "array",
+      "items": { "$ref": "./review.schema.json" }
+    },
+    "residuals": {
+      "type": "array",
+      "items": { "$ref": "./residual.schema.json" }
+    },
+    "session_closure": {
+      "type": "object",
+      "properties": {
+        "all_arbitrariness_localized": { "type": "boolean" },
+        "all_decisions_have_authority": { "type": "boolean" },
+        "all_residuals_durable": { "type": "boolean" },
+        "evidence_captured": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

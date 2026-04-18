@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/task.schema.json",
+  "title": "USC Task",
+  "type": "object",
+  "required": ["id", "title", "authority", "transformation", "evidence", "review_predicate", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "intent": { "type": "string" },
+    "scope": { "type": "string" },
+    "authority": { "type": "string" },
+    "dependencies": { "type": "array", "items": { "type": "string" } },
+    "transformation": { "type": "string" },
+    "output_artifact": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "evidence": { "type": "string" },
+    "review_predicate": { "type": "string" },
+    "residual_handling": { "type": "string" },
+    "status": { "enum": ["open", "claimed", "executed", "under_review", "accepted", "rejected", "residualized", "superseded"] },
+    "claimed_by": { "type": "string" },
+    "claimed_at": { "type": "string", "format": "date-time" },
+    "executed_at": { "type": "string", "format": "date-time" },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "reviewed_by": { "type": "string" },
+    "review_outcome": { "enum": ["accept", "reject", "residualize", "reopen"] },
+    "residual_of": { "type": "string" },
+    "supersedes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

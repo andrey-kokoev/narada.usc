@@ -31,6 +31,7 @@ This repo must not contain:
 - private repo names unless intentionally public
 - credentials, tokens, customer data, private mailbox content, or internal operational traces
 - app-specific implementation decisions that belong in `narada.usc.<app-name>`
+- runtime or product code that belongs in the `narada` product repo
 
 ## Verification
 
@@ -39,3 +40,16 @@ This repo is documentation/protocol first. Prefer targeted checks:
 - inspect Markdown links when changing docs
 - validate JSON schemas when changing schemas
 - do not run broad unrelated test suites
+
+## Schema Validation
+
+All JSON schemas should parse as valid JSON. To check:
+
+```bash
+cd /home/andrey/src/narada.usc
+find schemas examples -name '*.json' -print0 | xargs -0 -n1 node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))'
+```
+
+## Task File Policy
+
+Task files in this repo follow the conventions in `tasks/README.md`. Do not create derivative execution logs.

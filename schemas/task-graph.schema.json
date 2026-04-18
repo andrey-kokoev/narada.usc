@@ -7,7 +7,7 @@
   "properties": {
     "tasks": {
       "type": "array",
-      "items": { "$ref": "#/$defs/task" }
+      "items": { "$ref": "./task.schema.json" }
     },
     "edges": {
       "type": "array",
@@ -15,20 +15,6 @@
     }
   },
   "$defs": {
-    "task": {
-      "type": "object",
-      "required": ["id", "title", "authority", "transformation", "evidence", "review_predicate", "status"],
-      "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "authority": { "type": "string" },
-        "transformation": { "type": "string" },
-        "evidence": { "type": "string" },
-        "review_predicate": { "type": "string" },
-        "status": { "enum": ["open", "claimed", "executed", "accepted", "rejected", "residualized", "superseded"] }
-      },
-      "additionalProperties": false
-    },
     "edge": {
       "type": "object",
       "required": ["from", "to", "type"],

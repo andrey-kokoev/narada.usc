@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/decision-surface.schema.json",
+  "title": "USC Decision Surface",
+  "type": "object",
+  "required": ["system_context", "active_decisions"],
+  "properties": {
+    "system_context": { "type": "string" },
+    "active_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "decision", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "decision": { "type": "string" },
+          "options": { "type": "array", "items": { "type": "string" } },
+          "status": { "enum": ["closed", "open", "deferred", "inert"] },
+          "authority": { "type": "string" },
+          "rationale": { "type": "string" }
+        }
+      }
+    },
+    "closed_decisions": { "type": "array", "items": { "type": "string" } },
+    "open_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string" },
+          "blocker": { "type": "string" }
+        }
+      }
+    },
+    "inert_distinctions": { "type": "array", "items": { "type": "string" } },
+    "readiness_check": {
+      "type": "object",
+      "properties": {
+        "every_open_decision_has_authority": { "type": "boolean" },
+        "no_hidden_arbitrariness": { "type": "boolean" },
+        "all_closed_decisions_recorded": { "type": "boolean" },
+        "all_inert_distinctions_marked": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

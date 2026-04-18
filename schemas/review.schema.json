@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/review.schema.json",
+  "title": "USC Review",
+  "type": "object",
+  "required": ["review_id", "task_id", "reviewed_by", "reviewed_at", "outcome"],
+  "properties": {
+    "review_id": { "type": "string" },
+    "task_id": { "type": "string" },
+    "reviewed_by": { "type": "string" },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "task_statement": { "type": "string" },
+    "evidence_inspected": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence", "location", "relevance"],
+        "properties": {
+          "evidence": { "type": "string" },
+          "location": { "type": "string" },
+          "relevance": { "type": "string" }
+        }
+      }
+    },
+    "predicate_applied": { "type": "string" },
+    "findings": {
+      "type": "object",
+      "properties": {
+        "satisfied": { "type": "array", "items": { "type": "string" } },
+        "concerns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "outcome": { "enum": ["accept", "reject", "residualize", "reopen"] },
+    "integration_note": { "type": "string" }
+  },
+  "additionalProperties": false
+}

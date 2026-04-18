@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/closure-record.schema.json",
+  "title": "USC Closure Record",
+  "type": "object",
+  "required": ["closure_id", "closed_at", "authority_locus", "decision", "rationale"],
+  "properties": {
+    "closure_id": { "type": "string" },
+    "closed_at": { "type": "string", "format": "date-time" },
+    "authority_locus": { "type": "string" },
+    "decision": { "type": "string" },
+    "alternatives_considered": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "alternative": { "type": "string" },
+          "why_rejected": { "type": "string" },
+          "authority": { "type": "string" }
+        }
+      }
+    },
+    "rationale": { "type": "string" },
+    "reversibility": { "enum": ["reversible", "sunk", "permanent"] },
+    "reopening_conditions": { "type": "string" },
+    "consequences": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}
