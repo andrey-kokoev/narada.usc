@@ -22,9 +22,9 @@
       {
         "id": "T1",
         "title": "Create public substrate skeleton",
-        "authority": "semantic/planning",
+        "authority_locus": "semantic/planning",
         "transformation": "Create docs, protocols, schemas, and examples for reusable USC substrate.",
-        "evidence": "Files exist and describe intended boundaries.",
+        "evidence_requirement": "Files exist and describe intended boundaries.",
         "review_predicate": "Repo can be understood as USC substrate rather than app repo or diary.",
         "status": "open"
       }

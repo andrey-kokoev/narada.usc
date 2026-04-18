@@ -79,9 +79,9 @@
       {
         "id": "T1",
         "title": "Bootstrap VitePress documentation site",
-        "authority": "execution",
+        "authority_locus": "execution",
         "transformation": "Add VitePress, create docs/ skeleton, add npm scripts",
-        "evidence": "Local dev server runs; homepage renders",
+        "evidence_requirement": "Local dev server runs; homepage renders",
         "review_predicate": "Reviewer can clone, install, and run docs:dev successfully",
         "status": "accepted",
         "claimed_by": "Carol",
@@ -99,9 +99,9 @@
       {
         "id": "T2",
         "title": "Document the three main widgets",
-        "authority": "execution",
+        "authority_locus": "execution",
         "transformation": "Write MDX pages for Button, Card, Modal with examples",
-        "evidence": "Three pages with runnable examples",
+        "evidence_requirement": "Three pages with runnable examples",
         "review_predicate": "New developer can use widgets without reading source",
         "status": "open",
         "dependencies": ["T1"],
@@ -114,9 +114,9 @@
       {
         "id": "T3",
         "title": "Add CI validation for doc examples",
-        "authority": "execution",
+        "authority_locus": "execution",
         "transformation": "GitHub Actions workflow validates examples",
-        "evidence": "Invalid example in test PR fails CI",
+        "evidence_requirement": "Invalid example in test PR fails CI",
         "review_predicate": "Invalid examples caught; valid pass; < 2 min runtime",
         "status": "open",
         "dependencies": ["T2"],
@@ -129,9 +129,9 @@
       {
         "id": "T4",
         "title": "Deploy to GitHub Pages",
-        "authority": "execution",
+        "authority_locus": "execution",
         "transformation": "GitHub Actions deploys docs on push to main",
-        "evidence": "Site reachable at published URL",
+        "evidence_requirement": "Site reachable at published URL",
         "review_predicate": "Site loads without errors",
         "status": "open",
         "dependencies": ["T1"],
@@ -174,7 +174,7 @@
   ],
   "residuals": [
     {
-      "id": "res_T2_sidebar",
+      "residual_id": "res_T2_sidebar",
       "source_task_id": "T1",
       "policy_ref": "policy-cis-required-v1",
       "class": "decision_inert_distinction",
@@ -182,7 +182,7 @@
       "blocking": false
     },
     {
-      "id": "res_T1_darkmode",
+      "residual_id": "res_T1_darkmode",
       "source_task_id": "T1",
       "policy_ref": "policy-cis-required-v1",
       "class": "decision_inert_distinction",

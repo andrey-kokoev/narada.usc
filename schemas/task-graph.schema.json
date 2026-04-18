@@ -5,6 +5,7 @@
   "type": "object",
   "required": ["tasks", "edges"],
   "properties": {
+    "$schema": { "type": "string" },
     "tasks": {
       "type": "array",
       "items": { "$ref": "./task.schema.json" }

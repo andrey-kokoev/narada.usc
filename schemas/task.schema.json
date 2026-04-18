@@ -3,13 +3,13 @@
   "$id": "https://narada2.dev/schemas/usc/task.schema.json",
   "title": "USC Task",
   "type": "object",
-  "required": ["id", "title", "authority", "transformation", "evidence", "review_predicate", "status"],
+  "required": ["id", "title", "authority_locus", "transformation", "evidence_requirement", "review_predicate", "status"],
   "properties": {
     "id": { "type": "string" },
     "title": { "type": "string" },
     "intent": { "type": "string" },
     "scope": { "type": "string" },
-    "authority": { "type": "string" },
+    "authority_locus": { "type": "string" },
     "dependencies": { "type": "array", "items": { "type": "string" } },
     "transformation": { "type": "string" },
     "output_artifact": {
@@ -18,7 +18,7 @@
         { "type": "array", "items": { "type": "string" } }
       ]
     },
-    "evidence": { "type": "string" },
+    "evidence_requirement": { "type": "string" },
     "review_predicate": { "type": "string" },
     "residual_handling": { "type": "string" },
     "status": { "enum": ["open", "claimed", "executed", "under_review", "accepted", "rejected", "residualized", "superseded"] },
