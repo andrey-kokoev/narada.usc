@@ -43,12 +43,14 @@ This repo is documentation/protocol first. Prefer targeted checks:
 
 ## Schema Validation
 
-All JSON schemas should parse as valid JSON. To check:
+Validate example documents against JSON schemas:
 
 ```bash
 cd /home/andrey/src/narada.usc
-find schemas examples -name '*.json' -print0 | xargs -0 -n1 node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))'
+pnpm validate
 ```
+
+This checks structural conformance including `$ref` resolution, not just JSON syntax.
 
 ## Task File Policy
 

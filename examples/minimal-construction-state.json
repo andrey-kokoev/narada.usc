@@ -13,8 +13,10 @@
   "arbitrariness": [],
   "closure": [
     {
+      "id": "cls-minimal-01",
       "decision": "USC substrate is separate from USC app repos.",
-      "authority": "principal"
+      "authority": "principal",
+      "rationale": "Separation of reusable grammar from concrete systems."
     }
   ],
   "task_graph": {

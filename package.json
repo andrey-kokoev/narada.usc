@@ -1,0 +1,13 @@
+{
+  "name": "narada.usc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Public substrate for Universal Systems Constructor work",
+  "scripts": {
+    "validate": "node scripts/validate-json-schemas.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1"
+  }
+}

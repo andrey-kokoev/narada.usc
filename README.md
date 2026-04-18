@@ -51,6 +51,16 @@ A construction step is admissible only when its authority locus, dependencies, e
 5. Use [`templates/`](templates/) to start your own USC session.
 6. See [`examples/policies/`](examples/policies/) for reusable admissibility policy examples.
 
+## Validation
+
+Validate example documents against JSON schemas:
+
+```bash
+pnpm validate
+```
+
+This checks that examples structurally match their schemas, including `$ref` resolution. It is not just JSON syntax parsing.
+
 ## Boundaries
 
 - **`narada.usc` is reusable substrate.** It contains no product code, no private operational traces, and no app-specific decisions.
