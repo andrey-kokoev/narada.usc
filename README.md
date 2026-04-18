@@ -34,6 +34,7 @@ narada.usc.<app-name>
 | `reviews/` | Review semantics and evidence requirements |
 | `sessions/` | Session record conventions |
 | `examples/` | Minimal and full-cycle examples of USC-shaped work |
+| `examples/policies/` | Reusable admissibility policy examples |
 | `templates/` | Concrete artifact templates ready for use |
 | `apps/` | Naming and boundary guidance for concrete USC app repos |
 
@@ -45,8 +46,10 @@ A construction step is admissible only when its authority locus, dependencies, e
 
 1. Read [`concepts/universal-systems-constructor.md`](concepts/universal-systems-constructor.md) for the core idea.
 2. Read [`protocols/construction-state.md`](protocols/construction-state.md) for the construction state protocol.
-3. Walk through [`examples/full-cycle/`](examples/full-cycle/) for a complete sanitized example.
-4. Use [`templates/`](templates/) to start your own USC session.
+3. Read [`protocols/cis-admissibility-policy.md`](protocols/cis-admissibility-policy.md) for how admissibility policies constrain construction.
+4. Walk through [`examples/full-cycle/`](examples/full-cycle/) for a complete sanitized example.
+5. Use [`templates/`](templates/) to start your own USC session.
+6. See [`examples/policies/`](examples/policies/) for reusable admissibility policy examples.
 
 ## Boundaries
 

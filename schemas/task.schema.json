@@ -29,7 +29,17 @@
     "reviewed_by": { "type": "string" },
     "review_outcome": { "enum": ["accept", "reject", "residualize", "reopen"] },
     "residual_of": { "type": "string" },
-    "supersedes": { "type": "string" }
+    "supersedes": { "type": "string" },
+    "policy_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to admissibility policies that govern this task."
+    },
+    "policy_obligations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Specific policy obligations this task must satisfy."
+    }
   },
   "additionalProperties": false
 }

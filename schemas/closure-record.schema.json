@@ -23,7 +23,12 @@
     "rationale": { "type": "string" },
     "reversibility": { "enum": ["reversible", "sunk", "permanent"] },
     "reopening_conditions": { "type": "string" },
-    "consequences": { "type": "array", "items": { "type": "string" } }
+    "consequences": { "type": "array", "items": { "type": "string" } },
+    "policy_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to admissibility policies that inform this closure."
+    }
   },
   "additionalProperties": false
 }

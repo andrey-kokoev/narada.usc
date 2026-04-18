@@ -89,7 +89,12 @@
         "executed_at": "2026-04-10T12:00:00Z",
         "reviewed_at": "2026-04-10T14:00:00Z",
         "reviewed_by": "Bob",
-        "review_outcome": "accept"
+        "review_outcome": "accept",
+        "policy_refs": ["policy-cis-required-v1"],
+        "policy_obligations": [
+          "Transformation potential: site must remain deployable to GitHub Pages",
+          "Semantic closure: npm script names follow conventions"
+        ]
       },
       {
         "id": "T2",
@@ -99,7 +104,12 @@
         "evidence": "Three pages with runnable examples",
         "review_predicate": "New developer can use widgets without reading source",
         "status": "open",
-        "dependencies": ["T1"]
+        "dependencies": ["T1"],
+        "policy_refs": ["policy-cis-required-v1"],
+        "policy_obligations": [
+          "Functional properties: docs must not break existing CI",
+          "Verification evidence: examples must be validated"
+        ]
       },
       {
         "id": "T3",
@@ -109,7 +119,12 @@
         "evidence": "Invalid example in test PR fails CI",
         "review_predicate": "Invalid examples caught; valid pass; < 2 min runtime",
         "status": "open",
-        "dependencies": ["T2"]
+        "dependencies": ["T2"],
+        "policy_refs": ["policy-cis-required-v1"],
+        "policy_obligations": [
+          "Functional properties: doc examples execute without error",
+          "Verification evidence: invalid examples fail CI"
+        ]
       },
       {
         "id": "T4",
@@ -119,7 +134,12 @@
         "evidence": "Site reachable at published URL",
         "review_predicate": "Site loads without errors",
         "status": "open",
-        "dependencies": ["T1"]
+        "dependencies": ["T1"],
+        "policy_refs": ["policy-cis-required-v1"],
+        "policy_obligations": [
+          "Transformation potential: must remain deployable to GitHub Pages",
+          "Compatibility: must not require vendor migration"
+        ]
       }
     ],
     "edges": [
@@ -149,10 +169,14 @@
       "statement": "Reviewer can clone, install, and run docs:dev successfully"
     }
   ],
+  "admissibility_policies": [
+    { "$ref": "../policies/cis-required.json" }
+  ],
   "residuals": [
     {
       "id": "res_T2_sidebar",
       "source_task_id": "T1",
+      "policy_ref": "policy-cis-required-v1",
       "class": "decision_inert_distinction",
       "description": "Sidebar structure may need grouping when T2 adds widget pages",
       "blocking": false
@@ -160,6 +184,7 @@
     {
       "id": "res_T1_darkmode",
       "source_task_id": "T1",
+      "policy_ref": "policy-cis-required-v1",
       "class": "decision_inert_distinction",
       "description": "Dark mode toggle not explicitly configured",
       "blocking": false

@@ -34,7 +34,11 @@
         }
       }
     },
-    "derived_task_id": { "type": "string" }
+    "derived_task_id": { "type": "string" },
+    "policy_ref": {
+      "type": "string",
+      "description": "Reference to the admissibility policy that this residual concerns."
+    }
   },
   "additionalProperties": false
 }

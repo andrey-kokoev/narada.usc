@@ -89,6 +89,11 @@
     "residuals": {
       "type": "array",
       "items": { "$ref": "./residual.schema.json" }
+    },
+    "admissibility_policies": {
+      "type": "array",
+      "items": { "$ref": "./admissibility-policy.schema.json" },
+      "description": "Admissibility policies that govern this construction state."
     }
   },
   "additionalProperties": false

@@ -31,7 +31,12 @@
       }
     },
     "outcome": { "enum": ["accept", "reject", "residualize", "reopen"] },
-    "integration_note": { "type": "string" }
+    "integration_note": { "type": "string" },
+    "policy_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to admissibility policies checked during this review."
+    }
   },
   "additionalProperties": false
 }

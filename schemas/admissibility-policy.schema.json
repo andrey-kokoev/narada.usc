@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/admissibility-policy.schema.json",
+  "title": "USC Admissibility Policy",
+  "type": "object",
+  "required": ["id", "name", "type", "mode", "applies_to", "requirements"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "type": {
+      "enum": ["constructive_invariance", "custom"]
+    },
+    "mode": {
+      "enum": ["required", "advisory"]
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "de_arbitrarization",
+          "task_formation",
+          "execution",
+          "review",
+          "integration",
+          "closure"
+        ]
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "functional_properties": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Properties F(s) that the system state must preserve across construction."
+        },
+        "transformation_potential": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Capabilities T(s) that must remain realizable after construction."
+        },
+        "compatibility_or_migration": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Compatibility constraints and migration paths for evolving state."
+        },
+        "verification_evidence": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Evidence types that must be produced to demonstrate policy satisfaction."
+        },
+        "semantic_closure": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Naming, interface, and conceptual commitments that must remain stable."
+        }
+      }
+    },
+    "residual_on_failure": {
+      "type": "string",
+      "description": "How policy failure is classified as residual state."
+    }
+  },
+  "additionalProperties": false
+}
