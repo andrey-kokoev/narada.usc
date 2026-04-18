@@ -1,76 +1,70 @@
 # narada.usc
 
-`narada.usc` is the public substrate for Universal Systems Constructor (USC) work.
+`narada.usc` is the executable implementation of the Universal Systems Constructor.
 
 USC is a constructive control process that turns principal intent into admissible system transformation by preserving articulated difference across time, authority, execution, and review.
 
-This repository is not a product app and not an operations repo. It defines the reusable construction grammar: construction states, task graphs, authority loci, review predicates, residual handling, prompts, and session protocols.
-
-Concrete systems built under this discipline should live in app-specific repositories such as:
-
-```text
-narada.usc.<app-name>
-```
+This repo contains the constructor code — the CLI, schemas, compiler, and policies — that initializes, validates, and eventually compiles USC-governed system repositories.
 
 ## Repository Role
 
 | Repository | Role |
 |------------|------|
-| `thoughts` | Concept notes and public theory |
-| `narada` | Runtime substrate that can host operations, charters, durable work, and execution |
-| `narada.usc` | **USC construction grammar and reusable protocol substrate** |
-| `narada.usc.<app>` | Concrete system constructed under USC discipline |
-| `narada.sonar` | Private operational deployment using Narada |
+| `thoughts` | Theory of USC |
+| `narada.usc` | **Executable USC constructor implementation** |
+| `narada.usc.<app>` | Concrete system constructed/governed by USC |
+| `narada` | Optional compile/runtime target for operations/charters |
 
-## Contents
+## Architecture
 
-| Path | Purpose |
-|------|---------|
-| `concepts/` | Conceptual definitions and positioning |
-| `protocols/` | Operational protocols for USC practice |
-| `schemas/` | Machine-readable shapes for construction artifacts |
-| `prompts/` | Reusable prompts/spells for de-arbitrarization and delegation |
-| `tasks/` | Task-file conventions and lifecycle rules |
-| `reviews/` | Review semantics and evidence requirements |
-| `sessions/` | Session record conventions |
+| Package | Purpose |
+|---------|---------|
+| `packages/cli` | Executable entrypoint (`usc validate`, `usc init-session`, `usc init-app`) |
+| `packages/core` | Construction model, schema registry, and validator |
+| `packages/compiler` | Artifact generation (session init, app init, templates) |
+| `packages/policies` | Admissibility policy definitions and examples |
+| `docs/concepts/` | Conceptual definitions and positioning |
+| `docs/protocols/` | Operational protocols for USC practice |
 | `examples/` | Minimal and full-cycle examples of USC-shaped work |
-| `examples/policies/` | Reusable admissibility policy examples |
-| `templates/` | Concrete artifact templates ready for use |
-| `apps/` | Naming and boundary guidance for concrete USC app repos |
-
-## Core Rule
-
-A construction step is admissible only when its authority locus, dependencies, executable transformation, evidence path, and review predicate are explicit. Otherwise the blocker must become residual state.
 
 ## Quick Start
-
-1. Read [`concepts/universal-systems-constructor.md`](concepts/universal-systems-constructor.md) for the core idea.
-2. Read [`protocols/construction-state.md`](protocols/construction-state.md) for the construction state protocol.
-3. Read [`protocols/cis-admissibility-policy.md`](protocols/cis-admissibility-policy.md) for how admissibility policies constrain construction.
-4. Walk through [`examples/full-cycle/`](examples/full-cycle/) for a complete sanitized example.
-5. Use [`templates/`](templates/) to start your own USC session.
-6. See [`examples/policies/`](examples/policies/) for reusable admissibility policy examples.
-
-## Start a USC Session
 
 ```bash
 pnpm install
 pnpm usc:init -- --name my-session --principal "Alice" --intent "Add a public API documentation site"
+pnpm validate
 ```
 
-This creates `sessions/my-session/` with templates, starter JSON, and subfolders for reviews, residuals, and closures.
+## CLI Commands
+
+### Validate
+
+Validate examples, sessions, and app repos against JSON schemas:
+
+```bash
+pnpm validate                          # substrate examples and sessions
+pnpm validate -- --app ../narada.usc.my-app   # external app repo
+```
+
+### Init Session
+
+Create a construction session inside the substrate repo:
+
+```bash
+pnpm usc:init -- --name my-session --principal "Alice" --intent "..."
+```
 
 Options:
 - `--force` — overwrite an existing session
 - `--cis` — include a required CIS admissibility policy
 
-List existing sessions:
+### List Sessions
 
 ```bash
 pnpm usc:list
 ```
 
-## Create a USC App Repo
+### Init App
 
 Create a new concrete app repo outside the substrate:
 
@@ -78,34 +72,17 @@ Create a new concrete app repo outside the substrate:
 pnpm usc:init-app -- --name my-app --target ../narada.usc.my-app --principal "Alice" --intent "Build app X" --cis --git
 ```
 
-This creates a new directory with:
-- `README.md` and `AGENTS.md`
-- `usc/` directory containing construction state, task graph, templates, and subfolders
-- Optional CIS policy and git initialization
+Options:
+- `--force` — overwrite an existing target
+- `--cis` — include a required CIS admissibility policy
+- `--git` — initialize a git repository
 
-Validate an app repo from the substrate:
+## Future: Compile Target
 
-```bash
-pnpm validate -- --app ../narada.usc.my-app
-```
-
-## Validation
-
-Validate example, session, and app documents against JSON schemas:
-
-```bash
-pnpm validate
-```
-
-This checks that examples, sessions, and apps structurally match their schemas, including `$ref` resolution. It is not just JSON syntax parsing.
+The constructor will eventually compile USC-governed app repos into runnable operations. Narada is the intended runtime target, but it is not required — USC can be practiced with any durable task system.
 
 ## Boundaries
 
-- **`narada.usc` is reusable substrate.** It contains no product code, no private operational traces, and no app-specific decisions.
-- **`narada.usc.<app-name>` is a concrete constructed system.** It contains product code, private decisions, domain-specific task graphs, and deployment configuration.
-- **Polished generic concepts** may be extracted to `thoughts`.
-- **Runtime/product code** belongs in the appropriate product/runtime repo (e.g., `narada`).
-
-## Narada Compatibility
-
-See [`protocols/narada-compatibility.md`](protocols/narada-compatibility.md). USC can be practiced manually or with any durable task system. Narada is one valid runtime that can host USC-shaped work, but it is not required.
+- `narada.usc` is constructor code, not a product app.
+- `narada.usc.<app-name>` contains product code and app-specific construction state.
+- Protocols/schemas/templates are constructor grammar inputs, not the product itself.

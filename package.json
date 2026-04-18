@@ -2,12 +2,12 @@
   "name": "narada.usc",
   "version": "0.1.0",
   "private": true,
-  "description": "Public substrate for Universal Systems Constructor work",
+  "description": "Executable implementation of the Universal Systems Constructor",
   "scripts": {
-    "validate": "node scripts/validate-json-schemas.mjs",
-    "usc:init": "node scripts/init-session.mjs",
-    "usc:list": "node scripts/list-sessions.mjs",
-    "usc:init-app": "node scripts/init-app.mjs"
+    "validate": "node packages/cli/src/usc.js validate",
+    "usc:init": "node packages/cli/src/usc.js init-session",
+    "usc:list": "node packages/cli/src/usc.js list-sessions",
+    "usc:init-app": "node packages/cli/src/usc.js init-app"
   },
   "devDependencies": {
     "ajv": "^8.18.0",

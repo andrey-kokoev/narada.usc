@@ -1,5 +1,5 @@
 {
-  "$schema": "../../schemas/task-graph.schema.json",
+  "$schema": "../../packages/core/schemas/task-graph.schema.json",
   "tasks": [
     {
       "id": "T1",

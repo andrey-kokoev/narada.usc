@@ -1,6 +1,6 @@
 # AGENTS.md — narada.usc
 
-This repository defines the reusable substrate for Universal Systems Constructor work.
+This repository is the **executable implementation** of the Universal Systems Constructor.
 
 ## Working Posture
 
@@ -15,6 +15,17 @@ Preserve these distinctions:
 - review finding vs integration decision
 - residual blocker vs informal commentary
 
+## Architecture
+
+New behavior should go through packages, not ad hoc scripts:
+
+| Package | What belongs there |
+|---------|-------------------|
+| `packages/core` | Schema registry, validation logic, construction model |
+| `packages/compiler` | Artifact generation, template rendering, session/app init |
+| `packages/cli` | Command surface, argument parsing, orchestration |
+| `packages/policies` | Admissibility policy definitions and examples |
+
 ## Filesystem Rules
 
 - Do not create derivative status files such as `*-EXECUTED.md`, `*-RESULT.md`, or `*-DONE.md`.
@@ -24,7 +35,7 @@ Preserve these distinctions:
 
 ## Public Boundary
 
-This repo may contain reusable protocols, schemas, examples, and sanitized session patterns.
+This repo may contain constructor code, reusable protocols, schemas, examples, and sanitized session patterns.
 
 This repo must not contain:
 
@@ -32,14 +43,6 @@ This repo must not contain:
 - credentials, tokens, customer data, private mailbox content, or internal operational traces
 - app-specific implementation decisions that belong in `narada.usc.<app-name>`
 - runtime or product code that belongs in the `narada` product repo
-
-## Verification
-
-This repo is documentation/protocol first. Prefer targeted checks:
-
-- inspect Markdown links when changing docs
-- validate JSON schemas when changing schemas
-- do not run broad unrelated test suites
 
 ## Starting a Session
 
@@ -50,8 +53,6 @@ cd /home/andrey/src/narada.usc
 pnpm usc:init -- --name <session-name> --principal "<name>" --intent "<text>"
 ```
 
-This creates `sessions/<session-name>/` with all templates, starter JSON, and subfolders.
-
 ## Creating an App Repo
 
 When creating a new concrete USC app repo outside the substrate:
@@ -60,8 +61,6 @@ When creating a new concrete USC app repo outside the substrate:
 cd /home/andrey/src/narada.usc
 pnpm usc:init-app -- --name <app-name> --target <path> --principal "<name>" --intent "<text>"
 ```
-
-This creates a new app directory with `README.md`, `AGENTS.md`, and a `usc/` directory containing construction artifacts.
 
 ## Schema Validation
 
@@ -80,7 +79,3 @@ pnpm validate -- --app <path-to-app-repo>
 ```
 
 This checks structural conformance including `$ref` resolution, not just JSON syntax.
-
-## Task File Policy
-
-Task files in this repo follow the conventions in `tasks/README.md`. Do not create derivative execution logs.

@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/policies",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC admissibility policy definitions",
+  "main": "src/index.js",
+  "type": "module"
+}

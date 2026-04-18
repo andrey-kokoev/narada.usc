@@ -1,0 +1,11 @@
+{
+  "name": "@narada.usc/compiler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC artifact generation",
+  "main": "src/index.js",
+  "type": "module",
+  "dependencies": {
+    "@narada.usc/core": "workspace:*"
+  }
+}

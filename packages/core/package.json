@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC construction model and schemas",
+  "main": "src/index.js",
+  "type": "module"
+}

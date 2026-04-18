@@ -1,0 +1,12 @@
+{
+  "name": "@narada.usc/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC executable CLI",
+  "main": "src/usc.js",
+  "type": "module",
+  "dependencies": {
+    "@narada.usc/core": "workspace:*",
+    "@narada.usc/compiler": "workspace:*"
+  }
+}
