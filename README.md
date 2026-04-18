@@ -70,15 +70,34 @@ List existing sessions:
 pnpm usc:list
 ```
 
+## Create a USC App Repo
+
+Create a new concrete app repo outside the substrate:
+
+```bash
+pnpm usc:init-app -- --name my-app --target ../narada.usc.my-app --principal "Alice" --intent "Build app X" --cis --git
+```
+
+This creates a new directory with:
+- `README.md` and `AGENTS.md`
+- `usc/` directory containing construction state, task graph, templates, and subfolders
+- Optional CIS policy and git initialization
+
+Validate an app repo from the substrate:
+
+```bash
+pnpm validate -- --app ../narada.usc.my-app
+```
+
 ## Validation
 
-Validate example and session documents against JSON schemas:
+Validate example, session, and app documents against JSON schemas:
 
 ```bash
 pnpm validate
 ```
 
-This checks that examples and sessions structurally match their schemas, including `$ref` resolution. It is not just JSON syntax parsing.
+This checks that examples, sessions, and apps structurally match their schemas, including `$ref` resolution. It is not just JSON syntax parsing.
 
 ## Boundaries
 

@@ -43,7 +43,7 @@ This repo is documentation/protocol first. Prefer targeted checks:
 
 ## Starting a Session
 
-When creating a new USC session, use the init tool instead of manually copying templates:
+When creating a new USC session inside the substrate repo:
 
 ```bash
 cd /home/andrey/src/narada.usc
@@ -52,13 +52,31 @@ pnpm usc:init -- --name <session-name> --principal "<name>" --intent "<text>"
 
 This creates `sessions/<session-name>/` with all templates, starter JSON, and subfolders.
 
+## Creating an App Repo
+
+When creating a new concrete USC app repo outside the substrate:
+
+```bash
+cd /home/andrey/src/narada.usc
+pnpm usc:init-app -- --name <app-name> --target <path> --principal "<name>" --intent "<text>"
+```
+
+This creates a new app directory with `README.md`, `AGENTS.md`, and a `usc/` directory containing construction artifacts.
+
 ## Schema Validation
 
-Validate example and session documents against JSON schemas:
+Validate example, session, and app documents against JSON schemas:
 
 ```bash
 cd /home/andrey/src/narada.usc
 pnpm validate
+```
+
+Validate an external app repo:
+
+```bash
+cd /home/andrey/src/narada.usc
+pnpm validate -- --app <path-to-app-repo>
 ```
 
 This checks structural conformance including `$ref` resolution, not just JSON syntax.

@@ -6,7 +6,8 @@
   "scripts": {
     "validate": "node scripts/validate-json-schemas.mjs",
     "usc:init": "node scripts/init-session.mjs",
-    "usc:list": "node scripts/list-sessions.mjs"
+    "usc:list": "node scripts/list-sessions.mjs",
+    "usc:init-app": "node scripts/init-app.mjs"
   },
   "devDependencies": {
     "ajv": "^8.18.0",

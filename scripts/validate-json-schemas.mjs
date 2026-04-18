@@ -11,6 +11,25 @@ const schemasDir = join(rootDir, "schemas");
 const ajv = new Ajv({ strict: false });
 addFormats(ajv);
 
+// Parse optional --app argument
+function parseArgs(argv) {
+  const args = {};
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg.startsWith("--")) {
+      const key = arg.slice(2);
+      const next = argv[i + 1];
+      if (next && !next.startsWith("--")) {
+        args[key] = next;
+        i++;
+      }
+    }
+  }
+  return args;
+}
+const runArgs = parseArgs(process.argv.slice(2));
+const appPath = runArgs.app;
+
 // Load and register all schemas by their $id
 const schemaFiles = readdirSync(schemasDir).filter((f) => f.endsWith(".schema.json"));
 for (const file of schemaFiles) {
@@ -108,6 +127,44 @@ for (const sessionName of sessionDirs) {
       console.log(`PASS sessions/${sessionName}/task-graph`);
     } else {
       console.error(`FAIL sessions/${sessionName}/task-graph`);
+      for (const err of validate.errors) {
+        console.error(`  ${err.instancePath || "/"}: ${err.message}`);
+      }
+      allPassed = false;
+    }
+  }
+}
+
+// Validate external app repo if --app is provided
+if (appPath) {
+  const appUscDir = join(appPath, "usc");
+  const appName = appPath.split("/").pop();
+
+  const csPath = join(appUscDir, "construction-state.json");
+  if (existsSync(csPath)) {
+    const data = JSON.parse(readFileSync(csPath, "utf8"));
+    const validate = ajv.getSchema("https://narada2.dev/schemas/usc/construction-state.schema.json");
+    const valid = validate(data);
+    if (valid) {
+      console.log(`PASS app/${appName}/usc/construction-state`);
+    } else {
+      console.error(`FAIL app/${appName}/usc/construction-state`);
+      for (const err of validate.errors) {
+        console.error(`  ${err.instancePath || "/"}: ${err.message}`);
+      }
+      allPassed = false;
+    }
+  }
+
+  const tgPath = join(appUscDir, "task-graph.json");
+  if (existsSync(tgPath)) {
+    const data = JSON.parse(readFileSync(tgPath, "utf8"));
+    const validate = ajv.getSchema("https://narada2.dev/schemas/usc/task-graph.schema.json");
+    const valid = validate(data);
+    if (valid) {
+      console.log(`PASS app/${appName}/usc/task-graph`);
+    } else {
+      console.error(`FAIL app/${appName}/usc/task-graph`);
       for (const err of validate.errors) {
         console.error(`  ${err.instancePath || "/"}: ${err.message}`);
       }
