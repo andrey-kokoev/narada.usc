@@ -41,9 +41,20 @@ This repo is documentation/protocol first. Prefer targeted checks:
 - validate JSON schemas when changing schemas
 - do not run broad unrelated test suites
 
+## Starting a Session
+
+When creating a new USC session, use the init tool instead of manually copying templates:
+
+```bash
+cd /home/andrey/src/narada.usc
+pnpm usc:init -- --name <session-name> --principal "<name>" --intent "<text>"
+```
+
+This creates `sessions/<session-name>/` with all templates, starter JSON, and subfolders.
+
 ## Schema Validation
 
-Validate example documents against JSON schemas:
+Validate example and session documents against JSON schemas:
 
 ```bash
 cd /home/andrey/src/narada.usc

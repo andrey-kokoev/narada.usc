@@ -4,7 +4,9 @@
   "private": true,
   "description": "Public substrate for Universal Systems Constructor work",
   "scripts": {
-    "validate": "node scripts/validate-json-schemas.mjs"
+    "validate": "node scripts/validate-json-schemas.mjs",
+    "usc:init": "node scripts/init-session.mjs",
+    "usc:list": "node scripts/list-sessions.mjs"
   },
   "devDependencies": {
     "ajv": "^8.18.0",

@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import Ajv from "ajv/dist/2020.js";
@@ -61,6 +61,58 @@ for (const { dataPath, schemaId, name } of validations) {
       console.error(`  ${err.instancePath || "/"}: ${err.message}`);
     }
     allPassed = false;
+  }
+}
+
+// Validate generated sessions
+const sessionsDir = join(rootDir, "sessions");
+let sessionDirs = [];
+try {
+  sessionDirs = readdirSync(sessionsDir).filter((name) => {
+    const path = join(sessionsDir, name);
+    try {
+      return statSync(path).isDirectory();
+    } catch {
+      return false;
+    }
+  });
+} catch {
+  // no sessions directory
+}
+
+for (const sessionName of sessionDirs) {
+  const sessionPath = join(sessionsDir, sessionName);
+
+  const csPath = join(sessionPath, "construction-state.json");
+  if (existsSync(csPath)) {
+    const data = JSON.parse(readFileSync(csPath, "utf8"));
+    const validate = ajv.getSchema("https://narada2.dev/schemas/usc/construction-state.schema.json");
+    const valid = validate(data);
+    if (valid) {
+      console.log(`PASS sessions/${sessionName}/construction-state`);
+    } else {
+      console.error(`FAIL sessions/${sessionName}/construction-state`);
+      for (const err of validate.errors) {
+        console.error(`  ${err.instancePath || "/"}: ${err.message}`);
+      }
+      allPassed = false;
+    }
+  }
+
+  const tgPath = join(sessionPath, "task-graph.json");
+  if (existsSync(tgPath)) {
+    const data = JSON.parse(readFileSync(tgPath, "utf8"));
+    const validate = ajv.getSchema("https://narada2.dev/schemas/usc/task-graph.schema.json");
+    const valid = validate(data);
+    if (valid) {
+      console.log(`PASS sessions/${sessionName}/task-graph`);
+    } else {
+      console.error(`FAIL sessions/${sessionName}/task-graph`);
+      for (const err of validate.errors) {
+        console.error(`  ${err.instancePath || "/"}: ${err.message}`);
+      }
+      allPassed = false;
+    }
   }
 }
 

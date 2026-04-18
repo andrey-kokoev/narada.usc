@@ -51,15 +51,34 @@ A construction step is admissible only when its authority locus, dependencies, e
 5. Use [`templates/`](templates/) to start your own USC session.
 6. See [`examples/policies/`](examples/policies/) for reusable admissibility policy examples.
 
+## Start a USC Session
+
+```bash
+pnpm install
+pnpm usc:init -- --name my-session --principal "Alice" --intent "Add a public API documentation site"
+```
+
+This creates `sessions/my-session/` with templates, starter JSON, and subfolders for reviews, residuals, and closures.
+
+Options:
+- `--force` — overwrite an existing session
+- `--cis` — include a required CIS admissibility policy
+
+List existing sessions:
+
+```bash
+pnpm usc:list
+```
+
 ## Validation
 
-Validate example documents against JSON schemas:
+Validate example and session documents against JSON schemas:
 
 ```bash
 pnpm validate
 ```
 
-This checks that examples structurally match their schemas, including `$ref` resolution. It is not just JSON syntax parsing.
+This checks that examples and sessions structurally match their schemas, including `$ref` resolution. It is not just JSON syntax parsing.
 
 ## Boundaries
 
