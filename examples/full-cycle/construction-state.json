@@ -170,7 +170,45 @@
     }
   ],
   "admissibility_policies": [
-    { "$ref": "../policies/cis-required.json" }
+    {
+      "id": "policy-cis-required-v1",
+      "name": "Required CIS Policy",
+      "description": "A required constructive invariance policy that governs all construction states for this system.",
+      "type": "constructive_invariance",
+      "mode": "required",
+      "applies_to": [
+        "de_arbitrarization",
+        "task_formation",
+        "execution",
+        "review",
+        "integration",
+        "closure"
+      ],
+      "requirements": {
+        "functional_properties": [
+          "All public API contracts remain backward-compatible for one major version",
+          "Documentation examples must execute without error against the current library build"
+        ],
+        "transformation_potential": [
+          "The system must remain deployable to GitHub Pages without vendor migration",
+          "New widget documentation pages can be added without changing site generator"
+        ],
+        "compatibility_or_migration": [
+          "Schema changes require a migration script and a rollback path",
+          "Removed features must be documented with removal rationale and replacement path"
+        ],
+        "verification_evidence": [
+          "CI must run integration tests before merge",
+          "Doc examples must be validated against the built library in CI",
+          "Review must check that no public API contract was broken"
+        ],
+        "semantic_closure": [
+          "The term 'widget' refers only to UI components in the public API",
+          "Version numbers follow semver and are not reused"
+        ]
+      },
+      "residual_on_failure": "Policy failure becomes a failed_review or missing_policy residual. Work cannot integrate until the residual is resolved or the policy is explicitly relaxed by principal authority."
+    }
   ],
   "residuals": [
     {

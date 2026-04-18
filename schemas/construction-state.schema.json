@@ -5,6 +5,7 @@
   "type": "object",
   "required": ["system", "intent", "decision_context", "arbitrariness", "closure", "task_graph", "evidence", "review_predicates"],
   "properties": {
+    "$schema": { "type": "string" },
     "system": {
       "type": "object",
       "required": ["name"],
