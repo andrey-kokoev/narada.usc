@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/task-graph.schema.json",
+  "title": "USC Task Graph",
+  "type": "object",
+  "required": ["tasks", "edges"],
+  "properties": {
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/task" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" }
+    }
+  },
+  "$defs": {
+    "task": {
+      "type": "object",
+      "required": ["id", "title", "authority", "transformation", "evidence", "review_predicate", "status"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "authority": { "type": "string" },
+        "transformation": { "type": "string" },
+        "evidence": { "type": "string" },
+        "review_predicate": { "type": "string" },
+        "status": { "enum": ["open", "claimed", "executed", "accepted", "rejected", "residualized", "superseded"] }
+      },
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "required": ["from", "to", "type"],
+      "properties": {
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "type": { "enum": ["blocks", "validates", "conflicts_with", "supersedes", "derives"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

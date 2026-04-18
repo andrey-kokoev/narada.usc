@@ -1,0 +1,41 @@
+{
+  "system": {
+    "name": "example-system",
+    "version": "0.0.0"
+  },
+  "intent": {
+    "principal": "example-principal",
+    "statement": "Create a minimal documented construction substrate."
+  },
+  "decision_context": {
+    "matters": ["public boundary", "reusable protocol", "no private traces"]
+  },
+  "arbitrariness": [],
+  "closure": [
+    {
+      "decision": "USC substrate is separate from USC app repos.",
+      "authority": "principal"
+    }
+  ],
+  "task_graph": {
+    "tasks": [
+      {
+        "id": "T1",
+        "title": "Create public substrate skeleton",
+        "authority": "semantic/planning",
+        "transformation": "Create docs, protocols, schemas, and examples for reusable USC substrate.",
+        "evidence": "Files exist and describe intended boundaries.",
+        "review_predicate": "Repo can be understood as USC substrate rather than app repo or diary.",
+        "status": "open"
+      }
+    ],
+    "edges": []
+  },
+  "evidence": [],
+  "review_predicates": [
+    {
+      "id": "P1",
+      "statement": "All public files avoid private operational data."
+    }
+  ]
+}

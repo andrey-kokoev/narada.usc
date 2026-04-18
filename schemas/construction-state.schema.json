@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/construction-state.schema.json",
+  "title": "USC Construction State",
+  "type": "object",
+  "required": ["system", "intent", "decision_context", "arbitrariness", "closure", "task_graph", "evidence", "review_predicates"],
+  "properties": {
+    "system": { "type": "object" },
+    "intent": { "type": "object" },
+    "decision_context": { "type": "object" },
+    "arbitrariness": { "type": "array", "items": { "type": "object" } },
+    "closure": { "type": "array", "items": { "type": "object" } },
+    "task_graph": { "$ref": "./task-graph.schema.json" },
+    "evidence": { "type": "array", "items": { "type": "object" } },
+    "review_predicates": { "type": "array", "items": { "type": "object" } }
+  },
+  "additionalProperties": false
+}
