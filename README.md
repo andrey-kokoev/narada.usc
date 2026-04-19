@@ -82,10 +82,10 @@ Transform raw principal intent into decision-relevant ambiguity, questions, and 
 
 ```bash
 # Machine-readable JSON (use --silent to suppress pnpm lifecycle output)
-pnpm --silent usc:json refine --intent "I want ERP system" --format json
+pnpm --silent usc -- refine --intent "I want ERP system" --format json
 
 # Human-readable Markdown
-pnpm usc:refine -- --intent "I want support helpdesk" --format md
+pnpm usc -- refine --intent "I want support helpdesk" --format md
 ```
 
 Use a specific domain pack for richer construction grammar:

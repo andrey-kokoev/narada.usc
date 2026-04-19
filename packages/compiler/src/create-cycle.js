@@ -6,7 +6,10 @@ function createCycle({ target, name, intent, force }) {
   const uscDir = join(repoDir, "usc");
 
   if (!existsSync(uscDir)) {
-    throw new Error(`No USC construction repo found at '${repoDir}'. Expected 'usc/' directory.`);
+    throw new Error(
+      `No USC construction repo found at '${repoDir}'. Expected 'usc/' directory. ` +
+        `If running through pnpm --dir, pass --target <repo>.`
+    );
   }
 
   const cyclesDir = join(uscDir, "cycles");

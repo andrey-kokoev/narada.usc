@@ -58,8 +58,12 @@ pnpm usc -- init <path> --name <name> --principal "<name>" --intent "<text>"
 Inside an existing USC repo, open a construction cycle/checkpoint:
 
 ```bash
+# From inside a USC repo (direct node invocation)
 cd /path/to/narada.usc.<system>
-pnpm --dir /home/andrey/src/narada.usc usc -- cycle --intent "<text>"
+node /home/andrey/src/narada.usc/packages/cli/src/usc.js cycle --intent "<text>"
+
+# From the substrate repo
+pnpm --dir /home/andrey/src/narada.usc usc -- cycle --target /path/to/narada.usc.<system> --intent "<text>"
 ```
 
 ## Schema Validation
