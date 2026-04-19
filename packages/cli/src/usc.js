@@ -135,7 +135,7 @@ async function run() {
       if (!target || !taskId || !resultFile) {
         die("Usage: usc complete --target <path> --task <id> --result <file> [--claimant <id>] [--format json|md]");
       }
-      const result = completeTask({ target, taskId, resultFile, claimant: args.claimant || null });
+      const result = completeTask({ target, taskId, resultFile, claimant: args.claimant || null, reviewer: args.reviewer || null });
       if (args.format === "json") {
         console.log(JSON.stringify(result, null, 2));
       } else {

@@ -33,6 +33,9 @@
       "review_predicate": "Tests pass and feature meets acceptance criteria.",
       "status": "claimed",
       "depends_on": ["T1"],
+      "inputs": [],
+      "expected_outputs": [],
+      "acceptance": { "criteria": [] },
       "claim": {
         "claimant": "alice",
         "claimed_at": "2026-04-13T10:00:00.000Z",
@@ -48,10 +51,14 @@
       "review_predicate": "Health check passes and smoke tests succeed.",
       "status": "completed",
       "depends_on": ["T2"],
+      "inputs": [],
+      "expected_outputs": [],
+      "acceptance": { "criteria": [] },
       "result": {
         "artifact_reference": "https://staging.example.com",
         "completed_at": "2026-04-13T14:00:00.000Z",
-        "completed_by": "alice"
+        "completed_by": "alice",
+        "reviewed_by": "alice"
       }
     },
     {
@@ -63,6 +70,9 @@
       "review_predicate": "Original reproduction case now passes.",
       "status": "blocked",
       "depends_on": [],
+      "inputs": [],
+      "expected_outputs": [],
+      "acceptance": { "criteria": [] },
       "block": {
         "reason": "Waiting for reproduction steps from support team",
         "unblock_condition": "Support provides minimal reproduction case"
@@ -77,6 +87,9 @@
       "review_predicate": "No regressions and code review approved.",
       "status": "rejected",
       "depends_on": ["T1"],
+      "inputs": [],
+      "expected_outputs": [],
+      "acceptance": { "criteria": [] },
       "review": {
         "reviewer": "bob",
         "outcome": "reject",

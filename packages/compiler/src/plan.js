@@ -2,6 +2,13 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { readJson, writeJson } from "@narada.usc/core/src/atomic-json.js";
 
+function isInitPlaceholder(taskGraph) {
+  const tasks = taskGraph.tasks || [];
+  if (tasks.length !== 1) return false;
+  const t = tasks[0];
+  return t.id === "T1" && t.title && t.title.startsWith("Initial task for");
+}
+
 function plan({ target, from, force }) {
   const repoDir = target.startsWith("/") ? target : join(process.cwd(), target);
   const uscDir = join(repoDir, "usc");
@@ -16,8 +23,13 @@ function plan({ target, from, force }) {
   }
 
   const taskGraphPath = join(uscDir, "task-graph.json");
+  let isPlaceholder = false;
   if (existsSync(taskGraphPath) && !force) {
-    throw new Error(`Task graph already exists at '${taskGraphPath}'. Use --force to overwrite.`);
+    const existing = readJson(taskGraphPath);
+    isPlaceholder = isInitPlaceholder(existing);
+    if (!isPlaceholder) {
+      throw new Error(`Task graph already exists at '${taskGraphPath}'. Use --force to overwrite.`);
+    }
   }
 
   const refinement = JSON.parse(readFileSync(refinementPath, "utf8"));
@@ -27,7 +39,27 @@ function plan({ target, from, force }) {
   const now = new Date().toISOString();
   const tasks = [];
 
-  // Convert seed tasks to graph tasks
+  // Blocking residuals become pending resolution tasks
+  const blockingResiduals = residuals.filter((r) => r.blocking);
+  const blockingResidualIds = blockingResiduals.map((r) => r.residual_id);
+
+  for (const residual of blockingResiduals) {
+    tasks.push({
+      id: residual.residual_id,
+      title: `Resolve: ${residual.description}`,
+      authority_locus: "principal",
+      transformation: `Resolve the blocking residual: ${residual.description}`,
+      evidence_requirement: "Residual is documented as resolved or closed.",
+      review_predicate: "A reviewer agrees the residual no longer blocks construction.",
+      status: "pending",
+      depends_on: [],
+      inputs: [{ name: "principal_decision", description: "The decision or information needed to resolve this residual.", source: "principal" }],
+      expected_outputs: [{ name: "resolution_document", description: "Documented resolution of the residual", format: "markdown" }],
+      acceptance: { criteria: ["Residual is no longer blocking construction"] },
+    });
+  }
+
+  // Convert seed tasks to graph tasks; they depend on all blocking residuals
   for (const seed of seedTasks) {
     tasks.push({
       id: seed.id,
@@ -37,26 +69,10 @@ function plan({ target, from, force }) {
       evidence_requirement: seed.evidence_requirement,
       review_predicate: seed.review_predicate,
       status: "pending",
-      depends_on: [],
-    });
-  }
-
-  // Emit blocked tasks for blocking residuals
-  const blockingResiduals = residuals.filter((r) => r.blocking);
-  for (const residual of blockingResiduals) {
-    tasks.push({
-      id: residual.residual_id,
-      title: `Resolve: ${residual.description}`,
-      authority_locus: "principal",
-      transformation: `Resolve the blocking residual: ${residual.description}`,
-      evidence_requirement: "Residual is documented as resolved or closed.",
-      review_predicate: "A reviewer agrees the residual no longer blocks construction.",
-      status: "blocked",
-      depends_on: [],
-      block: {
-        reason: residual.description,
-        unblock_condition: "Principal provides the required decision or information.",
-      },
+      depends_on: [...blockingResidualIds],
+      inputs: [{ name: "refinement_context", description: "Context from intent refinement", source: "refinement" }],
+      expected_outputs: [{ name: "task_evidence", description: "Evidence satisfying the evidence requirement", format: "artifact" }],
+      acceptance: { criteria: [seed.review_predicate] },
     });
   }
 
@@ -76,7 +92,7 @@ function plan({ target, from, force }) {
   const taskCount = tasks.length;
   const blockedCount = tasks.filter((t) => t.status === "blocked").length;
   const runnableCount = tasks.filter((t) => {
-    if (t.status !== "pending" && t.status !== "open") return false;
+    if (t.status !== "pending") return false;
     const deps = [...(t.depends_on || []), ...(t.dependencies || [])];
     return deps.every((depId) => {
       const dep = tasks.find((task) => task.id === depId);

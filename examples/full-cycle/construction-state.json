@@ -83,18 +83,16 @@
         "transformation": "Add VitePress, create docs/ skeleton, add npm scripts",
         "evidence_requirement": "Local dev server runs; homepage renders",
         "review_predicate": "Reviewer can clone, install, and run docs:dev successfully",
-        "status": "accepted",
-        "claimed_by": "Carol",
-        "claimed_at": "2026-04-10T09:00:00Z",
-        "executed_at": "2026-04-10T12:00:00Z",
-        "reviewed_at": "2026-04-10T14:00:00Z",
-        "reviewed_by": "Bob",
-        "review_outcome": "accept",
-        "policy_refs": ["policy-cis-required-v1"],
-        "policy_obligations": [
-          "Transformation potential: site must remain deployable to GitHub Pages",
-          "Semantic closure: npm script names follow conventions"
-        ]
+        "status": "completed",
+        "inputs": [],
+        "expected_outputs": [],
+        "acceptance": { "criteria": [] },
+        "result": {
+          "artifact_reference": "docs/.vitepress/config.ts",
+          "completed_at": "2026-04-10T14:00:00Z",
+          "completed_by": "Carol",
+          "reviewed_by": "Bob"
+        }
       },
       {
         "id": "T2",
@@ -103,8 +101,11 @@
         "transformation": "Write MDX pages for Button, Card, Modal with examples",
         "evidence_requirement": "Three pages with runnable examples",
         "review_predicate": "New developer can use widgets without reading source",
-        "status": "open",
+        "status": "pending",
         "dependencies": ["T1"],
+        "inputs": [],
+        "expected_outputs": [],
+        "acceptance": { "criteria": [] },
         "policy_refs": ["policy-cis-required-v1"],
         "policy_obligations": [
           "Functional properties: docs must not break existing CI",
@@ -118,8 +119,11 @@
         "transformation": "GitHub Actions workflow validates examples",
         "evidence_requirement": "Invalid example in test PR fails CI",
         "review_predicate": "Invalid examples caught; valid pass; < 2 min runtime",
-        "status": "open",
+        "status": "pending",
         "dependencies": ["T2"],
+        "inputs": [],
+        "expected_outputs": [],
+        "acceptance": { "criteria": [] },
         "policy_refs": ["policy-cis-required-v1"],
         "policy_obligations": [
           "Functional properties: doc examples execute without error",
@@ -133,8 +137,11 @@
         "transformation": "GitHub Actions deploys docs on push to main",
         "evidence_requirement": "Site reachable at published URL",
         "review_predicate": "Site loads without errors",
-        "status": "open",
+        "status": "pending",
         "dependencies": ["T1"],
+        "inputs": [],
+        "expected_outputs": [],
+        "acceptance": { "criteria": [] },
         "policy_refs": ["policy-cis-required-v1"],
         "policy_obligations": [
           "Transformation potential: must remain deployable to GitHub Pages",

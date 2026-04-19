@@ -3,7 +3,7 @@
   "$id": "https://narada2.dev/schemas/usc/task.schema.json",
   "title": "USC Task",
   "type": "object",
-  "required": ["id", "title", "authority_locus", "transformation", "evidence_requirement", "review_predicate", "status"],
+  "required": ["id", "title", "authority_locus", "transformation", "evidence_requirement", "review_predicate", "status", "inputs", "expected_outputs", "acceptance"],
   "properties": {
     "id": { "type": "string" },
     "title": { "type": "string" },
@@ -23,25 +23,7 @@
     "review_predicate": { "type": "string" },
     "residual_handling": { "type": "string" },
     "status": {
-      "enum": ["open", "pending", "claimed", "executed", "completed", "under_review", "accepted", "rejected", "residualized", "superseded", "blocked"]
-    },
-    "claimed_by": { "type": "string" },
-    "claimed_at": { "type": "string", "format": "date-time" },
-    "executed_at": { "type": "string", "format": "date-time" },
-    "reviewed_at": { "type": "string", "format": "date-time" },
-    "reviewed_by": { "type": "string" },
-    "review_outcome": { "enum": ["accept", "reject", "residualize", "reopen"] },
-    "residual_of": { "type": "string" },
-    "supersedes": { "type": "string" },
-    "policy_refs": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "References to admissibility policies that govern this task."
-    },
-    "policy_obligations": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "Specific policy obligations this task must satisfy."
+      "enum": ["pending", "claimed", "completed", "rejected", "blocked"]
     },
     "inputs": {
       "type": "array",
@@ -71,6 +53,7 @@
     },
     "acceptance": {
       "type": "object",
+      "required": ["criteria"],
       "properties": {
         "criteria": { "type": "array", "items": { "type": "string" } },
         "automation": { "type": "string" }
@@ -101,11 +84,12 @@
     },
     "result": {
       "type": "object",
-      "required": ["artifact_reference", "completed_at", "completed_by"],
+      "required": ["artifact_reference", "completed_at", "completed_by", "reviewed_by"],
       "properties": {
         "artifact_reference": { "type": "string" },
         "completed_at": { "type": "string", "format": "date-time" },
-        "completed_by": { "type": "string" }
+        "completed_by": { "type": "string" },
+        "reviewed_by": { "type": "string" }
       },
       "additionalProperties": false
     },
@@ -117,6 +101,16 @@
         "unblock_condition": { "type": "string" }
       },
       "additionalProperties": false
+    },
+    "policy_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to admissibility policies that govern this task."
+    },
+    "policy_obligations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Specific policy obligations this task must satisfy."
     }
   },
   "allOf": [

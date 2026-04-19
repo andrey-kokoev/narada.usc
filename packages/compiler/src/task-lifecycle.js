@@ -29,7 +29,7 @@ function findTask(taskGraph, taskId) {
 }
 
 function isRunnable(task, tasks) {
-  if (task.status !== "pending" && task.status !== "open") return false;
+  if (task.status !== "pending") return false;
   const deps = [...(task.depends_on || []), ...(task.dependencies || [])];
   const taskMap = new Map(tasks.map((t) => [t.id, t]));
   return deps.every((depId) => {
@@ -38,7 +38,7 @@ function isRunnable(task, tasks) {
   });
 }
 
-function nextTask({ target, claimant }) {
+function nextTask({ target, claimant, dryRun }) {
   const { taskGraphPath, taskGraph } = loadTaskGraph(target);
   const tasks = taskGraph.tasks || [];
 
@@ -56,11 +56,13 @@ function nextTask({ target, claimant }) {
     claimed_at: now,
   };
 
-  saveTaskGraph(taskGraphPath, taskGraph);
+  if (!dryRun) {
+    saveTaskGraph(taskGraphPath, taskGraph);
+  }
   return { task, taskGraphPath, summary: { action: "next", claimed: task.id } };
 }
 
-function completeTask({ target, taskId, resultFile, claimant }) {
+function completeTask({ target, taskId, resultFile, claimant, reviewer }) {
   const { taskGraphPath, taskGraph } = loadTaskGraph(target);
   const task = findTask(taskGraph, taskId);
 
@@ -78,6 +80,7 @@ function completeTask({ target, taskId, resultFile, claimant }) {
     artifact_reference: resultFile,
     completed_at: now,
     completed_by: claimant || (task.claim && task.claim.claimant) || "unknown",
+    reviewed_by: reviewer || claimant || (task.claim && task.claim.claimant) || "unknown",
   };
 
   saveTaskGraph(taskGraphPath, taskGraph);

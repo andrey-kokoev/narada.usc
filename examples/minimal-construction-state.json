@@ -28,7 +28,10 @@
         "transformation": "Create docs, protocols, schemas, and examples for reusable USC substrate.",
         "evidence_requirement": "Files exist and describe intended boundaries.",
         "review_predicate": "Repo can be understood as USC substrate rather than app repo or diary.",
-        "status": "open"
+        "status": "pending",
+        "inputs": [],
+        "expected_outputs": [],
+        "acceptance": { "criteria": [] }
       }
     ],
     "edges": []
