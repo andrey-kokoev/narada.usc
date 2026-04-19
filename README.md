@@ -85,14 +85,20 @@ Options:
 Transform raw principal intent into decision-relevant ambiguity, questions, and construction artifacts:
 
 ```bash
-pnpm usc:refine -- --intent "I want ERP system" --format json
+# Machine-readable JSON (use --silent to suppress pnpm lifecycle output)
+pnpm --silent usc:json refine --intent "I want ERP system" --format json
+
+# Human-readable Markdown
 pnpm usc:refine -- --intent "I want support helpdesk" --format md
 ```
 
 Use a specific domain pack for richer construction grammar:
 
 ```bash
-pnpm usc:refine -- --intent "I want ERP system" --domain erp --format json
+# Machine-readable JSON with domain prior
+pnpm --silent usc:json refine --intent "I want ERP system" --domain erp --format json
+
+# Human-readable Markdown with domain prior
 pnpm usc:refine -- --intent "I want support helpdesk" --domain helpdesk --format md
 ```
 
@@ -101,7 +107,7 @@ If `--domain` is omitted, the CLI auto-detects the best-matching domain pack whe
 Write refinement into an app repo:
 
 ```bash
-pnpm usc:refine -- --target ../narada.usc.my-app --intent "I want ERP system" --domain erp --format json
+pnpm --silent usc:json refine --target ../narada.usc.my-app --intent "I want ERP system" --domain erp --format json
 ```
 
 `refine --target` refuses to overwrite existing `usc/refinement.json` or `usc/refinement.md` unless `--force` is provided.

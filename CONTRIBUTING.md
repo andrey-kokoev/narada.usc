@@ -125,8 +125,8 @@ pnpm validate -- --app <path>    # external app repo
 Manual verification for commands:
 
 ```bash
-# Refinement
-pnpm usc:refine -- --intent "I want ERP system" --format json
+# Refinement (machine-readable JSON — use --silent for clean stdout)
+pnpm --silent usc:json refine --intent "I want ERP system" --format json
 
 # Session creation
 pnpm usc:init -- --name test-session --principal "Test" --intent "..."

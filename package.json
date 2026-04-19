@@ -9,7 +9,8 @@
     "usc:init": "node packages/cli/src/usc.js init-session",
     "usc:list": "node packages/cli/src/usc.js list-sessions",
     "usc:init-app": "node packages/cli/src/usc.js init-app",
-    "usc:refine": "node packages/cli/src/usc.js refine"
+    "usc:refine": "node packages/cli/src/usc.js refine",
+    "usc:json": "node packages/cli/src/usc.js"
   },
   "devDependencies": {
     "ajv": "^8.18.0",
