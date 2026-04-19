@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/compliance-system-context.schema.json",
+  "title": "Compliance System Domain Pack Context",
+  "description": "Context parameters for the compliance system domain pack refinement",
+  "type": "object",
+  "properties": {
+    "frameworks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "controls_model": {
+      "type": "string"
+    },
+    "evidence_sources": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "automation_level": {
+      "type": "string",
+      "enum": ["manual", "semi-automated", "fully-automated"]
+    },
+    "review_workflows": {
+      "type": "boolean"
+    },
+    "retention_policy": {
+      "type": "string"
+    },
+    "access_controls": {
+      "type": "string"
+    },
+    "exception_tracking": {
+      "type": "boolean"
+    },
+    "reporting_requirements": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "monitoring_cadence": {
+      "type": "string",
+      "enum": ["continuous", "periodic", "event-driven", "hybrid"]
+    },
+    "scope_boundary": {
+      "type": "string"
+    }
+  }
+}

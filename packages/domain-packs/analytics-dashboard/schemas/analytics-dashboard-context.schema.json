@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/analytics-dashboard-context.schema.json",
+  "title": "Analytics Dashboard Domain Pack Context",
+  "description": "Context parameters for the analytics dashboard domain pack refinement",
+  "type": "object",
+  "properties": {
+    "metrics": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "data_sources": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dimensions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "refresh_cadence": {
+      "type": "string",
+      "enum": ["real-time", "hourly", "daily", "on-demand"]
+    },
+    "access_control": {
+      "type": "string"
+    },
+    "export_share": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "alerting": {
+      "type": "boolean"
+    },
+    "historical_backfill": {
+      "type": "string"
+    },
+    "analytics_type": {
+      "type": "string",
+      "enum": ["dashboard-only", "embedded", "self-service", "hybrid"]
+    },
+    "mvp_dashboards": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

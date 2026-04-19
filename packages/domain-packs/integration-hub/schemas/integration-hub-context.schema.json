@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/integration-hub-context.schema.json",
+  "title": "Integration Hub Domain Pack Context",
+  "description": "Context parameters for the integration hub domain pack refinement",
+  "type": "object",
+  "properties": {
+    "source_systems": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "target_systems": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "sync_direction": {
+      "type": "string",
+      "enum": ["unidirectional", "bidirectional", "multi-master"]
+    },
+    "identity_mapping": {
+      "type": "string"
+    },
+    "schema_transformation": {
+      "type": "boolean"
+    },
+    "conflict_resolution": {
+      "type": "string",
+      "enum": ["last-write-wins", "merge", "manual", "custom"]
+    },
+    "delivery_guarantee": {
+      "type": "string",
+      "enum": ["exactly-once", "at-least-once", "at-most-once"]
+    },
+    "rate_limits": {
+      "type": "boolean"
+    },
+    "reconciliation": {
+      "type": "string"
+    },
+    "credential_management": {
+      "type": "string"
+    },
+    "backfill_scope": {
+      "type": "string"
+    }
+  }
+}

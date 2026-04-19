@@ -1,0 +1,55 @@
+export function detect(intent) {
+  const text = intent.toLowerCase();
+  return /\bintegration\b|\bsync\b|\bapi hub\b|\bconnect\b.*\bsystem|\bdata sync\b|\bwebhook\b.*\bhub|\bintegration hub\b|\bapi gateway\b|\bconnector\b/.test(text);
+}
+
+export function refine(intent) {
+  return {
+    ambiguities: [
+      { layer: "ontology", description: "Source and target systems, their APIs, and capabilities", governing: true },
+      { layer: "dynamics", description: "Sync direction (unidirectional, bidirectional, multi-master)", governing: true },
+      { layer: "ontology", description: "Identity mapping and key resolution between systems", governing: true },
+      { layer: "dynamics", description: "Schema transformation, validation, and versioning", governing: true },
+      { layer: "dynamics", description: "Conflict resolution strategy (last-write-wins, merge, manual, custom)", governing: true },
+      { layer: "normativity", description: "Retry, idempotency, and exactly-once delivery semantics", governing: true },
+      { layer: "environment", description: "Rate limits, quotas, and throttling from external systems", governing: true },
+      { layer: "dynamics", description: "Reconciliation strategy and cadence", governing: true },
+      { layer: "environment", description: "Observability requirements for sync health and failures", governing: true },
+      { layer: "normativity", description: "Credential and secret management for external system access", governing: true },
+      { layer: "dynamics", description: "Backfills, replays, and historical sync scope", governing: true },
+      { layer: "dynamics", description: "Failure semantics (fail-stop, partial success, degrade gracefully)", governing: true },
+    ],
+    questions: [
+      { question: "What are the source and target systems?", authority: "principal", blocking: true },
+      { question: "What is the sync direction?", authority: "principal", options: ["unidirectional", "bidirectional", "multi-master"], blocking: true },
+      { question: "How are identities mapped and resolved between systems?", authority: "principal", blocking: true },
+      { question: "What schema transformations and validations are required?", authority: "semantic", blocking: false },
+      { question: "What conflict resolution strategy is required?", authority: "principal", options: ["last-write-wins", "merge", "manual", "custom"], blocking: false },
+      { question: "What delivery guarantee is required?", authority: "principal", options: ["exactly-once", "at-least-once", "at-most-once"], blocking: false },
+      { question: "What rate limits and quotas must be respected?", authority: "semantic", blocking: false },
+      { question: "What reconciliation strategy and cadence are needed?", authority: "principal", blocking: false },
+      { question: "What observability is required for sync health?", authority: "principal", blocking: false },
+      { question: "How are credentials and secrets managed?", authority: "semantic", blocking: false },
+      { question: "What backfill or replay scope is required?", authority: "principal", blocking: false },
+    ],
+    assumptions: [
+      { assumption: "Source and target systems expose stable APIs or data interfaces", confidence: "low", reversible: true },
+      { assumption: "Standard retry with exponential backoff is sufficient for transient failures", confidence: "medium", reversible: true },
+    ],
+    suggested_closures: [
+      { decision: "Integration hub construction will separate connectivity, transformation, sync orchestration, and observability into independent layers.", rationale: "Separation enables adding new connectors without rewriting transformation logic, and supports independent scaling of sync and observability.", authority: "principal" },
+    ],
+    seed_tasks: [
+      { id: "T3", title: "Inventory source and target systems and their APIs", authority_locus: "semantic", transformation: "List all systems, their APIs, auth methods, rate limits, and data models.", evidence_requirement: "System inventory with API documentation exists.", review_predicate: "Every system has documented API endpoints, auth, and rate limits." },
+      { id: "T4", title: "Define sync direction and identity mapping", authority_locus: "principal", transformation: "Document sync direction per entity and how keys are mapped between systems.", evidence_requirement: "Sync direction and identity mapping are documented.", review_predicate: "Every entity has defined direction and a resolvable identity mapping." },
+      { id: "T5", title: "Design transformation, validation, and conflict resolution", authority_locus: "principal", transformation: "Document schema transformations, validation rules, and conflict resolution policy.", evidence_requirement: "Transformation and conflict resolution policies are documented.", review_predicate: "Every sync path has defined transformation rules and conflict handling." },
+    ],
+    residuals: [
+      { residual_id: "res-systems", class: "unresolved_principal_decision", description: "Source and target systems are not identified.", blocking: true },
+      { residual_id: "res-sync-direction", class: "unresolved_principal_decision", description: "Sync direction is not selected.", blocking: true },
+      { residual_id: "res-identity-mapping", class: "missing_policy", description: "Identity mapping strategy is undefined.", blocking: false },
+      { residual_id: "res-conflict-resolution", class: "missing_policy", description: "Conflict resolution strategy is not selected.", blocking: false },
+      { residual_id: "res-delivery-guarantee", class: "missing_policy", description: "Delivery guarantee is not defined.", blocking: false },
+    ],
+  };
+}
