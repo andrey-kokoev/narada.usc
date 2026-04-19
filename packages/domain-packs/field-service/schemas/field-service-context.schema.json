@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/field-service-context.schema.json",
+  "title": "Field Service Domain Context",
+  "type": "object",
+  "properties": {
+    "service_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Types of field service work in scope"
+    },
+    "dispatch_model": {
+      "type": "string",
+      "enum": ["manual-dispatch", "automated-scheduling", "territory-based", "skill-matching"]
+    },
+    "mobile_strategy": {
+      "type": "string",
+      "enum": ["online-only", "offline-capable"]
+    },
+    "completion_criteria": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "sla_tiers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "billing_model": {
+      "type": "string",
+      "enum": ["time-and-materials", "flat-rate", "contract-based", "mixed"]
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

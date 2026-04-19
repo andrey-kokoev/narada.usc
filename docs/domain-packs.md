@@ -18,6 +18,16 @@ Domain packs are reusable constructor knowledge modules. Each pack surfaces deci
 | Compliance System | `compliance-system` | Compliance evidence, controls, audits, and retention |
 | Customer Portal | `customer-portal` | Customer-facing self-service portals |
 | Integration Hub | `integration-hub` | API connectors, data sync, transformation, and reconciliation |
+| Field Service | `field-service` | Dispatch, work orders, and mobile field operations |
+| Healthcare Operations | `healthcare-ops` | Appointments, patient workflows, and records coordination |
+| Real Estate | `real-estate` | Property, leasing, listings, and tenant operations |
+| Project Management | `project-management` | Task, project, and portfolio delivery coordination |
+| Notifications and Messaging | `notifications-messaging` | Multi-channel notification and broadcast systems |
+| CMS Publishing | `cms-publishing` | Content management, publishing, and editorial workflow |
+| Learning Management | `learning-management` | LMS, training, courses, and assessment |
+| Community Platform | `community-platform` | Forums, member communities, and moderation |
+| Procurement | `procurement` | Purchasing, vendors, approvals, and spend control |
+| Asset Management | `asset-management` | Physical/digital asset tracking and lifecycle |
 
 ## Using Domain Packs
 
@@ -36,6 +46,16 @@ usc refine --intent "I want analytics dashboard" --domain analytics-dashboard
 usc refine --intent "I want compliance system" --domain compliance-system
 usc refine --intent "I want customer portal" --domain customer-portal
 usc refine --intent "I want integration hub" --domain integration-hub
+usc refine --intent "I want field service system" --domain field-service
+usc refine --intent "I want healthcare operations system" --domain healthcare-ops
+usc refine --intent "I want real estate platform" --domain real-estate
+usc refine --intent "I want project management system" --domain project-management
+usc refine --intent "I want notifications messaging system" --domain notifications-messaging
+usc refine --intent "I want CMS publishing system" --domain cms-publishing
+usc refine --intent "I want learning management system" --domain learning-management
+usc refine --intent "I want community platform" --domain community-platform
+usc refine --intent "I want procurement system" --domain procurement
+usc refine --intent "I want asset management system" --domain asset-management
 ```
 
 ### Auto-Detection

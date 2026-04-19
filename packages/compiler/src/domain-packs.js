@@ -10,6 +10,16 @@ import billingSubscriptions from "../../domain-packs/billing-subscriptions/src/i
 import complianceSystem from "../../domain-packs/compliance-system/src/index.js";
 import customerPortal from "../../domain-packs/customer-portal/src/index.js";
 import integrationHub from "../../domain-packs/integration-hub/src/index.js";
+import fieldService from "../../domain-packs/field-service/src/index.js";
+import healthcareOps from "../../domain-packs/healthcare-ops/src/index.js";
+import realEstate from "../../domain-packs/real-estate/src/index.js";
+import projectManagement from "../../domain-packs/project-management/src/index.js";
+import notificationsMessaging from "../../domain-packs/notifications-messaging/src/index.js";
+import cmsPublishing from "../../domain-packs/cms-publishing/src/index.js";
+import learningManagement from "../../domain-packs/learning-management/src/index.js";
+import communityPlatform from "../../domain-packs/community-platform/src/index.js";
+import procurement from "../../domain-packs/procurement/src/index.js";
+import assetManagement from "../../domain-packs/asset-management/src/index.js";
 
 export const domainPacks = [
   saas,
@@ -24,6 +34,16 @@ export const domainPacks = [
   complianceSystem,
   customerPortal,
   integrationHub,
+  fieldService,
+  healthcareOps,
+  realEstate,
+  projectManagement,
+  notificationsMessaging,
+  cmsPublishing,
+  learningManagement,
+  communityPlatform,
+  procurement,
+  assetManagement,
 ];
 
 export function findPackById(id) {

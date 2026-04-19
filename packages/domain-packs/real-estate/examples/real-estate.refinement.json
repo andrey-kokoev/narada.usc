@@ -1,0 +1,61 @@
+{
+  "$schema": "https://narada2.dev/schemas/usc/refinement.schema.json",
+  "intent": "I want real estate platform",
+  "detected_domain": "real-estate",
+  "ambiguities": [
+    { "layer": "ontology", "description": "What entities, relationships, and boundaries define this system?", "governing": true },
+    { "layer": "dynamics", "description": "How do users and processes interact with the system over time?", "governing": true },
+    { "layer": "normativity", "description": "What rules, constraints, and compliance requirements apply?", "governing": true },
+    { "layer": "environment", "description": "What external systems, integrations, and deployment constraints exist?", "governing": true },
+    { "layer": "stopping", "description": "What defines MVP, done, and out-of-scope for this construction?", "governing": true },
+    { "layer": "ontology", "description": "Property, listing, lease, and tenant ontology (units, buildings, portfolios)", "governing": true },
+    { "layer": "ontology", "description": "Residential vs commercial focus (or mixed)", "governing": true },
+    { "layer": "dynamics", "description": "Listing workflow (creation, marketing, inquiry, showing, application)", "governing": true },
+    { "layer": "dynamics", "description": "Applications and screening workflow (criteria, fees, background, approval)", "governing": true },
+    { "layer": "dynamics", "description": "Lease lifecycle (draft, sign, move-in, renew, terminate, move-out)", "governing": true },
+    { "layer": "dynamics", "description": "Payments and deposits model (rent, deposit, fees, late charges, methods)", "governing": true },
+    { "layer": "dynamics", "description": "Maintenance requests and work order tracking", "governing": false },
+    { "layer": "environment", "description": "Document management (leases, disclosures, addenda, photos)", "governing": false },
+    { "layer": "ontology", "description": "Broker, agent, owner, and property manager roles", "governing": true },
+    { "layer": "normativity", "description": "Compliance and jurisdiction (local landlord-tenant law, fair housing, disclosures)", "governing": true },
+    { "layer": "environment", "description": "Integrations with MLS, accounting, or payment processors", "governing": false },
+    { "layer": "stopping", "description": "MVP transaction and operations boundary (listings only, leases only, full lifecycle)", "governing": true }
+  ],
+  "questions": [
+    { "question": "What does success look like for this system?", "authority": "principal", "blocking": true },
+    { "question": "Who are the primary users and what is the organization size?", "authority": "principal", "blocking": true },
+    { "question": "What is the timeline and what constraints (budget, compliance, team) apply?", "authority": "principal", "blocking": false },
+    { "question": "Is the focus residential, commercial, or mixed?", "authority": "principal", "options": ["residential", "commercial", "mixed"], "blocking": true },
+    { "question": "What is the primary business model? (sales, rentals, property management, mixed)", "authority": "principal", "options": ["sales", "rentals", "property-management", "mixed"], "blocking": true },
+    { "question": "What roles exist? (owner, agent, property manager, tenant, applicant)", "authority": "principal", "blocking": true },
+    { "question": "Are lease execution and payment collection in scope?", "authority": "principal", "options": ["yes", "no"], "blocking": true },
+    { "question": "What compliance or jurisdiction constraints apply?", "authority": "principal", "blocking": false },
+    { "question": "Is maintenance request tracking required?", "authority": "principal", "options": ["yes", "no"], "blocking": false },
+    { "question": "What payment methods must be supported?", "authority": "semantic", "blocking": false },
+    { "question": "Are MLS or accounting integrations required?", "authority": "principal", "blocking": false }
+  ],
+  "assumptions": [
+    { "assumption": "Properties are discrete addressable units with known owners or managers", "confidence": "high", "reversible": true },
+    { "assumption": "Tenants or buyers are identified individuals with contact information", "confidence": "high", "reversible": true },
+    { "assumption": "Sales vs rentals is not assumed without explicit policy", "confidence": "medium", "reversible": true },
+    { "assumption": "Jurisdiction-specific compliance must be explicitly declared", "confidence": "medium", "reversible": true }
+  ],
+  "suggested_closures": [
+    { "decision": "Real estate construction will explicitly model property, lease, and tenant entities with a chosen residential/commercial and sales/rentals focus.", "rationale": "These choices determine the entire ontology, workflow, and compliance surface.", "authority": "principal" }
+  ],
+  "seed_tasks": [
+    { "id": "T1", "title": "Define property and unit ontology", "authority_locus": "principal", "transformation": "Document how properties, units, and portfolios are structured.", "evidence_requirement": "Entity model is documented with relationships.", "review_predicate": "A developer can implement property lookup and unit assignment from the document." },
+    { "id": "T2", "title": "Define lease lifecycle and states", "authority_locus": "principal", "transformation": "Document lease states from application through termination.", "evidence_requirement": "Lease state machine is documented.", "review_predicate": "Any lease can be classified by state and next permissible transition." },
+    { "id": "T3", "title": "Define payment and deposit model", "authority_locus": "principal", "transformation": "Document rent, deposit, fee structures, and payment methods.", "evidence_requirement": "Payment model is documented with fee schedule.", "review_predicate": "A tenant can understand what they owe and how to pay." },
+    { "id": "T4", "title": "Define compliance and jurisdiction framework", "authority_locus": "principal", "transformation": "Document applicable laws, disclosures, and fair housing requirements.", "evidence_requirement": "Compliance checklist is documented by jurisdiction.", "review_predicate": "All required disclosures are listed and mapped to lease events." }
+  ],
+  "residuals": [
+    { "residual_id": "res-scope-unresolved", "class": "unresolved_principal_decision", "description": "System scope and success criteria are not yet defined by the principal.", "blocking": true },
+    { "residual_id": "res-constraints-unknown", "class": "missing_policy", "description": "Constraints, compliance requirements, and non-goals have not been documented.", "blocking": false },
+    { "residual_id": "res-property-ontology", "class": "unresolved_principal_decision", "description": "Property and unit ontology is not defined.", "blocking": true },
+    { "residual_id": "res-business-model", "class": "unresolved_principal_decision", "description": "Business model (sales/rentals/management) is not selected.", "blocking": true },
+    { "residual_id": "res-lease-lifecycle", "class": "unresolved_principal_decision", "description": "Lease lifecycle model is not defined.", "blocking": true },
+    { "residual_id": "res-payments", "class": "missing_policy", "description": "Payment and deposit model is undefined.", "blocking": false },
+    { "residual_id": "res-compliance", "class": "missing_policy", "description": "Compliance and jurisdiction requirements are not documented.", "blocking": false }
+  ]
+}
