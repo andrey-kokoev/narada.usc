@@ -5,7 +5,7 @@ import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
-import { initRepo, createCycle, plan, nextTask, completeTask, rejectTask, blockTask, executeTask } from "@narada.usc/compiler/src/index.js";
+import { initRepo, createCycle, plan, nextTask, completeTask, rejectTask, blockTask, executeTask, runLoop } from "@narada.usc/compiler/src/index.js";
 import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 
@@ -177,6 +177,38 @@ async function run() {
       break;
     }
 
+    case "loop": {
+      const target = args.target;
+      const executor = args.executor;
+      if (!target || !executor) {
+        die("Usage: usc loop --target <path> --executor <name> [--max-steps <n>] [--dry-run] [--format json|md]");
+      }
+      const maxSteps = args["max-steps"] ? parseInt(args["max-steps"], 10) : undefined;
+      const result = await runLoop({
+        target,
+        executorName: executor,
+        maxSteps,
+        dryRun: args["dry-run"] === true || args["dry-run"] === "true",
+      });
+      if (args.format === "json") {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        console.log(`Loop completed: ${result.totalSteps} step(s)`);
+        for (const step of result.steps) {
+          if (step.action === "stop") {
+            console.log(`  Step ${step.step}: stopped — ${step.reason}`);
+          } else if (step.action === "execute_error") {
+            console.log(`  Step ${step.step}: error on ${step.task} — ${step.error}`);
+          } else {
+            console.log(`  Step ${step.step}: ${step.task} — ${step.title} (${step.executor})`);
+            if (step.dryRun) console.log(`    [DRY RUN]`);
+            if (step.artifactPath) console.log(`    Artifact: ${step.artifactPath}`);
+          }
+        }
+      }
+      break;
+    }
+
     case "execute": {
       const target = args.target;
       const taskId = args.task;
@@ -289,6 +321,7 @@ Commands:
   reject --target <path>            Reject a task with reason
   block --target <path>             Block a task with reason and unblock condition
   execute --target <path>           Execute a claimed task via an executor adapter
+  loop --target <path>              Bounded constructor loop (next -> execute)
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
   refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
 `);
