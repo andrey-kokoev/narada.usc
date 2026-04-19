@@ -12,7 +12,7 @@
       "transformation": "Set up the project repository with initial structure.",
       "evidence_requirement": "Repository exists with README and license.",
       "review_predicate": "A reviewer can clone and build the project.",
-      "status": "pending",
+      "status": "proposed",
       "depends_on": [],
       "inputs": [
         { "name": "project_name", "description": "Name of the project", "source": "principal" }
@@ -31,16 +31,11 @@
       "transformation": "Implement the primary feature of the system.",
       "evidence_requirement": "Feature is demonstrated with tests.",
       "review_predicate": "Tests pass and feature meets acceptance criteria.",
-      "status": "claimed",
+      "status": "admitted",
       "depends_on": ["T1"],
       "inputs": [],
       "expected_outputs": [],
-      "acceptance": { "criteria": [] },
-      "claim": {
-        "claimant": "alice",
-        "claimed_at": "2026-04-13T10:00:00.000Z",
-        "expires_at": "2026-04-14T10:00:00.000Z"
-      }
+      "acceptance": { "criteria": [] }
     },
     {
       "id": "T3",
@@ -49,17 +44,11 @@
       "transformation": "Deploy the system to a staging environment.",
       "evidence_requirement": "Staging URL is accessible and health check passes.",
       "review_predicate": "Health check passes and smoke tests succeed.",
-      "status": "completed",
+      "status": "archived",
       "depends_on": ["T2"],
       "inputs": [],
       "expected_outputs": [],
-      "acceptance": { "criteria": [] },
-      "result": {
-        "artifact_reference": "https://staging.example.com",
-        "completed_at": "2026-04-13T14:00:00.000Z",
-        "completed_by": "alice",
-        "reviewed_by": "alice"
-      }
+      "acceptance": { "criteria": [] }
     },
     {
       "id": "T4",
@@ -68,15 +57,11 @@
       "transformation": "Fix the critical bug reported in production.",
       "evidence_requirement": "Bug is reproduced, fixed, and verified.",
       "review_predicate": "Original reproduction case now passes.",
-      "status": "blocked",
+      "status": "draft",
       "depends_on": [],
       "inputs": [],
       "expected_outputs": [],
-      "acceptance": { "criteria": [] },
-      "block": {
-        "reason": "Waiting for reproduction steps from support team",
-        "unblock_condition": "Support provides minimal reproduction case"
-      }
+      "acceptance": { "criteria": [] }
     },
     {
       "id": "T5",
@@ -85,18 +70,11 @@
       "transformation": "Refactor the legacy module to meet current standards.",
       "evidence_requirement": "Refactored module passes all existing tests.",
       "review_predicate": "No regressions and code review approved.",
-      "status": "rejected",
+      "status": "proposed",
       "depends_on": ["T1"],
       "inputs": [],
       "expected_outputs": [],
-      "acceptance": { "criteria": [] },
-      "review": {
-        "reviewer": "bob",
-        "outcome": "reject",
-        "reason": "Missing test coverage for edge cases",
-        "reviewed_at": "2026-04-13T16:00:00.000Z",
-        "next_action": "Add tests for null input handling and retry"
-      }
+      "acceptance": { "criteria": [] }
     }
   ],
   "edges": [

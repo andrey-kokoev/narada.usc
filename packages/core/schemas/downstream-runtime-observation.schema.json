@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/downstream-runtime-observation.schema.json",
+  "title": "Downstream Runtime Observation",
+  "description": "Non-authoritative runtime observations produced by downstream operators (e.g., Narada proper). USC compiler artifacts MAY be annotated with these fields at runtime, but they are NOT part of the canonical USC task or session schema and MUST NOT be treated as compiler-owned state.",
+  "type": "object",
+  "properties": {
+    "task_id": { "type": "string", "description": "Reference to the USC task being observed." },
+    "claim": {
+      "type": "object",
+      "required": ["claimant", "claimed_at"],
+      "properties": {
+        "claimant": { "type": "string" },
+        "claimed_at": { "type": "string", "format": "date-time" },
+        "expires_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "required": ["reviewer", "outcome", "reviewed_at"],
+      "properties": {
+        "reviewer": { "type": "string" },
+        "outcome": { "enum": ["accept", "reject", "residualize", "reopen"] },
+        "reason": { "type": "string" },
+        "reviewed_at": { "type": "string", "format": "date-time" },
+        "next_action": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "required": ["artifact_reference", "completed_at", "completed_by", "reviewed_by"],
+      "properties": {
+        "artifact_reference": { "type": "string" },
+        "completed_at": { "type": "string", "format": "date-time" },
+        "completed_by": { "type": "string" },
+        "reviewed_by": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "block": {
+      "type": "object",
+      "required": ["reason"],
+      "properties": {
+        "reason": { "type": "string" },
+        "unblock_condition": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "task_graph_change": {
+      "type": "object",
+      "description": "A runtime transition observed in the task graph. These values are owned by the downstream operator, not the USC compiler.",
+      "properties": {
+        "change": {
+          "enum": ["claimed", "executed", "reviewed", "residualized", "accepted", "rejected"]
+        },
+        "observed_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

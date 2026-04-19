@@ -8,8 +8,6 @@ A review compares execution evidence against a review predicate.
 |-------|-------|
 | `review_id` | `rev_<task-id>_<timestamp>` |
 | `task_id` | Which task is being reviewed? |
-| `reviewed_by` | Who holds review authority? |
-| `reviewed_at` | ISO 8601 timestamp |
 
 ## Task Statement
 
@@ -17,7 +15,7 @@ Restate the task's intended transformation.
 
 ## Evidence Inspected
 
-List all evidence examined.
+List all evidence that should be examined.
 
 | Evidence | Location | Relevance |
 |----------|----------|-----------|
@@ -29,7 +27,7 @@ Restate the review predicate.
 
 ## Findings
 
-What was discovered? Be specific.
+What should a reviewer discover? Be specific.
 
 ### Satisfied
 
@@ -41,14 +39,14 @@ What was discovered? Be specific.
 - Concern 1
 - Concern 2
 
-## Outcome
+## Expected Outcomes
 
-Select one:
+Describe the admissible verdicts for this review:
 
-- [ ] **accept** — evidence satisfies predicate; integration may proceed
-- [ ] **reject** — evidence fails predicate; work must not integrate
-- [ ] **residualize** — new blocker or ambiguity must become durable task/decision
-- [ ] **reopen** — prior closure must be explicitly reopened before continuing
+- **accept** — evidence satisfies predicate; integration may proceed
+- **reject** — evidence fails predicate; work must not integrate
+- **residualize** — new blocker or ambiguity must become durable task/decision
+- **reopen** — prior closure must be explicitly reopened before continuing
 
 ## Integration Note
 

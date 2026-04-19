@@ -156,12 +156,12 @@ stateDiagram-v2
   IntentCaptured --> AmbiguityLocalized: de-arbitrarization
   AmbiguityLocalized --> ClosureRecorded: decisions made
   ClosureRecorded --> TaskGraphFormed: planning
-  TaskGraphFormed --> TaskClaimed: executor claims work
-  TaskClaimed --> EvidenceProduced: transformation performed
+  TaskGraphFormed --> TaskAdmitted: tasks admitted to construction line
+  TaskAdmitted --> EvidenceProduced: transformation performed
   EvidenceProduced --> Reviewed: review predicate applied
-  Reviewed --> Integrated: accepted
-  Reviewed --> Residualized: blocker or ambiguity remains
-  Residualized --> AmbiguityLocalized: resolve residual
+  Reviewed --> Integrated: downstream runtime accepts
+  Reviewed --> ResidualCreated: blocker or ambiguity remains
+  ResidualCreated --> AmbiguityLocalized: resolve residual
   Integrated --> ClosureRecorded: update durable closure
   Integrated --> [*]
 ```
@@ -220,7 +220,7 @@ flowchart TD
   Truth --> Planning
 
   Review -. failed predicate .-> Residual["Residual"]
-  Integration -. reopened decision .-> Semantic
+  Integration -. reopened closure .-> Semantic
   Residual --> Principal
   Residual --> Planning
 ```

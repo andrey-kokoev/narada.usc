@@ -8,7 +8,7 @@
       "transformation": "This task depends on a non-existent task.",
       "evidence_requirement": "None",
       "review_predicate": "None",
-      "status": "pending",
+      "status": "proposed",
       "depends_on": ["T99"]
     }
   ]

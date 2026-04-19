@@ -8,7 +8,7 @@ Execution authority (Carol, contributor) claims and executes tasks.
 |-------|-------|
 | `task_id` | T1 |
 | `title` | Bootstrap VitePress documentation site |
-| `claimed_by` | Carol |
+| `claimant` | Carol |
 | `claimed_at` | 2026-04-10T09:00:00Z |
 
 ## Execution Log
@@ -63,4 +63,4 @@ None. Task executed cleanly.
 
 ## Status Update
 
-`T1` status: `executed`.
+T1 downstream runtime status: `executed`.

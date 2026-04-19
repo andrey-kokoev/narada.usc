@@ -2,6 +2,8 @@
 
 Integration is the act of accepting reviewed construction work into the durable system state. It is distinct from review and from execution.
 
+> **Note**: The outcomes described below (`accept`, `reject`, `residualize`, `reopen`) are downstream **runtime/integration** concepts managed by the operator runtime (e.g., Narada proper). They are not part of the `narada.usc` compiler-only task status vocabulary (`draft | proposed | admitted | archived`).
+
 ## Integration Inputs
 
 - Reviewed task
@@ -22,7 +24,7 @@ The work is accepted into the durable system state.
 
 **Effects:**
 - Artifacts are merged/committed to durable truth
-- Task status becomes `accepted`
+- Downstream runtime marks the work as accepted
 - Closure records are updated
 - Downstream tasks may become unblocked
 
@@ -34,7 +36,7 @@ The work is rejected and must not integrate.
 - Review outcome is `reject` or integration authority identifies an uncaught defect
 
 **Effects:**
-- Task status becomes `rejected`
+- Downstream runtime marks the work as rejected
 - Executor must address findings or the task is abandoned
 - If abandonment, a residual or declared non-goal must be recorded
 
@@ -46,7 +48,7 @@ The work reveals a new blocker or ambiguity that must become durable.
 - Review outcome is `residualize` or integration authority identifies a systemic blocker
 
 **Effects:**
-- Task status becomes `residualized`
+- Downstream runtime marks the work as residualized
 - Residual record is created
 - New task or decision request is spawned from the residual
 - Original work may be partially integrated if the residual is separable

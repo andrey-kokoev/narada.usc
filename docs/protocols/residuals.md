@@ -4,7 +4,7 @@ A residual is a durable record of a blocker, ambiguity, or deferred decision tha
 
 ## Core Rule
 
-If a pending transformation fails readiness, the blocker must become a residual. It must not remain as informal commentary, implicit assumption, or unrecorded dependency.
+If a draft transformation fails readiness, the blocker must become a residual. It must not remain as informal commentary, implicit assumption, or unrecorded dependency.
 
 ## Residual Classes
 
@@ -34,7 +34,7 @@ No executable path is available for the needed transformation. The intent is exp
 
 ### 4. Failed Review
 
-Review rejected the work. The evidence did not satisfy the review predicate.
+A review found that the evidence did not satisfy the review predicate.
 
 - **Blocks execution?** Yes — rejected work must not integrate.
 - **Deferrable?** No. Rework or redesign must happen before integration.

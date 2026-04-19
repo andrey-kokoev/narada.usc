@@ -108,7 +108,7 @@ async function run() {
         force: args.force === true || args.force === "true",
       });
       console.log(`Task graph written to ${result.taskGraphPath}`);
-      console.log(`Tasks: ${result.summary.task_count}, Runnable: ${result.summary.runnable_count}, Blocked: ${result.summary.blocked_count}`);
+      console.log(`Tasks: ${result.summary.task_count}, Proposed: ${result.summary.proposed_count}, Admitted: ${result.summary.admitted_count}`);
       break;
     }
 

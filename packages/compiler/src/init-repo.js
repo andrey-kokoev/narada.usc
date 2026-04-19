@@ -157,7 +157,7 @@ pnpm usc -- validate --app ${targetDir}
         transformation: "Define the first executable transformation for this repo.",
         evidence_requirement: "Artifacts exist and demonstrate the transformation.",
         review_predicate: "A reviewer can verify the transformation from the evidence alone.",
-        status: "pending",
+        status: "draft",
         depends_on: [],
         inputs: [],
         expected_outputs: [],

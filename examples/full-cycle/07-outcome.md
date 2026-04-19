@@ -5,7 +5,7 @@
 Integration authority (Bob) accepts T1.
 
 - **Task:** T1 — Bootstrap VitePress documentation site
-- **Outcome:** `accepted`
+- **Outcome:** `accepted` (downstream runtime state)
 - **Integrated artifacts:**
   - `docs/.vitepress/config.ts`
   - `docs/index.md`
@@ -18,12 +18,14 @@ No new closures required. Existing closures from `03-decisions.md` remain valid.
 
 ## Task Graph Status
 
-| Task | Status | Notes |
-|------|--------|-------|
-| T1 | `accepted` | Integrated |
-| T2 | `open` | Unblocked by T1 acceptance |
-| T3 | `open` | Still blocked on T2 |
-| T4 | `open` | Unblocked by T1 acceptance |
+> **Note**: The compiler task graph uses `draft | proposed | admitted | archived`. The table below shows the downstream runtime view after T1 integration.
+
+| Task | Compiler Status | Downstream Status | Notes |
+|------|-----------------|-------------------|-------|
+| T1 | `archived` | `accepted` | Integrated |
+| T2 | `proposed` | `admitted` | Unblocked by T1 acceptance |
+| T3 | `proposed` | `admitted` | Still depends on T2 |
+| T4 | `proposed` | `admitted` | Unblocked by T1 acceptance |
 
 ## Residuals
 

@@ -101,8 +101,6 @@ function validateAll(options = {}) {
     // Invalid examples (should fail)
     const invalidFiles = [
       { file: "invalid-status.json", expectFail: true },
-      { file: "invalid-claimed-without-metadata.json", expectFail: true },
-      { file: "invalid-completed-without-result.json", expectFail: true },
       { file: "invalid-missing-dependency.json", expectFail: true },
     ];
     for (const { file, expectFail } of invalidFiles) {

@@ -22,7 +22,7 @@ CState = (S, I, J, A, K, G, T, E, P)
 
 ## Ready State
 
-A state is construction-ready when each pending transformation has:
+A state is construction-ready when each draft transformation has:
 
 - explicit authority locus
 - satisfied dependencies
@@ -33,7 +33,7 @@ A state is construction-ready when each pending transformation has:
 
 ## Residualization
 
-If a pending transformation fails readiness, the blocker must become one of:
+If a draft transformation fails readiness, the blocker must become one of:
 
 - principal decision request
 - policy rule request

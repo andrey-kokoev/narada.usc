@@ -42,7 +42,7 @@
         "type": "object",
         "properties": {
           "task_id": { "type": "string" },
-          "change": { "enum": ["created", "claimed", "executed", "reviewed", "residualized", "accepted", "rejected"] }
+          "change": { "enum": ["created", "proposed", "admitted", "archived"] }
         }
       }
     },

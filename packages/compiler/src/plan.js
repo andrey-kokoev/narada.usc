@@ -51,7 +51,7 @@ function plan({ target, from, force }) {
       transformation: `Resolve the blocking residual: ${residual.description}`,
       evidence_requirement: "Residual is documented as resolved or closed.",
       review_predicate: "A reviewer agrees the residual no longer blocks construction.",
-      status: "pending",
+      status: "proposed",
       depends_on: [],
       inputs: [{ name: "principal_decision", description: "The decision or information needed to resolve this residual.", source: "principal" }],
       expected_outputs: [{ name: "resolution_document", description: "Documented resolution of the residual", format: "markdown" }],
@@ -68,7 +68,7 @@ function plan({ target, from, force }) {
       transformation: seed.transformation,
       evidence_requirement: seed.evidence_requirement,
       review_predicate: seed.review_predicate,
-      status: "pending",
+      status: "proposed",
       depends_on: [...blockingResidualIds],
       inputs: [{ name: "refinement_context", description: "Context from intent refinement", source: "refinement" }],
       expected_outputs: [{ name: "task_evidence", description: "Evidence satisfying the evidence requirement", format: "artifact" }],
@@ -90,22 +90,15 @@ function plan({ target, from, force }) {
 
   // Compute summary
   const taskCount = tasks.length;
-  const blockedCount = tasks.filter((t) => t.status === "blocked").length;
-  const runnableCount = tasks.filter((t) => {
-    if (t.status !== "pending") return false;
-    const deps = [...(t.depends_on || []), ...(t.dependencies || [])];
-    return deps.every((depId) => {
-      const dep = tasks.find((task) => task.id === depId);
-      return dep && dep.status === "completed";
-    });
-  }).length;
+  const admittedCount = tasks.filter((t) => t.status === "admitted").length;
+  const proposedCount = tasks.filter((t) => t.status === "proposed").length;
 
   return {
     taskGraphPath,
     summary: {
       task_count: taskCount,
-      runnable_count: runnableCount,
-      blocked_count: blockedCount,
+      proposed_count: proposedCount,
+      admitted_count: admittedCount,
     },
   };
 }

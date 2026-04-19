@@ -43,7 +43,7 @@ Record explicit closures from this session.
 
 ## Task Graph Changes
 
-What tasks were created, claimed, executed, reviewed, or residualized?
+What tasks were created, proposed, admitted, or archived?
 
 ## Execution Evidence
 

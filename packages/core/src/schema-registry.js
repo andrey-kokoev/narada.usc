@@ -15,6 +15,7 @@ const schemaIds = {
   decisionSurface: "https://narada2.dev/schemas/usc/decision-surface.schema.json",
   session: "https://narada2.dev/schemas/usc/session.schema.json",
   admissibilityPolicy: "https://narada2.dev/schemas/usc/admissibility-policy.schema.json",
+  downstreamRuntimeObservation: "https://narada2.dev/schemas/usc/downstream-runtime-observation.schema.json",
 };
 
 function loadSchemas() {

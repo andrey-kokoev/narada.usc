@@ -83,16 +83,10 @@
         "transformation": "Add VitePress, create docs/ skeleton, add npm scripts",
         "evidence_requirement": "Local dev server runs; homepage renders",
         "review_predicate": "Reviewer can clone, install, and run docs:dev successfully",
-        "status": "completed",
+        "status": "admitted",
         "inputs": [],
         "expected_outputs": [],
-        "acceptance": { "criteria": [] },
-        "result": {
-          "artifact_reference": "docs/.vitepress/config.ts",
-          "completed_at": "2026-04-10T14:00:00Z",
-          "completed_by": "Carol",
-          "reviewed_by": "Bob"
-        }
+        "acceptance": { "criteria": [] }
       },
       {
         "id": "T2",
@@ -101,7 +95,7 @@
         "transformation": "Write MDX pages for Button, Card, Modal with examples",
         "evidence_requirement": "Three pages with runnable examples",
         "review_predicate": "New developer can use widgets without reading source",
-        "status": "pending",
+        "status": "proposed",
         "dependencies": ["T1"],
         "inputs": [],
         "expected_outputs": [],
@@ -119,7 +113,7 @@
         "transformation": "GitHub Actions workflow validates examples",
         "evidence_requirement": "Invalid example in test PR fails CI",
         "review_predicate": "Invalid examples caught; valid pass; < 2 min runtime",
-        "status": "pending",
+        "status": "proposed",
         "dependencies": ["T2"],
         "inputs": [],
         "expected_outputs": [],
@@ -137,7 +131,7 @@
         "transformation": "GitHub Actions deploys docs on push to main",
         "evidence_requirement": "Site reachable at published URL",
         "review_predicate": "Site loads without errors",
-        "status": "pending",
+        "status": "proposed",
         "dependencies": ["T1"],
         "inputs": [],
         "expected_outputs": [],

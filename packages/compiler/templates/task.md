@@ -1,6 +1,6 @@
 # Task Template
 
-A USC task is a durable unit of construction work.
+A USC task is a construction-planning artifact: a durable, machine-readable proposal for a unit of work. It is produced by a compiler/deriver and consumed by a downstream runtime (e.g., Narada proper) that owns claim, execution, resolution, and confirmation authority.
 
 ## Required Fields
 
@@ -17,20 +17,24 @@ A USC task is a durable unit of construction work.
 | `evidence_requirement` | What evidence proves the transformation was performed correctly? |
 | `review_predicate` | What condition must the evidence satisfy? |
 | `residual_handling` | If the task fails or is blocked, what happens? (`new_task`, `principal_decision`, `declared_non_goal`, `decision_inert`) |
-| `status` | `open`, `claimed`, `executed`, `under_review`, `accepted`, `rejected`, `residualized`, `superseded` |
+| `status` | `draft`, `proposed`, `admitted`, `archived` |
 
 ## Optional Fields
 
 | Field | Description |
 |-------|-------------|
-| `claimed_by` | Who claimed this task? |
-| `claimed_at` | Timestamp |
-| `executed_at` | Timestamp |
-| `reviewed_at` | Timestamp |
-| `reviewed_by` | Who performed the review? |
-| `review_outcome` | `accept`, `reject`, `residualize`, `reopen` |
+| `inputs` | Required inputs for the transformation |
+| `expected_outputs` | Named outputs the artifact must produce |
+| `acceptance` | Acceptance criteria for admitting the task into the construction line |
 | `residual_of` | If this task derives from a residual, link the source task |
 | `supersedes` | If this task replaces another, link the superseded task |
+
+## Notes on Authority Boundary
+
+- **This template describes a planning artifact**, not a runtime work item.
+- `narada.usc` is a deriver/compiler. It does not claim, execute, complete, reject, block, or loop over tasks.
+- Downstream runtime authority (claim, execute, resolve, confirm) is owned by Narada proper or another operator runtime.
+- Review predicates and evidence requirements are **planning contracts** — they specify what a reviewer should look for, but the actual review execution belongs to the runtime.
 
 ## Example
 
@@ -73,7 +77,7 @@ A deliberate invalid example inserted in a test PR is caught by the CI step.
 If schema validation tooling is incompatible with our doc format, create a residual task to evaluate alternative validators.
 
 ## status
-open
+proposed
 ```
 
 ---
