@@ -1,0 +1,49 @@
+{
+  "intent": "I want customer portal",
+  "detected_domain": "customer-portal",
+  "ambiguities": [
+    { "layer": "ontology", "description": "Customer identity and authentication model", "governing": true },
+    { "layer": "ontology", "description": "Account and profile management capabilities", "governing": true },
+    { "layer": "dynamics", "description": "Documents and files access, upload, and sharing", "governing": true },
+    { "layer": "dynamics", "description": "Support request submission, tracking, and escalation", "governing": true },
+    { "layer": "environment", "description": "Billing visibility and payment history access", "governing": true },
+    { "layer": "dynamics", "description": "Notifications and communication preferences", "governing": true },
+    { "layer": "normativity", "description": "Permissions and delegated user management", "governing": true },
+    { "layer": "environment", "description": "Integration with internal systems (CRM, billing, support)", "governing": true },
+    { "layer": "normativity", "description": "Branding, localization, and white-label requirements", "governing": true },
+    { "layer": "normativity", "description": "Auditability of customer actions and data access", "governing": true },
+    { "layer": "normativity", "description": "Data privacy and consent management", "governing": true },
+    { "layer": "stopping", "description": "MVP self-service boundary: what customers can do without staff intervention", "governing": true }
+  ],
+  "questions": [
+    { "question": "What customer identity and authentication model is required?", "authority": "principal", "options": ["password", "sso", "magic-link", "social", "mfa"], "blocking": true },
+    { "question": "What account and profile management can customers perform?", "authority": "principal", "blocking": true },
+    { "question": "What documents and files should customers access or upload?", "authority": "principal", "blocking": false },
+    { "question": "What support request capabilities are needed?", "authority": "principal", "blocking": false },
+    { "question": "What billing visibility is required?", "authority": "principal", "blocking": false },
+    { "question": "What notification types and channels are needed?", "authority": "principal", "blocking": false },
+    { "question": "Can customers invite or manage delegated users?", "authority": "principal", "blocking": false },
+    { "question": "What internal systems must the portal integrate with?", "authority": "semantic", "blocking": false },
+    { "question": "What branding and localization requirements apply?", "authority": "principal", "blocking": false },
+    { "question": "What is the MVP self-service boundary?", "authority": "principal", "blocking": false }
+  ],
+  "assumptions": [
+    { "assumption": "Customers have a single primary account with optional sub-users", "confidence": "medium", "reversible": true },
+    { "assumption": "Billing mutations require staff approval or external verification", "confidence": "medium", "reversible": true }
+  ],
+  "suggested_closures": [
+    { "decision": "Customer portal construction will treat identity, data access, and mutation as separate layers with explicit approval gates for sensitive actions.", "rationale": "Self-service must not compromise data integrity or billing accuracy; separation enables safe delegation.", "authority": "principal" }
+  ],
+  "seed_tasks": [
+    { "id": "T3", "title": "Define customer identity and authentication model", "authority_locus": "principal", "transformation": "Document auth methods, registration flow, and identity verification.", "evidence_requirement": "Identity model is documented with flow diagrams.", "review_predicate": "A developer can implement authentication from the document alone." },
+    { "id": "T4", "title": "Map self-service capabilities and approval gates", "authority_locus": "principal", "transformation": "List what customers can do directly vs what requires staff approval.", "evidence_requirement": "Self-service capability map exists.", "review_predicate": "Every capability has defined access rules and approval gates where needed." },
+    { "id": "T5", "title": "Define integration contracts with internal systems", "authority_locus": "semantic", "transformation": "Document APIs, data sync, and error handling for internal system integrations.", "evidence_requirement": "Integration contracts are documented.", "review_predicate": "Every integration has defined request/response contracts and failure semantics." }
+  ],
+  "residuals": [
+    { "residual_id": "res-identity", "class": "unresolved_principal_decision", "description": "Customer identity and authentication model is not selected.", "blocking": true },
+    { "residual_id": "res-self-service", "class": "unresolved_principal_decision", "description": "Self-service capabilities and boundaries are undefined.", "blocking": true },
+    { "residual_id": "res-integrations", "class": "missing_effector", "description": "Internal system integrations are not documented.", "blocking": false },
+    { "residual_id": "res-delegated-users", "class": "missing_policy", "description": "Delegated user permissions are not defined.", "blocking": false },
+    { "residual_id": "res-localization", "class": "missing_policy", "description": "Localization and branding requirements are not documented.", "blocking": false }
+  ]
+}

@@ -13,6 +13,11 @@ Domain packs are reusable constructor knowledge modules. Each pack surfaces deci
 | Internal Tools | `internal-tools` | Admin panels and internal business tools |
 | ERP | `erp` | Enterprise resource planning systems |
 | Helpdesk | `helpdesk` | Support and ticketing systems |
+| Billing & Subscriptions | `billing-subscriptions` | Billing, plans, subscriptions, and payment lifecycle |
+| Analytics Dashboard | `analytics-dashboard` | Metrics, dashboards, reporting, and decision-support |
+| Compliance System | `compliance-system` | Compliance evidence, controls, audits, and retention |
+| Customer Portal | `customer-portal` | Customer-facing self-service portals |
+| Integration Hub | `integration-hub` | API connectors, data sync, transformation, and reconciliation |
 
 ## Using Domain Packs
 
@@ -26,6 +31,11 @@ usc refine --intent "I want workflow automation" --domain workflow-automation
 usc refine --intent "I want AI agent operation" --domain ai-agent-operation
 usc refine --intent "I want data pipeline" --domain data-pipeline
 usc refine --intent "I want internal admin tool" --domain internal-tools
+usc refine --intent "I want billing subscriptions" --domain billing-subscriptions
+usc refine --intent "I want analytics dashboard" --domain analytics-dashboard
+usc refine --intent "I want compliance system" --domain compliance-system
+usc refine --intent "I want customer portal" --domain customer-portal
+usc refine --intent "I want integration hub" --domain integration-hub
 ```
 
 ### Auto-Detection

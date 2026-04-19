@@ -5,6 +5,11 @@ import dataPipeline from "../../domain-packs/data-pipeline/src/index.js";
 import internalTools from "../../domain-packs/internal-tools/src/index.js";
 import erp from "../../domain-packs/erp/src/index.js";
 import helpdesk from "../../domain-packs/helpdesk/src/index.js";
+import analyticsDashboard from "../../domain-packs/analytics-dashboard/src/index.js";
+import billingSubscriptions from "../../domain-packs/billing-subscriptions/src/index.js";
+import complianceSystem from "../../domain-packs/compliance-system/src/index.js";
+import customerPortal from "../../domain-packs/customer-portal/src/index.js";
+import integrationHub from "../../domain-packs/integration-hub/src/index.js";
 
 export const domainPacks = [
   saas,
@@ -14,6 +19,11 @@ export const domainPacks = [
   internalTools,
   erp,
   helpdesk,
+  analyticsDashboard,
+  billingSubscriptions,
+  complianceSystem,
+  customerPortal,
+  integrationHub,
 ];
 
 export function findPackById(id) {

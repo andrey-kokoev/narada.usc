@@ -250,38 +250,36 @@ function refinePack(intent, pack) {
 }
 
 function refineIntent(intent, domainHint) {
-  // If a domain hint is provided, try built-in first, then packs
+  // If a domain hint is provided, try packs first, then built-in
   if (domainHint) {
-    if (builtInDomains.includes(domainHint)) {
-      return refineBuiltIn(intent, domainHint);
-    }
     const pack = findPackById(domainHint);
     if (pack) {
       return refinePack(intent, pack);
     }
+    if (builtInDomains.includes(domainHint)) {
+      return refineBuiltIn(intent, domainHint);
+    }
     // Unknown domain hint: fall through to detection
   }
 
-  // Auto-detect: built-in first, then packs
-  const builtIn = detectBuiltInDomain(intent);
-  if (builtIn) {
-    return refineBuiltIn(intent, builtIn);
-  }
-
+  // Auto-detect: try packs first, then built-in
   const pack = detectPack(intent);
   if (pack) {
     return refinePack(intent, pack);
+  }
+
+  const builtIn = detectBuiltInDomain(intent);
+  if (builtIn) {
+    return refineBuiltIn(intent, builtIn);
   }
 
   return refineBuiltIn(intent, "unknown");
 }
 
 function detectDomain(intent) {
-  const builtIn = detectBuiltInDomain(intent);
-  if (builtIn) return builtIn;
   const pack = detectPack(intent);
   if (pack) return pack.id;
-  return "unknown";
+  return detectBuiltInDomain(intent) || "unknown";
 }
 
 export { refineIntent, detectDomain };
