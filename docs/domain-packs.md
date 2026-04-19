@@ -1,6 +1,27 @@
 # Domain Packs
 
-Domain packs are reusable constructor knowledge modules. Each pack surfaces decision-relevant ambiguity for a specific system domain without making product-specific decisions.
+A **domain pack** is a **packaged domain prior**.
+
+A **domain prior** is reusable knowledge about where decision-relevant arbitrariness usually hides in a class of systems. It caches de-arbitrarization work by system domain:
+
+- Typical ambiguity loci
+- Common ontology boundaries
+- High-leverage questions
+- Non-assumptions (assumptions declared with confidence and reversibility)
+- Seed tasks
+- Policy hooks
+- Likely residual classes
+- Refinement examples
+
+A domain prior must **not** cache:
+
+- Final user decisions
+- App-specific requirements
+- Vendor choices
+- Concrete implementation architecture
+- Private or customer-specific facts
+
+Domain packs guide refinement rather than decide outcomes. They encode non-assumptions and high-leverage questions. They remain reusable only if they avoid app-specific facts.
 
 ## Available Packs
 
@@ -119,7 +140,7 @@ Common ambiguities, questions, seed tasks, and residuals are merged automaticall
 1. Create `packages/domain-packs/<id>/` with the structure above
 2. Implement `detect()` and `refine()` in `src/refinement.js`
 3. Export from `src/index.js`
-4. Add static import to `packages/compiler/src/domain-packs.js`
+4. Add static import to `packages/compiler/src/domain-priors.js`
 5. Generate an example: `node packages/cli/src/usc.js refine --intent "..." --domain <id> --format json > packages/domain-packs/<id>/examples/<id>.refinement.json`
 6. Run `pnpm validate` to ensure the example conforms to the refinement schema
 7. Update this document
@@ -141,3 +162,9 @@ Domain packs must:
 - Declare assumptions with confidence and reversibility
 - Provide concrete seed tasks with evidence requirements
 - Identify blocking and non-blocking residuals
+
+## Quality Bar
+
+A domain prior is justified only if it contains non-obvious, domain-specific anti-assumptions, questions, policies, residuals, or seed tasks that improve refinement over the generic prior.
+
+If a domain adds nothing beyond what the generic refinement already surfaces, it is decorative taxonomy and should not be packaged as a prior.

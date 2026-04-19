@@ -1,3 +1,7 @@
+// Domain packs are packaged domain priors: reusable knowledge about where
+// decision-relevant arbitrariness usually hides in a class of systems.
+// Each prior caches de-arbitrarization work (ambiguities, questions,
+// assumptions, seed tasks, residuals) without encoding app-specific decisions.
 import saas from "../../domain-packs/saas/src/index.js";
 import workflowAutomation from "../../domain-packs/workflow-automation/src/index.js";
 import aiAgentOperation from "../../domain-packs/ai-agent-operation/src/index.js";

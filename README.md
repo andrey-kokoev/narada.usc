@@ -25,7 +25,7 @@ For a compact system diagram, see [docs/system.md](docs/system.md).
 | `packages/core` | Construction model, schema registry, and validator |
 | `packages/compiler` | Artifact generation (session init, app init, templates, intent refinement) |
 | `packages/policies` | Admissibility policy definitions and examples |
-| `packages/domain-packs` | Reusable construction grammar for problem families (ERP, helpdesk, SaaS, etc.) |
+| `packages/domain-packs` | Packaged domain priors — reusable de-arbitrarization knowledge for problem families (ERP, helpdesk, SaaS, etc.) |
 | `docs/concepts/` | Conceptual definitions and positioning |
 | `docs/protocols/` | Operational protocols for USC practice |
 | `examples/` | Minimal and full-cycle examples of USC-shaped work |
@@ -106,7 +106,7 @@ pnpm usc:refine -- --target ../narada.usc.my-app --intent "I want ERP system" --
 
 `refine --target` refuses to overwrite existing `usc/refinement.json` or `usc/refinement.md` unless `--force` is provided.
 
-`refine` does not implement the system. It surfaces hidden arbitrariness and produces first construction artifacts. Domain packs provide reusable construction grammar for common problem families without inventing app-specific decisions.
+`refine` does not implement the system. It surfaces hidden arbitrariness and produces first construction artifacts. Domain packs are packaged domain priors that provide reusable de-arbitrarization knowledge for common problem families without inventing app-specific decisions.
 
 ## Future: Compile Target
 

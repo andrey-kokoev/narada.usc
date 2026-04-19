@@ -73,7 +73,7 @@ function validateAll(options = {}) {
     }
   }
 
-  // Domain pack examples
+  // Domain prior examples (packaged in domain-packs/)
   const domainPacksDir = join(rootDir, "packages", "domain-packs");
   if (existsSync(domainPacksDir)) {
     const packNames = readdirSync(domainPacksDir).filter((name) => {

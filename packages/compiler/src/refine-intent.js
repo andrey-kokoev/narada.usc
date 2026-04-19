@@ -1,4 +1,4 @@
-import { findPackById, detectPack } from "./domain-packs.js";
+import { findPackById, detectPack } from "./domain-priors.js";
 
 const builtInDomains = [
   "enterprise_resource_planning",

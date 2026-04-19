@@ -13,7 +13,7 @@ flowchart TD
     Commands --> Core["Core<br>packages/core"]
     Commands --> Compiler["Compiler<br>packages/compiler"]
     Commands --> Policies["Policies<br>packages/policies"]
-    Commands --> DomainPacks["Domain Packs<br>packages/domain-packs"]
+    Commands --> DomainPacks["Domain Priors<br>packages/domain-packs"]
 
     Core --> Schemas["Schemas<br>construction state / task graph / review / residual"]
     Core --> Validator["Validator<br>Ajv schema validation"]
@@ -59,7 +59,7 @@ flowchart LR
   CLI["packages/cli<br>user entrypoint"] --> Core["packages/core<br>model + schemas + validation"]
   CLI --> Compiler["packages/compiler<br>artifact generation"]
   CLI --> Policies["packages/policies<br>admissibility policies"]
-  CLI --> DomainPacks["packages/domain-packs<br>reusable construction grammar"]
+  CLI --> DomainPacks["packages/domain-packs<br>packaged domain priors"]
 
   Compiler --> Templates["compiler templates"]
   Compiler --> Core
@@ -92,9 +92,9 @@ flowchart TD
   Residuals --> NextWork["new work / principal decision / closed branch"]
 ```
 
-## Domain Pack Flow
+## Domain Prior Flow
 
-Domain packs are reusable construction grammar for problem families. They plug into the `refine` command to produce richer decision surfaces and seed task graphs without inventing app-specific decisions.
+Domain priors are reusable knowledge about where decision-relevant arbitrariness usually hides in a class of systems. They are packaged as domain packs in `packages/domain-packs/`. They plug into the `refine` command to produce richer decision surfaces and seed task graphs without inventing app-specific decisions.
 
 ```text
 principal intent -> domain pack detects -> domain pack refines
@@ -114,7 +114,7 @@ flowchart LR
   Artifacts --> DecisionSurface["Decision Surface"]
 ```
 
-A domain pack is not a concrete app repo. It contains no product code, customer-specific decisions, or secrets. It is constructor knowledge that helps collapse arbitrariness for a problem family.
+A domain prior is not a concrete app repo. It contains no product code, customer-specific decisions, or secrets. It is constructor knowledge that helps collapse arbitrariness for a problem family.
 
 ## Boundary
 
