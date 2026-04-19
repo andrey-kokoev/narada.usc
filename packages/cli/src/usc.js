@@ -5,7 +5,7 @@ import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
-import { initRepo, createCycle } from "@narada.usc/compiler/src/index.js";
+import { initRepo, createCycle, plan } from "@narada.usc/compiler/src/index.js";
 import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 
@@ -99,6 +99,19 @@ async function run() {
       break;
     }
 
+    case "plan": {
+      const target = args.target;
+      if (!target) die("Usage: usc plan --target <path> [--from <refinement-file>] [--force]");
+      const result = plan({
+        target,
+        from: args.from || null,
+        force: args.force === true || args.force === "true",
+      });
+      console.log(`Task graph written to ${result.taskGraphPath}`);
+      console.log(`Tasks: ${result.summary.task_count}, Runnable: ${result.summary.runnable_count}, Blocked: ${result.summary.blocked_count}`);
+      break;
+    }
+
     case "refine": {
       const intent = args.intent;
       if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md] [--force]");
@@ -174,6 +187,7 @@ Commands:
   validate --app <path>             Validate an external USC repo
   init <path> --name <name>         Initialize a USC-governed construction repo
   cycle --intent <text>             Open a construction cycle in an existing repo
+  plan --target <path>              Convert refinement into task graph
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
   refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
 `);
