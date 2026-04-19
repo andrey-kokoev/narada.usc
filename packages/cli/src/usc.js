@@ -5,7 +5,7 @@ import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
-import { initRepo, createCycle, plan } from "@narada.usc/compiler/src/index.js";
+import { initRepo, createCycle, plan, nextTask, completeTask, rejectTask, blockTask } from "@narada.usc/compiler/src/index.js";
 import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 
@@ -112,6 +112,71 @@ async function run() {
       break;
     }
 
+    case "next": {
+      const target = args.target;
+      if (!target) die("Usage: usc next --target <path> [--claimant <id>] [--format json|md]");
+      const result = nextTask({ target, claimant: args.claimant || null });
+      if (args.format === "json") {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        if (result.task) {
+          console.log(`Claimed task ${result.task.id}: ${result.task.title}`);
+        } else {
+          console.log("No runnable tasks available.");
+        }
+      }
+      break;
+    }
+
+    case "complete": {
+      const target = args.target;
+      const taskId = args.task;
+      const resultFile = args.result;
+      if (!target || !taskId || !resultFile) {
+        die("Usage: usc complete --target <path> --task <id> --result <file> [--claimant <id>] [--format json|md]");
+      }
+      const result = completeTask({ target, taskId, resultFile, claimant: args.claimant || null });
+      if (args.format === "json") {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        console.log(`Completed task ${result.task.id}: ${result.task.title}`);
+      }
+      break;
+    }
+
+    case "reject": {
+      const target = args.target;
+      const taskId = args.task;
+      const reason = args.reason;
+      if (!target || !taskId || !reason) {
+        die("Usage: usc reject --target <path> --task <id> --reason <text> [--reviewer <id>] [--format json|md]");
+      }
+      const result = rejectTask({ target, taskId, reason, reviewer: args.reviewer || null });
+      if (args.format === "json") {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        console.log(`Rejected task ${result.task.id}: ${result.task.title}`);
+      }
+      break;
+    }
+
+    case "block": {
+      const target = args.target;
+      const taskId = args.task;
+      const reason = args.reason;
+      const until = args.until;
+      if (!target || !taskId || !reason || !until) {
+        die("Usage: usc block --target <path> --task <id> --reason <text> --until <text> [--format json|md]");
+      }
+      const result = blockTask({ target, taskId, reason, until });
+      if (args.format === "json") {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        console.log(`Blocked task ${result.task.id}: ${result.task.title}`);
+      }
+      break;
+    }
+
     case "refine": {
       const intent = args.intent;
       if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md] [--force]");
@@ -188,6 +253,10 @@ Commands:
   init <path> --name <name>         Initialize a USC-governed construction repo
   cycle --intent <text>             Open a construction cycle in an existing repo
   plan --target <path>              Convert refinement into task graph
+  next --target <path>              Claim the first runnable task
+  complete --target <path>          Complete a claimed task
+  reject --target <path>            Reject a task with reason
+  block --target <path>             Block a task with reason and unblock condition
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
   refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
 `);
