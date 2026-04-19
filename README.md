@@ -6,6 +6,8 @@ USC is a constructive control process that turns principal intent into admissibl
 
 This repo contains the constructor code — the CLI, schemas, compiler, and policies — that initializes, validates, and eventually compiles USC-governed system repositories.
 
+For a compact system diagram, see [docs/system.md](docs/system.md).
+
 ## Repository Role
 
 | Repository | Role |
@@ -76,6 +78,23 @@ Options:
 - `--force` — overwrite an existing target
 - `--cis` — include a required CIS admissibility policy
 - `--git` — initialize a git repository
+
+### Refine Intent
+
+Transform raw principal intent into decision-relevant ambiguity, questions, and construction artifacts:
+
+```bash
+pnpm usc:refine -- --intent "I want ERP system" --format json
+pnpm usc:refine -- --intent "I want support helpdesk" --format md
+```
+
+Write refinement into an app repo:
+
+```bash
+pnpm usc:refine -- --target ../narada.usc.my-app --intent "I want ERP system" --format json
+```
+
+`refine` does not implement the system. It surfaces hidden arbitrariness and produces first construction artifacts.
 
 ## Future: Compile Target
 

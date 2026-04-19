@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/refinement.schema.json",
+  "title": "USC Intent Refinement",
+  "type": "object",
+  "required": ["intent", "detected_domain", "ambiguities", "questions", "assumptions", "seed_tasks", "residuals"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "intent": { "type": "string" },
+    "detected_domain": {
+      "type": "string",
+      "description": "Detected domain classification or 'unknown'"
+    },
+    "ambiguities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer", "description"],
+        "properties": {
+          "layer": {
+            "enum": ["ontology", "dynamics", "normativity", "environment", "stopping"],
+            "description": "Progressive De-Arbitrarization layer"
+          },
+          "description": { "type": "string" },
+          "governing": { "type": "boolean", "description": "Whether this ambiguity affects admissible transformations" }
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["question", "authority"],
+        "properties": {
+          "question": { "type": "string" },
+          "authority": { "type": "string", "description": "Who should answer this question" },
+          "options": { "type": "array", "items": { "type": "string" } },
+          "blocking": { "type": "boolean", "description": "Whether this question blocks task formation" }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["assumption", "confidence"],
+        "properties": {
+          "assumption": { "type": "string" },
+          "confidence": { "enum": ["low", "medium", "high"] },
+          "reversible": { "type": "boolean" }
+        }
+      }
+    },
+    "suggested_closures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["decision", "rationale"],
+        "properties": {
+          "decision": { "type": "string" },
+          "rationale": { "type": "string" },
+          "authority": { "type": "string" }
+        }
+      }
+    },
+    "seed_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "authority_locus", "transformation", "evidence_requirement", "review_predicate"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "authority_locus": { "type": "string" },
+          "transformation": { "type": "string" },
+          "evidence_requirement": { "type": "string" },
+          "review_predicate": { "type": "string" }
+        }
+      }
+    },
+    "residuals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["residual_id", "class", "description", "blocking"],
+        "properties": {
+          "residual_id": { "type": "string" },
+          "class": {
+            "enum": [
+              "unresolved_principal_decision",
+              "missing_policy",
+              "missing_effector",
+              "failed_review",
+              "blocked_dependency",
+              "reopened_closure",
+              "out_of_calculus_target",
+              "declared_non_goal",
+              "decision_inert_distinction"
+            ]
+          },
+          "description": { "type": "string" },
+          "blocking": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

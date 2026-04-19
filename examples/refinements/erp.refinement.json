@@ -1,0 +1,219 @@
+{
+  "intent": "I want ERP system",
+  "detected_domain": "enterprise_resource_planning",
+  "ambiguities": [
+    {
+      "layer": "ontology",
+      "description": "What entities, relationships, and boundaries define this system?",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "How do users and processes interact with the system over time?",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "What rules, constraints, and compliance requirements apply?",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "What external systems, integrations, and deployment constraints exist?",
+      "governing": true
+    },
+    {
+      "layer": "stopping",
+      "description": "What defines MVP, done, and out-of-scope for this construction?",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Build from scratch vs configure existing ERP vs integration layer",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Which modules are required (finance, HR, inventory, manufacturing, CRM)?",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "Batch vs real-time processing requirements",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "Accounting standards, tax rules, and audit compliance",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "Data migration scope from existing systems",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "Hosting model (self-hosted, cloud SaaS, hybrid)",
+      "governing": true
+    },
+    {
+      "layer": "stopping",
+      "description": "MVP module boundary and rollout sequence",
+      "governing": true
+    }
+  ],
+  "questions": [
+    {
+      "question": "What does success look like for this system?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "Who are the primary users and what is the organization size?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "What is the timeline and what constraints (budget, compliance, team) apply?",
+      "authority": "principal",
+      "blocking": false
+    },
+    {
+      "question": "Is this a greenfield build, replacement, or integration layer?",
+      "authority": "principal",
+      "options": [
+        "greenfield",
+        "replacement",
+        "integration"
+      ],
+      "blocking": true
+    },
+    {
+      "question": "Which modules are in MVP?",
+      "authority": "principal",
+      "options": [
+        "finance",
+        "hr",
+        "inventory",
+        "manufacturing",
+        "crm",
+        "procurement"
+      ],
+      "blocking": true
+    },
+    {
+      "question": "What existing systems must be migrated or integrated?",
+      "authority": "semantic",
+      "blocking": true
+    },
+    {
+      "question": "What accounting standards and compliance requirements apply?",
+      "authority": "principal",
+      "blocking": false
+    },
+    {
+      "question": "Who will host and operate the system?",
+      "authority": "planning",
+      "options": [
+        "self-hosted",
+        "cloud-saas",
+        "hybrid"
+      ],
+      "blocking": false
+    }
+  ],
+  "assumptions": [
+    {
+      "assumption": "Multi-tenant or single-tenant deployment",
+      "confidence": "low",
+      "reversible": true
+    },
+    {
+      "assumption": "Web-based UI is sufficient for MVP",
+      "confidence": "medium",
+      "reversible": true
+    }
+  ],
+  "suggested_closures": [
+    {
+      "decision": "ERP construction will follow a defined module boundary with explicit phased rollout.",
+      "rationale": "ERP is too large to build all at once; phased rollout reduces risk.",
+      "authority": "principal"
+    }
+  ],
+  "seed_tasks": [
+    {
+      "id": "T1",
+      "title": "Define system scope and success criteria",
+      "authority_locus": "principal",
+      "transformation": "Document what the system must do, for whom, and what success looks like.",
+      "evidence_requirement": "A written scope document exists and has been reviewed.",
+      "review_predicate": "A third party can understand the scope without asking clarifying questions."
+    },
+    {
+      "id": "T2",
+      "title": "Identify constraints and non-goals",
+      "authority_locus": "principal",
+      "transformation": "Explicitly list budget, timeline, compliance, and out-of-scope items.",
+      "evidence_requirement": "Constraints and non-goals are documented.",
+      "review_predicate": "No hidden constraints remain that would invalidate the construction plan."
+    },
+    {
+      "id": "T3",
+      "title": "Decide build vs configure vs integrate strategy",
+      "authority_locus": "principal",
+      "transformation": "Choose whether to build custom ERP, configure existing ERP, or build an integration layer.",
+      "evidence_requirement": "Decision is documented with rationale and alternatives rejected.",
+      "review_predicate": "Decision accounts for total cost of ownership and timeline."
+    },
+    {
+      "id": "T4",
+      "title": "Inventory existing systems and data migration requirements",
+      "authority_locus": "semantic",
+      "transformation": "List all systems that interact with ERP data and define migration scope.",
+      "evidence_requirement": "System inventory and data map exist.",
+      "review_predicate": "No critical data source or integration is missing from the inventory."
+    },
+    {
+      "id": "T5",
+      "title": "Define MVP module boundary",
+      "authority_locus": "principal",
+      "transformation": "Select which ERP modules are in MVP and which are deferred.",
+      "evidence_requirement": "Module boundary is documented with rollout sequence.",
+      "review_predicate": "MVP is achievable with available resources and timeline."
+    }
+  ],
+  "residuals": [
+    {
+      "residual_id": "res-scope-unresolved",
+      "class": "unresolved_principal_decision",
+      "description": "System scope and success criteria are not yet defined by the principal.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-constraints-unknown",
+      "class": "missing_policy",
+      "description": "Constraints, compliance requirements, and non-goals have not been documented.",
+      "blocking": false
+    },
+    {
+      "residual_id": "res-erp-strategy",
+      "class": "unresolved_principal_decision",
+      "description": "Build vs configure vs integrate strategy is unresolved.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-modules",
+      "class": "unresolved_principal_decision",
+      "description": "Required ERP modules and MVP boundary are undefined.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-migration",
+      "class": "missing_effector",
+      "description": "Data migration approach depends on existing system inventory which is incomplete.",
+      "blocking": false
+    }
+  ]
+}

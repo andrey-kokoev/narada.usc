@@ -61,6 +61,18 @@ function validateAll(options = {}) {
     if (!result.valid) allPassed = false;
   }
 
+  // Refinement examples
+  const refinementsDir = join(rootDir, "examples", "refinements");
+  if (existsSync(refinementsDir)) {
+    const refinementFiles = readdirSync(refinementsDir).filter((f) => f.endsWith(".json"));
+    for (const file of refinementFiles) {
+      const path = join(refinementsDir, file);
+      const result = validateDocument(ajv, path, "https://narada2.dev/schemas/usc/refinement.schema.json", `refinements/${file}`);
+      results.push(result);
+      if (!result.valid) allPassed = false;
+    }
+  }
+
   // Sessions
   const sessionsDir = join(rootDir, "sessions");
   let sessionDirs = [];

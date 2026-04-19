@@ -6,6 +6,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
 import { createSession, createApp } from "@narada.usc/compiler/src/index.js";
+import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..", "..", "..");
@@ -15,6 +17,7 @@ function parseArgs(argv) {
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
+    if (arg === "--") continue;
     if (arg.startsWith("--")) {
       const key = arg.slice(2);
       const next = argv[i + 1];
@@ -123,6 +126,62 @@ async function run() {
       break;
     }
 
+    case "refine": {
+      const intent = args.intent;
+      if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md]");
+      const domain = args.domain || null;
+      const format = args.format || "md";
+      const target = args.target;
+      const useCis = args.cis === true || args.cis === "true";
+
+      const refinement = refineIntent(intent, domain);
+
+      if (format === "json") {
+        console.log(JSON.stringify(refinement, null, 2));
+      } else {
+        console.log(`# Intent Refinement: ${intent}\n`);
+        console.log(`**Detected Domain:** ${refinement.detected_domain}\n`);
+        console.log("## Ambiguities\n");
+        for (const a of refinement.ambiguities) {
+          console.log(`- **${a.layer}**: ${a.description}${a.governing ? " (governing)" : ""}`);
+        }
+        console.log("\n## Questions\n");
+        for (const q of refinement.questions) {
+          console.log(`- **${q.authority}**: ${q.question}${q.blocking ? " (blocking)" : ""}`);
+        }
+        console.log("\n## Assumptions\n");
+        for (const a of refinement.assumptions) {
+          console.log(`- ${a.assumption} (confidence: ${a.confidence})`);
+        }
+        console.log("\n## Seed Tasks\n");
+        for (const t of refinement.seed_tasks) {
+          console.log(`- **${t.id}**: ${t.title}`);
+        }
+        console.log("\n## Residuals\n");
+        for (const r of refinement.residuals) {
+          console.log(`- **${r.residual_id}**: ${r.description} (${r.blocking ? "blocking" : "non-blocking"})`);
+        }
+      }
+
+      if (target) {
+        const targetDir = target.startsWith("/") ? target : join(process.cwd(), target);
+        const uscDir = join(targetDir, "usc");
+        if (!existsSync(uscDir)) {
+          mkdirSync(uscDir, { recursive: true });
+        }
+
+        const refinementPath = join(uscDir, "refinement.json");
+        writeFileSync(refinementPath, JSON.stringify(refinement, null, 2));
+        console.log(`\nRefinement written to ${refinementPath}`);
+
+        const refinementMdPath = join(uscDir, "refinement.md");
+        const mdContent = [`# Intent Refinement: ${intent}`, ``, `**Detected Domain:** ${refinement.detected_domain}`, ``, `## Ambiguities`, ...refinement.ambiguities.map(a => `- **${a.layer}**: ${a.description}${a.governing ? " (governing)" : ""}`), ``, `## Questions`, ...refinement.questions.map(q => `- **${q.authority}**: ${q.question}${q.blocking ? " (blocking)" : ""}`), ``, `## Assumptions`, ...refinement.assumptions.map(a => `- ${a.assumption} (confidence: ${a.confidence})`), ``, `## Seed Tasks`, ...refinement.seed_tasks.map(t => `- **${t.id}**: ${t.title} — ${t.transformation}`), ``, `## Residuals`, ...refinement.residuals.map(r => `- **${r.residual_id}**: ${r.description} (${r.blocking ? "blocking" : "non-blocking"})`), ``].join("\n");
+        writeFileSync(refinementMdPath, mdContent);
+        console.log(`Refinement markdown written to ${refinementMdPath}`);
+      }
+      break;
+    }
+
     default:
       console.log(`Usage: usc <command> [options]
 
@@ -132,6 +191,7 @@ Commands:
   init-session --name <name>        Create a new session
   list-sessions                     List existing sessions
   init-app --name <name> --target <path>  Create a new app repo
+  refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
 `);
       process.exit(1);
   }

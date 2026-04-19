@@ -1,0 +1,161 @@
+{
+  "intent": "I want support helpdesk",
+  "detected_domain": "support_helpdesk",
+  "ambiguities": [
+    {
+      "layer": "ontology",
+      "description": "What entities, relationships, and boundaries define this system?",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "How do users and processes interact with the system over time?",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "What rules, constraints, and compliance requirements apply?",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "What external systems, integrations, and deployment constraints exist?",
+      "governing": true
+    },
+    {
+      "layer": "stopping",
+      "description": "What defines MVP, done, and out-of-scope for this construction?",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Self-service portal vs agent-only vs hybrid",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Ticket taxonomy and escalation hierarchy",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "SLA definitions and breach handling",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "Integration with email, chat, phone, or existing CRM",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "Privacy and data retention for customer interactions",
+      "governing": true
+    },
+    {
+      "layer": "stopping",
+      "description": "Channels supported in MVP",
+      "governing": true
+    }
+  ],
+  "questions": [
+    {
+      "question": "What does success look like for this system?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "Who are the primary users and what is the organization size?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "What is the timeline and what constraints (budget, compliance, team) apply?",
+      "authority": "principal",
+      "blocking": false
+    },
+    {
+      "question": "What channels must be supported (email, chat, phone, portal)?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "What are the target SLA response and resolution times?",
+      "authority": "principal",
+      "blocking": false
+    },
+    {
+      "question": "Must this integrate with an existing CRM or user directory?",
+      "authority": "semantic",
+      "blocking": false
+    }
+  ],
+  "assumptions": [
+    {
+      "assumption": "Web portal and email are sufficient channels for MVP",
+      "confidence": "medium",
+      "reversible": true
+    }
+  ],
+  "suggested_closures": [],
+  "seed_tasks": [
+    {
+      "id": "T1",
+      "title": "Define system scope and success criteria",
+      "authority_locus": "principal",
+      "transformation": "Document what the system must do, for whom, and what success looks like.",
+      "evidence_requirement": "A written scope document exists and has been reviewed.",
+      "review_predicate": "A third party can understand the scope without asking clarifying questions."
+    },
+    {
+      "id": "T2",
+      "title": "Identify constraints and non-goals",
+      "authority_locus": "principal",
+      "transformation": "Explicitly list budget, timeline, compliance, and out-of-scope items.",
+      "evidence_requirement": "Constraints and non-goals are documented.",
+      "review_predicate": "No hidden constraints remain that would invalidate the construction plan."
+    },
+    {
+      "id": "T3",
+      "title": "Define ticket taxonomy and SLA structure",
+      "authority_locus": "semantic",
+      "transformation": "Document ticket types, priorities, escalation rules, and SLA targets.",
+      "evidence_requirement": "Taxonomy and SLA document exist.",
+      "review_predicate": "SLA targets are measurable and achievable."
+    },
+    {
+      "id": "T4",
+      "title": "Select channels and integrations for MVP",
+      "authority_locus": "principal",
+      "transformation": "Decide which channels (email, chat, portal) and integrations are required.",
+      "evidence_requirement": "Channel and integration list is documented.",
+      "review_predicate": "Selected channels cover the primary user journeys."
+    }
+  ],
+  "residuals": [
+    {
+      "residual_id": "res-scope-unresolved",
+      "class": "unresolved_principal_decision",
+      "description": "System scope and success criteria are not yet defined by the principal.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-constraints-unknown",
+      "class": "missing_policy",
+      "description": "Constraints, compliance requirements, and non-goals have not been documented.",
+      "blocking": false
+    },
+    {
+      "residual_id": "res-channels",
+      "class": "unresolved_principal_decision",
+      "description": "Support channels for MVP are not selected.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-sla",
+      "class": "missing_policy",
+      "description": "SLA definitions are not yet established.",
+      "blocking": false
+    }
+  ]
+}
