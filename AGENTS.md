@@ -44,22 +44,22 @@ This repo must not contain:
 - app-specific implementation decisions that belong in `narada.usc.<app-name>`
 - runtime or product code that belongs in the `narada` product repo
 
-## Starting a Session
+## Initializing a USC Repo
 
-When creating a new USC session inside the substrate repo:
+`session` is not the user-facing primitive. Users initialize USC-governed construction repos:
 
 ```bash
 cd /home/andrey/src/narada.usc
-pnpm usc:init -- --name <session-name> --principal "<name>" --intent "<text>"
+pnpm usc -- init <path> --name <name> --principal "<name>" --intent "<text>"
 ```
 
-## Creating an App Repo
+## Opening a Construction Cycle
 
-When creating a new concrete USC app repo outside the substrate:
+Inside an existing USC repo, open a construction cycle/checkpoint:
 
 ```bash
-cd /home/andrey/src/narada.usc
-pnpm usc:init-app -- --name <app-name> --target <path> --principal "<name>" --intent "<text>"
+cd /path/to/narada.usc.<system>
+pnpm --dir /home/andrey/src/narada.usc usc -- cycle --intent "<text>"
 ```
 
 ## Schema Validation

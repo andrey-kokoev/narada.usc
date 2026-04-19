@@ -14,7 +14,7 @@ function renderTemplate(content, vars) {
   return result;
 }
 
-function createApp({ name, target, principal, intent, useCis, initGit, force, rootDir }) {
+function initRepo({ name, target, principal, intent, useCis, initGit, force, rootDir }) {
   const targetDir = target.startsWith("/") ? target : join(process.cwd(), target);
 
   if (existsSync(targetDir)) {
@@ -37,6 +37,7 @@ function createApp({ name, target, principal, intent, useCis, initGit, force, ro
   mkdirSync(join(uscDir, "reviews"), { recursive: true });
   mkdirSync(join(uscDir, "residuals"), { recursive: true });
   mkdirSync(join(uscDir, "closures"), { recursive: true });
+  mkdirSync(join(uscDir, "cycles"), { recursive: true });
 
   if (useCis) {
     mkdirSync(join(uscDir, "policies"), { recursive: true });
@@ -57,16 +58,17 @@ function createApp({ name, target, principal, intent, useCis, initGit, force, ro
 
   const readmeContent = `# narada.usc.${name}
 
-A concrete system constructed under USC discipline.
+A USC-governed construction repo.
 
 ## Structure
 
 | Path | Purpose |
 |------|---------|
-| \`usc/\` | USC construction state, tasks, reviews, residuals, closures |
+| \`usc/\` | USC construction state, tasks, reviews, residuals, closures, cycles |
 | \`usc/construction-state.json\` | Durable construction state |
 | \`usc/task-graph.json\` | Task and dependency graph |
-| product code | Lives outside \`usc/\`; specific to this app |
+| \`usc/cycles/\` | Construction cycles and checkpoints |
+| product code | Lives outside \`usc/\`; specific to this system |
 
 ## USC Constructor
 
@@ -76,16 +78,17 @@ The executable USC constructor lives in the substrate repo:
 narada.usc
 \`\`\`
 
-This app repo contains app-specific construction work and product code.
+This repo contains construction work and product code for a specific system.
 
 ## Quick Start
 
 1. Edit \`usc/construction-state.json\` to reflect current intent and state.
 2. Use templates in \`usc/\` to create tasks, reviews, and closures.
-3. Validate from the substrate repo:
+3. Open construction cycles with \`usc cycle\`.
+4. Validate from the substrate repo:
    \`\`\`bash
    cd /path/to/narada.usc
-   pnpm validate -- --app ${targetDir}
+   pnpm usc -- validate --app ${targetDir}
    \`\`\`
 
 ${vars.CIS_NOTE}
@@ -95,7 +98,7 @@ ${vars.CIS_NOTE}
 
   const agentsContent = `# AGENTS.md — narada.usc.${name}
 
-This is a concrete USC app repo. Use \`usc/\` artifacts for construction discipline.
+This is a USC-governed construction repo. Use \`usc/\` artifacts for construction discipline.
 
 ## Rules
 
@@ -115,7 +118,7 @@ From the substrate repo:
 
 \`\`\`bash
 cd /path/to/narada.usc
-pnpm validate -- --app ${targetDir}
+pnpm usc -- validate --app ${targetDir}
 \`\`\`
 `;
 
@@ -198,4 +201,4 @@ pnpm validate -- --app ${targetDir}
   return targetDir;
 }
 
-export { createApp };
+export { initRepo };

@@ -42,7 +42,7 @@ Verify the workspace:
 
 ```bash
 pnpm validate        # validate all examples, sessions, and schemas
-pnpm usc:list        # list existing sessions
+pnpm usc -- cycle --intent "..."   # open a construction cycle
 ```
 
 ---
@@ -126,14 +126,14 @@ Manual verification for commands:
 
 ```bash
 # Refinement (machine-readable JSON — use --silent for clean stdout)
-pnpm --silent usc:json refine --intent "I want ERP system" --format json
+pnpm --silent usc -- refine --intent "I want ERP system" --format json
 
-# Session creation
-pnpm usc:init -- --name test-session --principal "Test" --intent "..."
+# Repo initialization
+rm -rf /tmp/test-repo && pnpm usc -- init /tmp/test-repo --name test-repo --principal "Test" --intent "..."
+pnpm usc -- validate --app /tmp/test-repo
 
-# App creation
-rm -rf /tmp/test-app && pnpm usc:init-app -- --name test-app --target /tmp/test-app --principal "Test" --intent "..."
-pnpm usc -- validate --app /tmp/test-app
+# Cycle
+pnpm usc -- cycle --target /tmp/test-repo --intent "Test cycle"
 ```
 
 All examples in `packages/core/examples/` and `packages/policies/examples/` must remain valid at all times.

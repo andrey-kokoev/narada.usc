@@ -5,7 +5,7 @@ import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
-import { createSession, createApp } from "@narada.usc/compiler/src/index.js";
+import { initRepo, createCycle } from "@narada.usc/compiler/src/index.js";
 import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 
@@ -63,54 +63,13 @@ async function run() {
       break;
     }
 
-    case "init-session": {
+    case "init": {
+      const target = positional[1];
       const name = args.name;
-      if (!name) die("Usage: usc init-session --name <session-name> [--principal <name>] [--intent <text>] [--cis] [--force]");
-      const sessionDir = createSession({
-        name,
-        principal: args.principal || "TBD",
-        intent: args.intent || "TBD",
-        useCis: args.cis === true || args.cis === "true",
-        force: args.force === true || args.force === "true",
-        rootDir,
-      });
-      console.log(`Session '${name}' created at ${sessionDir}`);
-      if (args.cis) console.log("CIS admissibility policy included.");
-      break;
-    }
-
-    case "list-sessions": {
-      const sessionsDir = join(rootDir, "sessions");
-      let sessions = [];
-      try {
-        sessions = readdirSync(sessionsDir).filter((name) => {
-          const path = join(sessionsDir, name);
-          try {
-            return statSync(path).isDirectory();
-          } catch {
-            return false;
-          }
-        });
-      } catch {
-        // ignore
+      if (!target || !name) {
+        die("Usage: usc init <path> --name <name> --principal <name> --intent <text> [--cis] [--git] [--force]");
       }
-      if (sessions.length === 0) {
-        console.log("No sessions found.");
-        break;
-      }
-      for (const name of sessions) {
-        console.log(`- ${name}`);
-      }
-      break;
-    }
-
-    case "init-app": {
-      const name = args.name;
-      const target = args.target;
-      if (!name || !target) {
-        die("Usage: usc init-app --name <app-name> --target <path> [--principal <name>] [--intent <text>] [--cis] [--git] [--force]");
-      }
-      const targetDir = createApp({
+      const targetDir = initRepo({
         name,
         target,
         principal: args.principal || "TBD",
@@ -120,9 +79,23 @@ async function run() {
         force: args.force === true || args.force === "true",
         rootDir,
       });
-      console.log(`App repo '${name}' created at ${targetDir}`);
+      console.log(`USC repo '${name}' initialized at ${targetDir}`);
       if (args.cis) console.log("CIS admissibility policy included.");
       if (args.git) console.log("Git repository initialized.");
+      break;
+    }
+
+    case "cycle": {
+      const intent = args.intent;
+      if (!intent) die("Usage: usc cycle --intent <text> [--target <path>] [--name <cycle-name>] [--force]");
+      const target = args.target || process.cwd();
+      const cycleDir = createCycle({
+        target,
+        name: args.name || null,
+        intent,
+        force: args.force === true || args.force === "true",
+      });
+      console.log(`Cycle opened at ${cycleDir}`);
       break;
     }
 
@@ -197,11 +170,10 @@ async function run() {
       console.log(`Usage: usc <command> [options]
 
 Commands:
-  validate                          Validate examples and sessions
-  validate --app <path>             Validate an external app repo
-  init-session --name <name>        Create a new session
-  list-sessions                     List existing sessions
-  init-app --name <name> --target <path>  Create a new app repo
+  validate                          Validate examples and USC repos
+  validate --app <path>             Validate an external USC repo
+  init <path> --name <name>         Initialize a USC-governed construction repo
+  cycle --intent <text>             Open a construction cycle in an existing repo
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
   refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
 `);

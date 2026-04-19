@@ -5,12 +5,7 @@
   "description": "Executable implementation of the Universal Systems Constructor",
   "scripts": {
     "usc": "node packages/cli/src/usc.js",
-    "validate": "node packages/cli/src/usc.js validate",
-    "usc:init": "node packages/cli/src/usc.js init-session",
-    "usc:list": "node packages/cli/src/usc.js list-sessions",
-    "usc:init-app": "node packages/cli/src/usc.js init-app",
-    "usc:refine": "node packages/cli/src/usc.js refine",
-    "usc:json": "node packages/cli/src/usc.js"
+    "validate": "node packages/cli/src/usc.js validate"
   },
   "devDependencies": {
     "ajv": "^8.18.0",

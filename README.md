@@ -21,7 +21,7 @@ For a compact system diagram, see [docs/system.md](docs/system.md).
 
 | Package | Purpose |
 |---------|---------|
-| `packages/cli` | Executable entrypoint (`usc validate`, `usc init-session`, `usc init-app`) |
+| `packages/cli` | Executable entrypoint (`usc validate`, `usc init`, `usc cycle`, `usc refine`) |
 | `packages/core` | Construction model, schema registry, and validator |
 | `packages/compiler` | Artifact generation (session init, app init, templates, intent refinement) |
 | `packages/policies` | Admissibility policy definitions and examples |
@@ -34,8 +34,8 @@ For a compact system diagram, see [docs/system.md](docs/system.md).
 
 ```bash
 pnpm install
-pnpm usc:init -- --name my-session --principal "Alice" --intent "Add a public API documentation site"
-pnpm validate
+pnpm usc -- init ../narada.usc.my-system --name my-system --principal "Alice" --intent "Add a public API documentation site" --git
+pnpm usc -- validate --app ../narada.usc.my-system
 ```
 
 ## CLI Commands
@@ -49,36 +49,32 @@ pnpm validate                          # substrate examples and sessions
 pnpm validate -- --app ../narada.usc.my-app   # external app repo
 ```
 
-### Init Session
+### Init
 
-Create a construction session inside the substrate repo:
-
-```bash
-pnpm usc:init -- --name my-session --principal "Alice" --intent "..."
-```
-
-Options:
-- `--force` — overwrite an existing session
-- `--cis` — include a required CIS admissibility policy
-
-### List Sessions
+Initialize a USC-governed construction repo:
 
 ```bash
-pnpm usc:list
-```
-
-### Init App
-
-Create a new concrete app repo outside the substrate:
-
-```bash
-pnpm usc:init-app -- --name my-app --target ../narada.usc.my-app --principal "Alice" --intent "Build app X" --cis --git
+pnpm usc -- init ../narada.usc.my-system --name my-system --principal "Alice" --intent "Build app X" --cis --git
 ```
 
 Options:
 - `--force` — overwrite an existing target
 - `--cis` — include a required CIS admissibility policy
 - `--git` — initialize a git repository
+
+### Cycle
+
+Open a construction cycle/checkpoint in an existing USC repo:
+
+```bash
+cd ../narada.usc.my-system
+pnpm --dir /path/to/narada.usc usc -- cycle --intent "Add support mailbox operation"
+```
+
+Options:
+- `--target <path>` — target repo (defaults to current working directory)
+- `--name <cycle-name>` — cycle name (defaults to timestamp)
+- `--force` — overwrite an existing cycle
 
 ### Refine Intent
 
@@ -96,18 +92,18 @@ Use a specific domain pack for richer construction grammar:
 
 ```bash
 # Machine-readable JSON with domain prior
-pnpm --silent usc:json refine --intent "I want ERP system" --domain erp --format json
+pnpm --silent usc -- refine --intent "I want ERP system" --domain erp --format json
 
 # Human-readable Markdown with domain prior
-pnpm usc:refine -- --intent "I want support helpdesk" --domain helpdesk --format md
+pnpm usc -- refine --intent "I want support helpdesk" --domain helpdesk --format md
 ```
 
 If `--domain` is omitted, the CLI auto-detects the best-matching domain pack when confidence is high; otherwise it uses generic refinement and lists candidate packs.
 
-Write refinement into an app repo:
+Write refinement into a USC repo:
 
 ```bash
-pnpm --silent usc:json refine --target ../narada.usc.my-app --intent "I want ERP system" --domain erp --format json
+pnpm --silent usc -- refine --target ../narada.usc.my-app --intent "I want ERP system" --domain erp --format json
 ```
 
 `refine --target` refuses to overwrite existing `usc/refinement.json` or `usc/refinement.md` unless `--force` is provided.
