@@ -1,0 +1,54 @@
+{
+  "$schema": "https://narada2.dev/schemas/usc/refinement.schema.json",
+  "intent": "I want CRM",
+  "detected_domain": "crm",
+  "ambiguities": [
+    { "layer": "ontology", "description": "CRM purpose and scope (sales, support, success, marketing, combined)", "governing": true },
+    { "layer": "ontology", "description": "Entity model (leads, contacts, accounts, opportunities, deals, tickets, activities)", "governing": true },
+    { "layer": "dynamics", "description": "Pipeline or lifecycle stages and how records progress between them", "governing": true },
+    { "layer": "dynamics", "description": "Activity tracking (calls, emails, meetings, notes, tasks) and automation triggers", "governing": true },
+    { "layer": "normativity", "description": "Data ownership and privacy (who sees what, GDPR, opt-in, data retention)", "governing": true },
+    { "layer": "environment", "description": "Integration with email, calendar, marketing, support, or accounting systems", "governing": true },
+    { "layer": "dynamics", "description": "Assignment and routing (manual, round-robin, territory-based, skill-based)", "governing": true },
+    { "layer": "normativity", "description": "Reporting and forecasting (pipeline value, win rate, activity metrics, quotas)", "governing": true },
+    { "layer": "environment", "description": "Import and migration (existing contact lists, spreadsheets, other CRM data)", "governing": true },
+    { "layer": "dynamics", "description": "Communication model (email templates, sequences, campaigns, 1:1 outreach)", "governing": true },
+    { "layer": "environment", "description": "Mobile or offline access requirements", "governing": true },
+    { "layer": "stopping", "description": "MVP CRM boundary — what modules and features are in scope", "governing": true }
+  ],
+  "questions": [
+    { "question": "What is the primary CRM purpose (sales, support, success, marketing, combined)?", "authority": "principal", "blocking": true },
+    { "question": "What entities must be tracked (leads, contacts, accounts, deals, tickets)?", "authority": "principal", "blocking": true },
+    { "question": "What pipeline or lifecycle stages are required?", "authority": "principal", "blocking": true },
+    { "question": "What activity types must be tracked?", "authority": "principal", "blocking": false },
+    { "question": "What assignment and routing model is required?", "authority": "principal", "blocking": false },
+    { "question": "Must this integrate with email, calendar, or marketing tools?", "authority": "semantic", "blocking": false },
+    { "question": "What reporting and forecasting are required?", "authority": "principal", "blocking": false },
+    { "question": "What data import or migration is needed?", "authority": "semantic", "blocking": false }
+  ],
+  "assumptions": [
+    { "assumption": "A combined contact and deal tracking model is acceptable for MVP", "confidence": "medium", "reversible": true },
+    { "assumption": "A simple pipeline with 3-5 stages is sufficient initially", "confidence": "medium", "reversible": true },
+    { "assumption": "Manual assignment with optional round-robin is acceptable for MVP", "confidence": "medium", "reversible": true },
+    { "assumption": "Web-based access is sufficient for MVP", "confidence": "medium", "reversible": true }
+  ],
+  "suggested_closures": [
+    { "decision": "CRM construction will start with contact and deal tracking under a simple pipeline with manual assignment.", "rationale": "A focused entity model and conservative workflow reduce initial complexity while preserving principal control over sales or support processes.", "authority": "principal" }
+  ],
+  "seed_tasks": [
+    { "id": "T1", "title": "Define CRM purpose and scope", "authority_locus": "principal", "transformation": "Document whether CRM is for sales, support, success, marketing, or combined use.", "evidence_requirement": "CRM purpose and scope document exists.", "review_predicate": "Every stakeholder can identify which functions are in scope." },
+    { "id": "T2", "title": "Define entity model", "authority_locus": "principal", "transformation": "Document leads, contacts, accounts, deals, and any custom entities with their fields.", "evidence_requirement": "Entity model specification exists.", "review_predicate": "Every entity has defined fields and relationships; no entity is ambiguous." },
+    { "id": "T3", "title": "Define pipeline or lifecycle stages", "authority_locus": "principal", "transformation": "Document stage definitions, entry/exit criteria, and authorized transitions.", "evidence_requirement": "Pipeline stage document exists.", "review_predicate": "Every stage has clear entry and exit criteria." },
+    { "id": "T4", "title": "Define assignment and routing rules", "authority_locus": "principal", "transformation": "Document how records are assigned, routed, and reassigned.", "evidence_requirement": "Assignment and routing policy exists.", "review_predicate": "Every record has a clear owner; no record is orphaned." },
+    { "id": "T5", "title": "Define privacy and data ownership policy", "authority_locus": "principal", "transformation": "Document who can see what data, opt-in requirements, and retention rules.", "evidence_requirement": "Privacy and data ownership policy exists.", "review_predicate": "Every data type has an access level and a retention rule." },
+    { "id": "T6", "title": "Define MVP CRM boundary", "authority_locus": "principal", "transformation": "Explicitly list modules and features in MVP and what is out of scope.", "evidence_requirement": "MVP scope document exists with explicit inclusions and exclusions.", "review_predicate": "Scope is achievable and every excluded module is consciously deferred." }
+  ],
+  "residuals": [
+    { "residual_id": "res-purpose", "class": "unresolved_principal_decision", "description": "CRM purpose and scope are not defined.", "blocking": true },
+    { "residual_id": "res-entities", "class": "unresolved_principal_decision", "description": "Entity model is not established.", "blocking": true },
+    { "residual_id": "res-pipeline", "class": "unresolved_principal_decision", "description": "Pipeline or lifecycle stages are not decided.", "blocking": true },
+    { "residual_id": "res-assignment", "class": "missing_policy", "description": "Assignment and routing model is undefined.", "blocking": false },
+    { "residual_id": "res-privacy", "class": "missing_policy", "description": "Privacy and data ownership policy is undocumented.", "blocking": false },
+    { "residual_id": "res-integrations", "class": "missing_effector", "description": "System integrations are not defined.", "blocking": false }
+  ]
+}

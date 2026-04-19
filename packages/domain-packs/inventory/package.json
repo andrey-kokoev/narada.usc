@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-inventory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for inventory and stock management systems",
+  "main": "src/index.js",
+  "type": "module"
+}

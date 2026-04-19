@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/knowledge-base-context.schema.json",
+  "title": "Knowledge Base Domain Context",
+  "type": "object",
+  "required": ["domain", "content_types", "audience"],
+  "properties": {
+    "domain": { "const": "knowledge-base" },
+    "content_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Content types supported"
+    },
+    "audience": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["internal", "external", "customers", "partners", "public"] },
+      "description": "Primary audiences"
+    },
+    "workflow": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Authoring and publishing workflow stages"
+    },
+    "search_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Search and discovery features"
+    },
+    "access_control": {
+      "type": "string",
+      "enum": ["public", "authenticated", "role-based", "ip-restricted", "sso"],
+      "description": "Access control model"
+    },
+    "governance": {
+      "type": "object",
+      "properties": {
+        "freshness_policy": { "type": "string" },
+        "review_cycle_days": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External system integrations"
+    },
+    "localization": {
+      "type": "boolean",
+      "description": "Whether multi-language is required"
+    }
+  },
+  "additionalProperties": false
+}

@@ -20,6 +20,11 @@ import learningManagement from "../../domain-packs/learning-management/src/index
 import communityPlatform from "../../domain-packs/community-platform/src/index.js";
 import procurement from "../../domain-packs/procurement/src/index.js";
 import assetManagement from "../../domain-packs/asset-management/src/index.js";
+import marketplace from "../../domain-packs/marketplace/src/index.js";
+import crm from "../../domain-packs/crm/src/index.js";
+import inventory from "../../domain-packs/inventory/src/index.js";
+import booking from "../../domain-packs/booking/src/index.js";
+import knowledgeBase from "../../domain-packs/knowledge-base/src/index.js";
 
 export const domainPacks = [
   saas,
@@ -44,6 +49,11 @@ export const domainPacks = [
   communityPlatform,
   procurement,
   assetManagement,
+  marketplace,
+  crm,
+  inventory,
+  booking,
+  knowledgeBase,
 ];
 
 export function findPackById(id) {

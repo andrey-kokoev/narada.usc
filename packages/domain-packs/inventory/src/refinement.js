@@ -1,0 +1,65 @@
+export function detect(intent) {
+  const text = intent.toLowerCase();
+  const score =
+    (/\binventory\b/.test(text) ? 3 : 0) +
+    (/\bstock\b/.test(text) ? 2 : 0) +
+    (/\bwarehouse\b/.test(text) ? 2 : 0) +
+    (/\bsku\b/.test(text) ? 2 : 0) +
+    (/\bsupply chain\b/.test(text) ? 1 : 0) +
+    (/\bfulfillment\b/.test(text) ? 1 : 0);
+  return score > 0 ? score : false;
+}
+
+export function refine(intent) {
+  return {
+    ambiguities: [
+      { layer: "ontology", description: "Item model (SKUs, variants, bundles, assemblies, units of measure)", governing: true },
+      { layer: "ontology", description: "Location model (warehouses, bins, stores, zones, virtual locations)", governing: true },
+      { layer: "dynamics", description: "Stock movements (receipts, transfers, adjustments, consumption, returns)", governing: true },
+      { layer: "dynamics", description: "Stock levels and tracking (on-hand, reserved, available, in-transit, thresholds)", governing: true },
+      { layer: "normativity", description: "Costing method policy (standard, actual, average — not assumed by default)", governing: true },
+      { layer: "dynamics", description: "Replenishment model (reorder points, min/max, auto-purchase, demand-driven)", governing: true },
+      { layer: "environment", description: "Integration with purchasing, sales, manufacturing, or accounting systems", governing: true },
+      { layer: "normativity", description: "Auditing and traceability (lot numbers, serial numbers, expiry, batch tracking)", governing: true },
+      { layer: "dynamics", description: "Cycle counts and physical inventory reconciliation", governing: true },
+      { layer: "environment", description: "Multi-location and multi-currency considerations", governing: true },
+      { layer: "normativity", description: "Reporting (stock valuation, movement history, aging, shrinkage)", governing: true },
+      { layer: "stopping", description: "MVP inventory boundary — what item types and locations are in scope", governing: true },
+    ],
+    questions: [
+      { question: "What item types must be tracked (SKUs, variants, bundles, assemblies)?", authority: "principal", blocking: true },
+      { question: "What locations must be tracked (warehouses, stores, bins, zones)?", authority: "principal", blocking: true },
+      { question: "What stock movement types are required (receipts, transfers, adjustments, returns)?", authority: "principal", blocking: true },
+      { question: "What costing method policy applies?", authority: "principal", blocking: false },
+      { question: "What replenishment model is required?", authority: "principal", blocking: false },
+      { question: "Is lot/serial/batch tracking required?", authority: "principal", blocking: false },
+      { question: "Must this integrate with purchasing, sales, or accounting systems?", authority: "semantic", blocking: false },
+      { question: "What reporting and analytics are required?", authority: "principal", blocking: false },
+    ],
+    assumptions: [
+      { assumption: "Simple SKU-based items are the core MVP item type", confidence: "medium", reversible: true },
+      { assumption: "A single warehouse or store location is acceptable for MVP", confidence: "medium", reversible: true },
+      { assumption: "Basic stock level tracking (on-hand, available) is sufficient initially", confidence: "medium", reversible: true },
+      { assumption: "Manual replenishment with reorder point alerts is acceptable for MVP", confidence: "medium", reversible: true },
+    ],
+    suggested_closures: [
+      { decision: "Inventory construction will start with SKU-based items, single-location tracking, and manual replenishment under an explicit costing policy.", rationale: "A focused item model and conservative location scope reduce risk while preserving principal control over costing and replenishment decisions.", authority: "principal" },
+    ],
+    seed_tasks: [
+      { id: "T1", title: "Define item model and SKU structure", authority_locus: "principal", transformation: "Document item types, SKU format, variants, bundles, and units of measure.", evidence_requirement: "Item model specification exists.", review_predicate: "Every item type has a defined structure and SKU format." },
+      { id: "T2", title: "Define location model", authority_locus: "principal", transformation: "Document warehouses, stores, bins, zones, and how locations relate.", evidence_requirement: "Location model document exists.", review_predicate: "Every location has a defined purpose and hierarchy." },
+      { id: "T3", title: "Define stock movement types and rules", authority_locus: "principal", transformation: "Document receipts, transfers, adjustments, consumption, and returns with authorization rules.", evidence_requirement: "Stock movement policy exists.", review_predicate: "Every movement type has an authorized actor and a documented rule." },
+      { id: "T4", title: "Define costing method policy", authority_locus: "principal", transformation: "Document how costs are assigned and what method is used.", evidence_requirement: "Costing policy document exists.", review_predicate: "Costing method is documented and every stakeholder understands how valuation is calculated." },
+      { id: "T5", title: "Define replenishment and threshold rules", authority_locus: "principal", transformation: "Document reorder points, min/max levels, and who triggers replenishment.", evidence_requirement: "Replenishment policy exists.", review_predicate: "Every item has a documented reorder rule or an explicit exception." },
+      { id: "T6", title: "Define MVP inventory boundary", authority_locus: "principal", transformation: "Explicitly list item types, locations, and features in MVP and what is out of scope.", evidence_requirement: "MVP scope document exists with explicit inclusions and exclusions.", review_predicate: "Scope is achievable and every excluded item type is consciously deferred." },
+    ],
+    residuals: [
+      { residual_id: "res-items", class: "unresolved_principal_decision", description: "Item model and SKU structure are not defined.", blocking: true },
+      { residual_id: "res-locations", class: "unresolved_principal_decision", description: "Location model is not established.", blocking: true },
+      { residual_id: "res-movements", class: "unresolved_principal_decision", description: "Stock movement types and rules are not decided.", blocking: true },
+      { residual_id: "res-costing", class: "missing_policy", description: "Costing method policy is undefined.", blocking: false },
+      { residual_id: "res-replenishment", class: "missing_policy", description: "Replenishment model is not decided.", blocking: false },
+      { residual_id: "res-tracking", class: "missing_policy", description: "Lot/serial/batch tracking requirements are undocumented.", blocking: false },
+    ],
+  };
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-crm",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for customer relationship management systems",
+  "main": "src/index.js",
+  "type": "module"
+}

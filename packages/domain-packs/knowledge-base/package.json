@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-knowledge-base",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for knowledge base and documentation systems",
+  "main": "src/index.js",
+  "type": "module"
+}

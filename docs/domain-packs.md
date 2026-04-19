@@ -28,6 +28,11 @@ Domain packs are reusable constructor knowledge modules. Each pack surfaces deci
 | Community Platform | `community-platform` | Forums, member communities, and moderation |
 | Procurement | `procurement` | Purchasing, vendors, approvals, and spend control |
 | Asset Management | `asset-management` | Physical/digital asset tracking and lifecycle |
+| Marketplace | `marketplace` | Multi-vendor marketplace and platform commerce |
+| CRM | `crm` | Customer relationship management |
+| Inventory | `inventory` | Inventory and stock management |
+| Booking | `booking` | Booking, scheduling, and reservations |
+| Knowledge Base | `knowledge-base` | Knowledge base and documentation |
 
 ## Using Domain Packs
 
@@ -56,6 +61,11 @@ usc refine --intent "I want learning management system" --domain learning-manage
 usc refine --intent "I want community platform" --domain community-platform
 usc refine --intent "I want procurement system" --domain procurement
 usc refine --intent "I want asset management system" --domain asset-management
+usc refine --intent "I want marketplace" --domain marketplace
+usc refine --intent "I want CRM" --domain crm
+usc refine --intent "I want inventory system" --domain inventory
+usc refine --intent "I want booking system" --domain booking
+usc refine --intent "I want knowledge base" --domain knowledge-base
 ```
 
 ### Auto-Detection

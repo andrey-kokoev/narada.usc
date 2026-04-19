@@ -1,0 +1,53 @@
+{
+  "$schema": "https://narada2.dev/schemas/usc/refinement.schema.json",
+  "intent": "I want marketplace",
+  "detected_domain": "marketplace",
+  "ambiguities": [
+    { "layer": "ontology", "description": "Participant model (buyers, sellers, vendors, agents, admins) and how they onboard", "governing": true },
+    { "layer": "ontology", "description": "Product/catalog model (who lists, variants, categories, moderation, digital vs physical)", "governing": true },
+    { "layer": "dynamics", "description": "Discovery and matching (search, browse, recommendations, curated vs algorithmic)", "governing": true },
+    { "layer": "dynamics", "description": "Transaction model (who takes payment, when, what currency, invoicing, netting)", "governing": true },
+    { "layer": "normativity", "description": "Trust and verification (identity checks, ratings, reviews, dispute resolution, guarantees)", "governing": true },
+    { "layer": "normativity", "description": "Commission and fee structure (who pays, when, flat vs percentage, tiers)", "governing": true },
+    { "layer": "environment", "description": "Fulfillment responsibility (vendor-shipped, platform-shipped, digital delivery, pickup)", "governing": true },
+    { "layer": "environment", "description": "Integration with payment, tax, shipping, or accounting systems", "governing": true },
+    { "layer": "normativity", "description": "Policies (returns, refunds, cancellations, prohibited items, jurisdiction)", "governing": true },
+    { "layer": "dynamics", "description": "Messaging and negotiation (buyer-seller chat, quotes, offers, auctions)", "governing": true },
+    { "layer": "environment", "description": "Analytics and reporting (vendor dashboards, platform health, payout reports)", "governing": true },
+    { "layer": "stopping", "description": "MVP marketplace boundary — what transaction types and features are in scope", "governing": true }
+  ],
+  "questions": [
+    { "question": "What participant types must be supported (buyers, sellers, vendors, agents)?", "authority": "principal", "blocking": true },
+    { "question": "Who is responsible for fulfillment (vendor, platform, hybrid)?", "authority": "principal", "blocking": true },
+    { "question": "What is the commission or fee model?", "authority": "principal", "blocking": true },
+    { "question": "What trust and verification mechanisms are required?", "authority": "principal", "blocking": false },
+    { "question": "What transaction and payment flow is required?", "authority": "principal", "blocking": false },
+    { "question": "What policies apply (returns, refunds, prohibited items)?", "authority": "principal", "blocking": false },
+    { "question": "Is buyer-seller messaging or negotiation required?", "authority": "principal", "blocking": false },
+    { "question": "What external integrations are required (payments, tax, shipping)?", "authority": "semantic", "blocking": false }
+  ],
+  "assumptions": [
+    { "assumption": "A buyer-and-seller model with platform facilitation is the core MVP pattern", "confidence": "medium", "reversible": true },
+    { "assumption": "Vendor-managed listings with platform moderation are acceptable initially", "confidence": "medium", "reversible": true },
+    { "assumption": "Simple percentage-based commission is acceptable for MVP", "confidence": "medium", "reversible": true }
+  ],
+  "suggested_closures": [
+    { "decision": "Marketplace construction will start with vendor-managed listings, platform-facilitated discovery, and a simple commission model under a conservative trust policy.", "rationale": "A focused transaction model with explicit participant responsibilities reduces risk while preserving principal control over fees and fulfillment policies.", "authority": "principal" }
+  ],
+  "seed_tasks": [
+    { "id": "T1", "title": "Define participant model and onboarding", "authority_locus": "principal", "transformation": "Document buyer, seller, and admin roles, onboarding requirements, and verification levels.", "evidence_requirement": "Participant model and onboarding flow exist.", "review_predicate": "Every participant type has defined permissions and an onboarding path." },
+    { "id": "T2", "title": "Define product catalog and listing policy", "authority_locus": "principal", "transformation": "Document who can list, what can be listed, category structure, and moderation rules.", "evidence_requirement": "Catalog policy and category taxonomy exist.", "review_predicate": "Every listing type has a moderation rule; no category is ungoverned." },
+    { "id": "T3", "title": "Define commission and fee structure", "authority_locus": "principal", "transformation": "Document who pays fees, when they are collected, and how payouts work.", "evidence_requirement": "Fee structure document exists with examples.", "review_predicate": "Every transaction type has a documented fee; no fee is hidden from participants." },
+    { "id": "T4", "title": "Define fulfillment responsibility model", "authority_locus": "principal", "transformation": "Document who ships, who tracks, and who handles returns for each product type.", "evidence_requirement": "Fulfillment responsibility matrix exists.", "review_predicate": "Every product type has a clear fulfillment owner." },
+    { "id": "T5", "title": "Define trust, dispute, and refund policies", "authority_locus": "principal", "transformation": "Document verification requirements, dispute resolution steps, and refund conditions.", "evidence_requirement": "Trust and dispute policy document exists.", "review_predicate": "Every dispute type has a resolution path; every refund condition is objective." },
+    { "id": "T6", "title": "Define MVP marketplace boundary", "authority_locus": "principal", "transformation": "Explicitly list features and transaction types in MVP and what is out of scope.", "evidence_requirement": "MVP scope document exists with explicit inclusions and exclusions.", "review_predicate": "Scope is achievable and every excluded feature is consciously deferred." }
+  ],
+  "residuals": [
+    { "residual_id": "res-participants", "class": "unresolved_principal_decision", "description": "Participant model and onboarding are not defined.", "blocking": true },
+    { "residual_id": "res-catalog", "class": "unresolved_principal_decision", "description": "Product catalog and listing policy are not established.", "blocking": true },
+    { "residual_id": "res-commission", "class": "unresolved_principal_decision", "description": "Commission and fee structure are not decided.", "blocking": true },
+    { "residual_id": "res-fulfillment", "class": "unresolved_principal_decision", "description": "Fulfillment responsibility model is undefined.", "blocking": true },
+    { "residual_id": "res-trust", "class": "missing_policy", "description": "Trust and dispute policies are not documented.", "blocking": false },
+    { "residual_id": "res-payments", "class": "missing_policy", "description": "Transaction and payment flow is not defined.", "blocking": false }
+  ]
+}

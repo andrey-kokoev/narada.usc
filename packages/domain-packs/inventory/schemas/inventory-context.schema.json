@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/inventory-context.schema.json",
+  "title": "Inventory Domain Context",
+  "type": "object",
+  "required": ["domain", "item_types", "locations"],
+  "properties": {
+    "domain": { "const": "inventory" },
+    "item_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Item types tracked (SKUs, variants, bundles, assemblies)"
+    },
+    "locations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Location types (warehouses, stores, bins, zones)"
+    },
+    "movement_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Supported stock movement types"
+    },
+    "costing_method": {
+      "type": "string",
+      "enum": ["standard", "actual", "average", "fifo", "lifo", "none"],
+      "description": "Costing method policy"
+    },
+    "replenishment_model": {
+      "type": "string",
+      "enum": ["reorder-point", "min-max", "auto-purchase", "demand-driven", "manual"],
+      "description": "How stock is replenished"
+    },
+    "tracking": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["lot", "serial", "batch", "expiry", "none"] },
+      "description": "Tracking requirements"
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External system integrations"
+    }
+  },
+  "additionalProperties": false
+}
