@@ -67,8 +67,9 @@ Options:
 Open a construction cycle/checkpoint in an existing USC repo:
 
 ```bash
-cd ../narada.usc.my-system
-pnpm --dir /path/to/narada.usc usc -- cycle --intent "Add support mailbox operation"
+pnpm --dir /path/to/narada.usc usc -- cycle \
+  --target ../narada.usc.my-system \
+  --intent "Add support mailbox operation"
 ```
 
 Options:
