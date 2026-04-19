@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-saas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for multi-tenant SaaS systems",
+  "main": "src/index.js",
+  "type": "module"
+}

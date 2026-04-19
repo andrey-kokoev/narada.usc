@@ -134,7 +134,7 @@ async function run() {
       const target = args.target;
       const useCis = args.cis === true || args.cis === "true";
 
-      const refinement = refineIntent(intent, domain);
+      const refinement = await refineIntent(intent, domain);
 
       if (format === "json") {
         console.log(JSON.stringify(refinement, null, 2));

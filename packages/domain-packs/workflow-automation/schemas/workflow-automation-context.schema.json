@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/workflow-automation-context.schema.json",
+  "title": "Workflow Automation Domain Pack Context",
+  "description": "Context parameters for the workflow automation domain pack refinement",
+  "type": "object",
+  "properties": {
+    "trigger_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["event", "schedule", "webhook", "manual", "external"]
+      }
+    },
+    "action_targets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["api", "database", "notification", "external"]
+      }
+    },
+    "delivery_guarantee": {
+      "type": "string",
+      "enum": ["exactly-once", "at-least-once", "at-most-once"]
+    },
+    "requires_approval": {
+      "type": "boolean"
+    },
+    "failure_handling": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["retry", "dead-letter", "alert", "manual-recovery"]
+      }
+    }
+  }
+}

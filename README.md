@@ -23,8 +23,9 @@ For a compact system diagram, see [docs/system.md](docs/system.md).
 |---------|---------|
 | `packages/cli` | Executable entrypoint (`usc validate`, `usc init-session`, `usc init-app`) |
 | `packages/core` | Construction model, schema registry, and validator |
-| `packages/compiler` | Artifact generation (session init, app init, templates) |
+| `packages/compiler` | Artifact generation (session init, app init, templates, intent refinement) |
 | `packages/policies` | Admissibility policy definitions and examples |
+| `packages/domain-packs` | Reusable construction grammar for problem families (ERP, helpdesk, SaaS, etc.) |
 | `docs/concepts/` | Conceptual definitions and positioning |
 | `docs/protocols/` | Operational protocols for USC practice |
 | `examples/` | Minimal and full-cycle examples of USC-shaped work |
@@ -88,13 +89,22 @@ pnpm usc:refine -- --intent "I want ERP system" --format json
 pnpm usc:refine -- --intent "I want support helpdesk" --format md
 ```
 
+Use a specific domain pack for richer construction grammar:
+
+```bash
+pnpm usc:refine -- --intent "I want ERP system" --domain erp --format json
+pnpm usc:refine -- --intent "I want support helpdesk" --domain helpdesk --format md
+```
+
+If `--domain` is omitted, the CLI auto-detects the best-matching domain pack when confidence is high; otherwise it uses generic refinement and lists candidate packs.
+
 Write refinement into an app repo:
 
 ```bash
-pnpm usc:refine -- --target ../narada.usc.my-app --intent "I want ERP system" --format json
+pnpm usc:refine -- --target ../narada.usc.my-app --intent "I want ERP system" --domain erp --format json
 ```
 
-`refine` does not implement the system. It surfaces hidden arbitrariness and produces first construction artifacts.
+`refine` does not implement the system. It surfaces hidden arbitrariness and produces first construction artifacts. Domain packs provide reusable construction grammar for common problem families without inventing app-specific decisions.
 
 ## Future: Compile Target
 

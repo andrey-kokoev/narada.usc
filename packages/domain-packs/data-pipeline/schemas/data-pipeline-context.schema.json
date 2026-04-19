@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/data-pipeline-context.schema.json",
+  "title": "Data Pipeline Domain Pack Context",
+  "description": "Context parameters for the data pipeline domain pack refinement",
+  "type": "object",
+  "properties": {
+    "source_systems": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "ingestion_mode": {
+      "type": "string",
+      "enum": ["batch", "streaming", "micro-batch", "hybrid"]
+    },
+    "schema_policy": {
+      "type": "string",
+      "enum": ["explicit-schema", "schema-on-read", "hybrid"]
+    },
+    "freshness_sla": {
+      "type": "string"
+    },
+    "retention_policy": {
+      "type": "string"
+    },
+    "backfill_strategy": {
+      "type": "string",
+      "enum": ["full-rewrite", "incremental", "versioned"]
+    }
+  }
+}

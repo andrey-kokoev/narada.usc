@@ -1,4 +1,16 @@
-function detectDomain(intent) {
+import { findPackById, detectPack } from "./domain-packs.js";
+
+const builtInDomains = [
+  "enterprise_resource_planning",
+  "support_helpdesk",
+  "customer_relationship_management",
+  "e_commerce",
+  "content_management",
+  "analytics",
+  "unknown",
+];
+
+function detectBuiltInDomain(intent) {
   const text = intent.toLowerCase();
   if (/erp|enterprise resource|resource planning|inventory|procurement|supply chain/.test(text)) {
     return "enterprise_resource_planning";
@@ -18,18 +30,42 @@ function detectDomain(intent) {
   if (/analytics|dashboard|metrics|reporting|bi|business intelligence/.test(text)) {
     return "analytics";
   }
-  return "unknown";
+  return null;
 }
 
-function buildAmbiguities(domain) {
-  const common = [
+function buildCommonAmbiguities() {
+  return [
     { layer: "ontology", description: "What entities, relationships, and boundaries define this system?", governing: true },
     { layer: "dynamics", description: "How do users and processes interact with the system over time?", governing: true },
     { layer: "normativity", description: "What rules, constraints, and compliance requirements apply?", governing: true },
     { layer: "environment", description: "What external systems, integrations, and deployment constraints exist?", governing: true },
     { layer: "stopping", description: "What defines MVP, done, and out-of-scope for this construction?", governing: true },
   ];
+}
 
+function buildCommonQuestions() {
+  return [
+    { question: "What does success look like for this system?", authority: "principal", blocking: true },
+    { question: "Who are the primary users and what is the organization size?", authority: "principal", blocking: true },
+    { question: "What is the timeline and what constraints (budget, compliance, team) apply?", authority: "principal", blocking: false },
+  ];
+}
+
+function buildCommonSeedTasks() {
+  return [
+    { id: "T1", title: "Define system scope and success criteria", authority_locus: "principal", transformation: "Document what the system must do, for whom, and what success looks like.", evidence_requirement: "A written scope document exists and has been reviewed.", review_predicate: "A third party can understand the scope without asking clarifying questions." },
+    { id: "T2", title: "Identify constraints and non-goals", authority_locus: "principal", transformation: "Explicitly list budget, timeline, compliance, and out-of-scope items.", evidence_requirement: "Constraints and non-goals are documented.", review_predicate: "No hidden constraints remain that would invalidate the construction plan." },
+  ];
+}
+
+function buildCommonResiduals() {
+  return [
+    { residual_id: "res-scope-unresolved", class: "unresolved_principal_decision", description: "System scope and success criteria are not yet defined by the principal.", blocking: true },
+    { residual_id: "res-constraints-unknown", class: "missing_policy", description: "Constraints, compliance requirements, and non-goals have not been documented.", blocking: false },
+  ];
+}
+
+function buildBuiltInAmbiguities(domain) {
   const domainSpecific = {
     enterprise_resource_planning: [
       { layer: "ontology", description: "Build from scratch vs configure existing ERP vs integration layer", governing: true },
@@ -74,17 +110,10 @@ function buildAmbiguities(domain) {
       { layer: "ontology", description: "The system domain is not recognized; the principal must define what is being built", governing: true },
     ],
   };
-
-  return [...common, ...(domainSpecific[domain] || [])];
+  return domainSpecific[domain] || [];
 }
 
-function buildQuestions(domain) {
-  const common = [
-    { question: "What does success look like for this system?", authority: "principal", blocking: true },
-    { question: "Who are the primary users and what is the organization size?", authority: "principal", blocking: true },
-    { question: "What is the timeline and what constraints (budget, compliance, team) apply?", authority: "principal", blocking: false },
-  ];
-
+function buildBuiltInQuestions(domain) {
   const domainSpecific = {
     enterprise_resource_planning: [
       { question: "Is this a greenfield build, replacement, or integration layer?", authority: "principal", options: ["greenfield", "replacement", "integration"], blocking: true },
@@ -120,11 +149,10 @@ function buildQuestions(domain) {
       { question: "Are you building from scratch, replacing something, or integrating?", authority: "principal", options: ["greenfield", "replacement", "integration"], blocking: true },
     ],
   };
-
-  return [...common, ...(domainSpecific[domain] || [])];
+  return domainSpecific[domain] || [];
 }
 
-function buildAssumptions(domain) {
+function buildBuiltInAssumptions(domain) {
   const domainSpecific = {
     enterprise_resource_planning: [
       { assumption: "Multi-tenant or single-tenant deployment", confidence: "low", reversible: true },
@@ -143,16 +171,10 @@ function buildAssumptions(domain) {
       { assumption: "A web-based system is the intended delivery form", confidence: "low", reversible: true },
     ],
   };
-
   return domainSpecific[domain] || [];
 }
 
-function buildSeedTasks(domain) {
-  const common = [
-    { id: "T1", title: "Define system scope and success criteria", authority_locus: "principal", transformation: "Document what the system must do, for whom, and what success looks like.", evidence_requirement: "A written scope document exists and has been reviewed.", review_predicate: "A third party can understand the scope without asking clarifying questions." },
-    { id: "T2", title: "Identify constraints and non-goals", authority_locus: "principal", transformation: "Explicitly list budget, timeline, compliance, and out-of-scope items.", evidence_requirement: "Constraints and non-goals are documented.", review_predicate: "No hidden constraints remain that would invalidate the construction plan." },
-  ];
-
+function buildBuiltInSeedTasks(domain) {
   const domainSpecific = {
     enterprise_resource_planning: [
       { id: "T3", title: "Decide build vs configure vs integrate strategy", authority_locus: "principal", transformation: "Choose whether to build custom ERP, configure existing ERP, or build an integration layer.", evidence_requirement: "Decision is documented with rationale and alternatives rejected.", review_predicate: "Decision accounts for total cost of ownership and timeline." },
@@ -167,16 +189,10 @@ function buildSeedTasks(domain) {
       { id: "T3", title: "Clarify system domain and problem statement", authority_locus: "principal", transformation: "Produce a clear statement of what kind of system is needed and what problem it solves.", evidence_requirement: "Domain and problem statement are written and reviewable.", review_predicate: "A reader can identify the system type and user problem without ambiguity." },
     ],
   };
-
-  return [...common, ...(domainSpecific[domain] || [])];
+  return domainSpecific[domain] || [];
 }
 
-function buildResiduals(domain) {
-  const common = [
-    { residual_id: "res-scope-unresolved", class: "unresolved_principal_decision", description: "System scope and success criteria are not yet defined by the principal.", blocking: true },
-    { residual_id: "res-constraints-unknown", class: "missing_policy", description: "Constraints, compliance requirements, and non-goals have not been documented.", blocking: false },
-  ];
-
+function buildBuiltInResiduals(domain) {
   const domainSpecific = {
     enterprise_resource_planning: [
       { residual_id: "res-erp-strategy", class: "unresolved_principal_decision", description: "Build vs configure vs integrate strategy is unresolved.", blocking: true },
@@ -191,11 +207,10 @@ function buildResiduals(domain) {
       { residual_id: "res-domain-unknown", class: "out_of_calculus_target", description: "The system domain is too broad to form a construction state. Principal must narrow intent.", blocking: true },
     ],
   };
-
-  return [...common, ...(domainSpecific[domain] || [])];
+  return domainSpecific[domain] || [];
 }
 
-function buildSuggestedClosures(domain) {
+function buildBuiltInSuggestedClosures(domain) {
   const domainSpecific = {
     enterprise_resource_planning: [
       { decision: "ERP construction will follow a defined module boundary with explicit phased rollout.", rationale: "ERP is too large to build all at once; phased rollout reduces risk.", authority: "principal" },
@@ -204,22 +219,69 @@ function buildSuggestedClosures(domain) {
       { decision: "Intent is too broad to proceed; principal must clarify domain and problem before task formation.", rationale: "USC requires explicit intent before construction steps become admissible.", authority: "principal" },
     ],
   };
-
   return domainSpecific[domain] || [];
 }
 
-function refineIntent(intent, domainHint) {
-  const domain = domainHint || detectDomain(intent);
+function refineBuiltIn(intent, domain) {
   return {
     intent,
     detected_domain: domain,
-    ambiguities: buildAmbiguities(domain),
-    questions: buildQuestions(domain),
-    assumptions: buildAssumptions(domain),
-    suggested_closures: buildSuggestedClosures(domain),
-    seed_tasks: buildSeedTasks(domain),
-    residuals: buildResiduals(domain),
+    ambiguities: [...buildCommonAmbiguities(), ...buildBuiltInAmbiguities(domain)],
+    questions: [...buildCommonQuestions(), ...buildBuiltInQuestions(domain)],
+    assumptions: buildBuiltInAssumptions(domain),
+    suggested_closures: buildBuiltInSuggestedClosures(domain),
+    seed_tasks: [...buildCommonSeedTasks(), ...buildBuiltInSeedTasks(domain)],
+    residuals: [...buildCommonResiduals(), ...buildBuiltInResiduals(domain)],
   };
+}
+
+function refinePack(intent, pack) {
+  const packResult = pack.refine(intent);
+  return {
+    intent,
+    detected_domain: pack.id,
+    ambiguities: [...buildCommonAmbiguities(), ...packResult.ambiguities],
+    questions: [...buildCommonQuestions(), ...packResult.questions],
+    assumptions: packResult.assumptions,
+    suggested_closures: packResult.suggested_closures,
+    seed_tasks: [...buildCommonSeedTasks(), ...packResult.seed_tasks],
+    residuals: [...buildCommonResiduals(), ...packResult.residuals],
+  };
+}
+
+function refineIntent(intent, domainHint) {
+  // If a domain hint is provided, try built-in first, then packs
+  if (domainHint) {
+    if (builtInDomains.includes(domainHint)) {
+      return refineBuiltIn(intent, domainHint);
+    }
+    const pack = findPackById(domainHint);
+    if (pack) {
+      return refinePack(intent, pack);
+    }
+    // Unknown domain hint: fall through to detection
+  }
+
+  // Auto-detect: built-in first, then packs
+  const builtIn = detectBuiltInDomain(intent);
+  if (builtIn) {
+    return refineBuiltIn(intent, builtIn);
+  }
+
+  const pack = detectPack(intent);
+  if (pack) {
+    return refinePack(intent, pack);
+  }
+
+  return refineBuiltIn(intent, "unknown");
+}
+
+function detectDomain(intent) {
+  const builtIn = detectBuiltInDomain(intent);
+  if (builtIn) return builtIn;
+  const pack = detectPack(intent);
+  if (pack) return pack.id;
+  return "unknown";
 }
 
 export { refineIntent, detectDomain };

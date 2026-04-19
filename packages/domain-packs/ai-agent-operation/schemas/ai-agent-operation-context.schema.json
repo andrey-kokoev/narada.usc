@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/ai-agent-operation-context.schema.json",
+  "title": "AI Agent Operation Domain Pack Context",
+  "description": "Context parameters for the AI agent operation domain pack refinement",
+  "type": "object",
+  "properties": {
+    "charter_scope": {
+      "type": "string"
+    },
+    "allowed_tools": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "review_posture": {
+      "type": "string",
+      "enum": ["pre-approval", "post-review", "no-review"]
+    },
+    "knowledge_source": {
+      "type": "string",
+      "enum": ["context-window", "rag", "long-term-memory", "hybrid"]
+    },
+    "requires_human_approval": {
+      "type": "boolean"
+    },
+    "safety_constraints": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

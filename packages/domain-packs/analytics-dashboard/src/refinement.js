@@ -1,0 +1,54 @@
+export function detect(intent) {
+  const text = intent.toLowerCase();
+  return /\banalytics\b|\bdashboard\b|\bmetrics\b|\breporting\b|\bbi\b|\bbusiness intelligence\b|\bkpi\b|\bdata visualization/.test(text);
+}
+
+export function refine(intent) {
+  return {
+    ambiguities: [
+      { layer: "ontology", description: "Metric definitions, formulas, and semantic ownership", governing: true },
+      { layer: "ontology", description: "Data sources, schemas, and freshness requirements", governing: true },
+      { layer: "dynamics", description: "Dimensions, filters, and drill-down paths", governing: true },
+      { layer: "dynamics", description: "Refresh cadence (real-time, hourly, daily, on-demand)", governing: true },
+      { layer: "normativity", description: "Access control and data sensitivity levels", governing: true },
+      { layer: "environment", description: "Export and share requirements (PDF, CSV, embed, API)", governing: true },
+      { layer: "dynamics", description: "Alerting thresholds, channels, and escalation", governing: true },
+      { layer: "dynamics", description: "Historical backfill scope and method", governing: true },
+      { layer: "normativity", description: "Data quality, lineage, and trust requirements", governing: true },
+      { layer: "ontology", description: "Ownership of metric semantics and change governance", governing: true },
+      { layer: "environment", description: "Dashboard vs embedded analytics vs self-service exploration", governing: true },
+      { layer: "stopping", description: "MVP dashboard/report set and audience", governing: true },
+    ],
+    questions: [
+      { question: "What metrics and KPIs must be tracked?", authority: "principal", blocking: true },
+      { question: "What are the data sources and their schemas?", authority: "principal", blocking: true },
+      { question: "What dimensions and filters are required?", authority: "principal", blocking: false },
+      { question: "What refresh cadence is required?", authority: "principal", options: ["real-time", "hourly", "daily", "on-demand"], blocking: false },
+      { question: "Who can access which dashboards and metrics?", authority: "principal", blocking: false },
+      { question: "What export and sharing capabilities are required?", authority: "principal", blocking: false },
+      { question: "What alerting thresholds and channels are needed?", authority: "principal", blocking: false },
+      { question: "How much historical data must be backfilled?", authority: "semantic", blocking: false },
+      { question: "Is this dashboard-only, embedded, or self-service analytics?", authority: "principal", options: ["dashboard-only", "embedded", "self-service", "hybrid"], blocking: false },
+      { question: "What is the MVP dashboard set and who is the audience?", authority: "principal", blocking: false },
+    ],
+    assumptions: [
+      { assumption: "Standard batch data pipelines are sufficient for MVP refresh", confidence: "medium", reversible: true },
+      { assumption: "Web-based dashboards are the primary consumption form", confidence: "medium", reversible: true },
+    ],
+    suggested_closures: [
+      { decision: "Analytics construction will separate metric definitions, data ingestion, and presentation layers.", rationale: "Separation ensures metric semantics are owned independently of dashboards, and supports multiple consumption forms.", authority: "principal" },
+    ],
+    seed_tasks: [
+      { id: "T3", title: "Define metric catalog and ownership", authority_locus: "principal", transformation: "Document every metric, its formula, data source, and semantic owner.", evidence_requirement: "Metric catalog exists with formulas and owners.", review_predicate: "Every metric can be recomputed from its documented formula and source." },
+      { id: "T4", title: "Map data sources and freshness requirements", authority_locus: "semantic", transformation: "List all data sources, schemas, update frequency, and freshness SLAs.", evidence_requirement: "Data source inventory with freshness SLAs exists.", review_predicate: "Every metric has a traceable data source and freshness commitment." },
+      { id: "T5", title: "Define MVP dashboard set and audience", authority_locus: "principal", transformation: "Select initial dashboards, their audience, and required dimensions/filters.", evidence_requirement: "MVP dashboard specification exists.", review_predicate: "Each dashboard has defined metrics, audience, and access level." },
+    ],
+    residuals: [
+      { residual_id: "res-metrics", class: "unresolved_principal_decision", description: "Metric definitions and catalog are not established.", blocking: true },
+      { residual_id: "res-data-sources", class: "unresolved_principal_decision", description: "Data sources and schemas are not documented.", blocking: true },
+      { residual_id: "res-refresh-cadence", class: "missing_policy", description: "Refresh cadence and freshness SLAs are not defined.", blocking: false },
+      { residual_id: "res-access-control", class: "missing_policy", description: "Access control and data sensitivity levels are not defined.", blocking: false },
+      { residual_id: "res-mvp-dashboards", class: "unresolved_principal_decision", description: "MVP dashboard set and audience are not selected.", blocking: false },
+    ],
+  };
+}

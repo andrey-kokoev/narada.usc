@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-internal-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for internal tools and admin panels",
+  "main": "src/index.js",
+  "type": "module"
+}

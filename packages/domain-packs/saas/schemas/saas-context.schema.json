@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/saas-context.schema.json",
+  "title": "SaaS Domain Pack Context",
+  "description": "Context parameters for the SaaS domain pack refinement",
+  "type": "object",
+  "properties": {
+    "target_segment": {
+      "type": "string",
+      "enum": ["B2B", "B2C", "vertical", "horizontal"]
+    },
+    "tenant_model": {
+      "type": "string",
+      "enum": ["shared-schema", "isolated-schema", "hybrid"]
+    },
+    "billing_model": {
+      "type": "string",
+      "enum": ["freemium", "tiered", "usage-based", "custom"]
+    },
+    "onboarding_model": {
+      "type": "string",
+      "enum": ["self-serve", "sales-led", "hybrid"]
+    },
+    "compliance_requirements": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/helpdesk-context.schema.json",
+  "title": "Helpdesk Domain Context",
+  "type": "object",
+  "required": ["domain", "channels", "posture"],
+  "properties": {
+    "domain": { "const": "helpdesk" },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["email", "chat", "phone", "portal", "social"]
+      },
+      "description": "Support channels in MVP"
+    },
+    "posture": {
+      "type": "string",
+      "enum": ["observe-only", "draft-only", "review-required", "autonomous"],
+      "description": "Response posture. Not assumed autonomous by default."
+    },
+    "sla": {
+      "type": "object",
+      "properties": {
+        "response_time_minutes": { "type": "integer", "minimum": 0 },
+        "resolution_time_hours": { "type": "integer", "minimum": 0 },
+        "priority_levels": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "routing": {
+      "type": "string",
+      "enum": ["round-robin", "skill-based", "load-balanced", "manual"]
+    },
+    "knowledge_sources": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sources of knowledge for responders"
+    },
+    "escalation": {
+      "type": "object",
+      "properties": {
+        "criteria": { "type": "array", "items": { "type": "string" } },
+        "paths": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External systems to integrate with (CRM, project management, user directory)"
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "retention_months": { "type": "integer", "minimum": 0 },
+        "logging_required": { "type": "boolean" }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Reporting metrics required"
+    }
+  },
+  "additionalProperties": false
+}

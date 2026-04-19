@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-analytics-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for metrics, dashboards, reporting, and decision-support systems",
+  "main": "src/index.js",
+  "type": "module"
+}

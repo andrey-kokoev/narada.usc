@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/erp-context.schema.json",
+  "title": "ERP Domain Context",
+  "type": "object",
+  "required": ["domain", "strategy", "modules", "organization"],
+  "properties": {
+    "domain": { "const": "erp" },
+    "strategy": {
+      "type": "string",
+      "enum": ["greenfield", "replacement", "integration"],
+      "description": "Overall ERP construction strategy"
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["finance", "inventory", "procurement", "sales", "hr", "manufacturing", "reporting"]
+      },
+      "description": "Modules selected for MVP. No default is assumed."
+    },
+    "organization": {
+      "type": "object",
+      "required": ["size_category"],
+      "properties": {
+        "size_category": { "type": "string", "enum": ["small", "mid", "enterprise"] },
+        "entities": { "type": "integer", "minimum": 1 },
+        "locations": { "type": "integer", "minimum": 1 },
+        "operating_units": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "properties": {
+        "accounting_standards": { "type": "array", "items": { "type": "string" } },
+        "regulations": { "type": "array", "items": { "type": "string" } },
+        "audit_trail_required": { "type": "boolean" }
+      }
+    },
+    "hosting": {
+      "type": "string",
+      "enum": ["self-hosted", "cloud-saas", "hybrid", "on-premise"]
+    },
+    "data_migration": {
+      "type": "object",
+      "properties": {
+        "source_systems": { "type": "array", "items": { "type": "string" } },
+        "estimated_records": { "type": "integer", "minimum": 0 },
+        "timeline_weeks": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External systems to integrate with"
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "auth_methods": { "type": "array", "items": { "type": "string" } },
+        "mfa_required": { "type": "boolean" },
+        "sso_provider": { "type": "string" },
+        "field_level_permissions": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-billing-subscriptions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for billing, subscriptions, and payment lifecycle systems",
+  "main": "src/index.js",
+  "type": "module"
+}

@@ -73,6 +73,30 @@ function validateAll(options = {}) {
     }
   }
 
+  // Domain pack examples
+  const domainPacksDir = join(rootDir, "packages", "domain-packs");
+  if (existsSync(domainPacksDir)) {
+    const packNames = readdirSync(domainPacksDir).filter((name) => {
+      const path = join(domainPacksDir, name);
+      try {
+        return statSync(path).isDirectory();
+      } catch {
+        return false;
+      }
+    });
+    for (const packName of packNames) {
+      const examplesDir = join(domainPacksDir, packName, "examples");
+      if (!existsSync(examplesDir)) continue;
+      const exampleFiles = readdirSync(examplesDir).filter((f) => f.endsWith(".json"));
+      for (const file of exampleFiles) {
+        const path = join(examplesDir, file);
+        const result = validateDocument(ajv, path, "https://narada2.dev/schemas/usc/refinement.schema.json", `domain-packs/${packName}/${file}`);
+        results.push(result);
+        if (!result.valid) allPassed = false;
+      }
+    }
+  }
+
   // Sessions
   const sessionsDir = join(rootDir, "sessions");
   let sessionDirs = [];

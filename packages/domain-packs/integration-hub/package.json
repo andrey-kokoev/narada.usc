@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-integration-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for systems that connect APIs, sync data, transform payloads, and reconcile external systems",
+  "main": "src/index.js",
+  "type": "module"
+}

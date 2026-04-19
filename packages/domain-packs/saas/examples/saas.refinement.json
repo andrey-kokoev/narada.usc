@@ -1,0 +1,243 @@
+{
+  "intent": "I want SaaS app",
+  "detected_domain": "saas",
+  "ambiguities": [
+    {
+      "layer": "ontology",
+      "description": "What entities, relationships, and boundaries define this system?",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "How do users and processes interact with the system over time?",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "What rules, constraints, and compliance requirements apply?",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "What external systems, integrations, and deployment constraints exist?",
+      "governing": true
+    },
+    {
+      "layer": "stopping",
+      "description": "What defines MVP, done, and out-of-scope for this construction?",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Target customer/user segments (B2B, B2C, vertical, horizontal)",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Tenant model (shared schema, isolated schema, hybrid)",
+      "governing": true
+    },
+    {
+      "layer": "ontology",
+      "description": "Auth and identity model ( SSO, password, magic link, MFA)",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "Billing/subscription model (freemium, tiered, usage-based, custom)",
+      "governing": true
+    },
+    {
+      "layer": "dynamics",
+      "description": "Onboarding and activation flow (self-serve, sales-led, hybrid)",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "Admin roles and permission model (RBAC, ABAC, custom)",
+      "governing": true
+    },
+    {
+      "layer": "normativity",
+      "description": "Data isolation requirements between tenants",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "Observability and support model (self-service, dedicated support, hybrid)",
+      "governing": true
+    },
+    {
+      "layer": "environment",
+      "description": "Compliance and security requirements (SOC2, GDPR, HIPAA, etc.)",
+      "governing": true
+    },
+    {
+      "layer": "stopping",
+      "description": "MVP boundary: which tenants, features, and geographies are in scope",
+      "governing": true
+    }
+  ],
+  "questions": [
+    {
+      "question": "What does success look like for this system?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "Who are the primary users and what is the organization size?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "What is the timeline and what constraints (budget, compliance, team) apply?",
+      "authority": "principal",
+      "blocking": false
+    },
+    {
+      "question": "Who is the target customer? B2B, B2C, or vertical-specific?",
+      "authority": "principal",
+      "blocking": true
+    },
+    {
+      "question": "What tenant isolation model is required?",
+      "authority": "principal",
+      "options": [
+        "shared-schema",
+        "isolated-schema",
+        "hybrid"
+      ],
+      "blocking": true
+    },
+    {
+      "question": "What billing model is expected?",
+      "authority": "principal",
+      "options": [
+        "freemium",
+        "tiered",
+        "usage-based",
+        "custom"
+      ],
+      "blocking": true
+    },
+    {
+      "question": "What compliance requirements apply?",
+      "authority": "principal",
+      "blocking": false
+    },
+    {
+      "question": "Is onboarding self-serve, sales-led, or hybrid?",
+      "authority": "principal",
+      "options": [
+        "self-serve",
+        "sales-led",
+        "hybrid"
+      ],
+      "blocking": false
+    },
+    {
+      "question": "What auth methods must be supported?",
+      "authority": "semantic",
+      "options": [
+        "password",
+        "sso",
+        "magic-link",
+        "mfa"
+      ],
+      "blocking": false
+    }
+  ],
+  "assumptions": [
+    {
+      "assumption": "Web-based application is the primary delivery form",
+      "confidence": "medium",
+      "reversible": true
+    },
+    {
+      "assumption": "Standard cloud hosting is acceptable",
+      "confidence": "medium",
+      "reversible": true
+    }
+  ],
+  "suggested_closures": [
+    {
+      "decision": "SaaS construction will follow a tenant-aware architecture with explicit isolation boundaries.",
+      "rationale": "Tenant isolation is foundational to SaaS and affects every layer of the system.",
+      "authority": "principal"
+    }
+  ],
+  "seed_tasks": [
+    {
+      "id": "T1",
+      "title": "Define system scope and success criteria",
+      "authority_locus": "principal",
+      "transformation": "Document what the system must do, for whom, and what success looks like.",
+      "evidence_requirement": "A written scope document exists and has been reviewed.",
+      "review_predicate": "A third party can understand the scope without asking clarifying questions."
+    },
+    {
+      "id": "T2",
+      "title": "Identify constraints and non-goals",
+      "authority_locus": "principal",
+      "transformation": "Explicitly list budget, timeline, compliance, and out-of-scope items.",
+      "evidence_requirement": "Constraints and non-goals are documented.",
+      "review_predicate": "No hidden constraints remain that would invalidate the construction plan."
+    },
+    {
+      "id": "T3",
+      "title": "Define tenant model and isolation strategy",
+      "authority_locus": "principal",
+      "transformation": "Choose and document the tenant isolation model and its implications.",
+      "evidence_requirement": "Tenant model decision is documented with trade-offs.",
+      "review_predicate": "A developer can implement tenant isolation from the document alone."
+    },
+    {
+      "id": "T4",
+      "title": "Define customer segments and onboarding flow",
+      "authority_locus": "principal",
+      "transformation": "Document target segments and how each segment is onboarded.",
+      "evidence_requirement": "Segment and onboarding documentation exists.",
+      "review_predicate": "Each segment has a defined path from signup to value."
+    },
+    {
+      "id": "T5",
+      "title": "Define billing and subscription model",
+      "authority_locus": "principal",
+      "transformation": "Document pricing tiers, billing events, and subscription lifecycle.",
+      "evidence_requirement": "Billing model is documented with state machine.",
+      "review_predicate": "Billing logic covers signup, upgrade, downgrade, and cancellation."
+    }
+  ],
+  "residuals": [
+    {
+      "residual_id": "res-scope-unresolved",
+      "class": "unresolved_principal_decision",
+      "description": "System scope and success criteria are not yet defined by the principal.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-constraints-unknown",
+      "class": "missing_policy",
+      "description": "Constraints, compliance requirements, and non-goals have not been documented.",
+      "blocking": false
+    },
+    {
+      "residual_id": "res-tenant-model",
+      "class": "unresolved_principal_decision",
+      "description": "Tenant isolation model is not selected.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-billing",
+      "class": "unresolved_principal_decision",
+      "description": "Billing/subscription model is undefined.",
+      "blocking": true
+    },
+    {
+      "residual_id": "res-compliance",
+      "class": "missing_policy",
+      "description": "Compliance requirements are not documented.",
+      "blocking": false
+    }
+  ]
+}

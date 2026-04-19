@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/internal-tools-context.schema.json",
+  "title": "Internal Tools Domain Pack Context",
+  "description": "Context parameters for the internal tools domain pack refinement",
+  "type": "object",
+  "properties": {
+    "user_roles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "managed_entities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "requires_approval": {
+      "type": "boolean"
+    },
+    "import_export": {
+      "type": "boolean"
+    },
+    "audit_required": {
+      "type": "boolean"
+    },
+    "source_of_truth": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

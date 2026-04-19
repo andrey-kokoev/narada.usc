@@ -9,15 +9,23 @@ flowchart TD
   User["User / Principal"] --> CLI["USC CLI<br>packages/cli"]
 
   subgraph Constructor["narada.usc Constructor"]
-    CLI --> Commands["Commands<br>init / cycle / validate / future compile"]
+    CLI --> Commands["Commands<br>init / cycle / validate / refine / future compile"]
     Commands --> Core["Core<br>packages/core"]
     Commands --> Compiler["Compiler<br>packages/compiler"]
     Commands --> Policies["Policies<br>packages/policies"]
+    Commands --> DomainPacks["Domain Packs<br>packages/domain-packs"]
 
     Core --> Schemas["Schemas<br>construction state / task graph / review / residual"]
     Core --> Validator["Validator<br>Ajv schema validation"]
     Compiler --> Templates["Templates<br>repo, cycle, task, review, residual, closure"]
     Policies --> CIS["CIS Policy<br>constructive invariance admissibility"]
+    DomainPacks --> ERP["ERP pack"]
+    DomainPacks --> Helpdesk["Helpdesk pack"]
+    DomainPacks --> SaaS["SaaS pack"]
+    DomainPacks --> Workflow["Workflow Automation pack"]
+    DomainPacks --> Agent["AI Agent Operation pack"]
+    DomainPacks --> Pipeline["Data Pipeline pack"]
+    DomainPacks --> Internal["Internal Tools pack"]
   end
 
   subgraph SourceGrammar["USC Grammar"]
@@ -51,10 +59,13 @@ flowchart LR
   CLI["packages/cli<br>user entrypoint"] --> Core["packages/core<br>model + schemas + validation"]
   CLI --> Compiler["packages/compiler<br>artifact generation"]
   CLI --> Policies["packages/policies<br>admissibility policies"]
+  CLI --> DomainPacks["packages/domain-packs<br>reusable construction grammar"]
 
   Compiler --> Templates["compiler templates"]
   Compiler --> Core
+  Compiler --> DomainPacks
   Policies --> Core
+  DomainPacks --> Core
 
   Core --> Examples["examples<br>validation fixtures"]
   Compiler --> GeneratedRepo["generated repo<br>usc/ + product surface"]
@@ -80,6 +91,30 @@ flowchart TD
   Reviews --> Evidence["evidence checks"]
   Residuals --> NextWork["new work / principal decision / closed branch"]
 ```
+
+## Domain Pack Flow
+
+Domain packs are reusable construction grammar for problem families. They plug into the `refine` command to produce richer decision surfaces and seed task graphs without inventing app-specific decisions.
+
+```text
+principal intent -> domain pack detects -> domain pack refines
+                                          |
+                                          v
+                              decision surface + seed tasks + residuals
+```
+
+```mermaid
+flowchart LR
+  Intent["Principal Intent"] --> Refine["usc refine"]
+  Refine --> Detect{"Domain detected?"}
+  Detect -->|yes| Pack["Domain Pack<br>erp / helpdesk / saas ..."]
+  Detect -->|no| Generic["Generic Refinement"]
+  Pack --> Artifacts["Ambiguities<br>Questions<br>Seed Tasks<br>Residuals"]
+  Generic --> Artifacts
+  Artifacts --> DecisionSurface["Decision Surface"]
+```
+
+A domain pack is not a concrete app repo. It contains no product code, customer-specific decisions, or secrets. It is constructor knowledge that helps collapse arbitrariness for a problem family.
 
 ## Boundary
 
