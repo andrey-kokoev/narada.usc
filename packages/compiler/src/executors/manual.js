@@ -29,7 +29,7 @@ ${task.review_predicate}
 1. Perform the transformation described above.
 2. Produce evidence that satisfies the evidence requirement.
 3. Verify the evidence meets the review predicate.
-4. Run \`usc complete --target ${repoDir} --task ${task.id} --result <artifact-path>\`.
+4. Run \`usc complete --target ${repoDir} --task ${task.id} --result <artifact-path> --reviewer <reviewer-id>\`.
 
 ---
 

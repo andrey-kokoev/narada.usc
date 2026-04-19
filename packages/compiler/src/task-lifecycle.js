@@ -74,13 +74,17 @@ function completeTask({ target, taskId, resultFile, claimant, reviewer }) {
     throw new Error(`Result file '${resultFile}' does not exist.`);
   }
 
+  if (!reviewer) {
+    throw new Error(`Completion requires an explicit reviewer. Use --reviewer <id>.`);
+  }
+
   const now = new Date().toISOString();
   task.status = "completed";
   task.result = {
     artifact_reference: resultFile,
     completed_at: now,
     completed_by: claimant || (task.claim && task.claim.claimant) || "unknown",
-    reviewed_by: reviewer || claimant || (task.claim && task.claim.claimant) || "unknown",
+    reviewed_by: reviewer,
   };
 
   saveTaskGraph(taskGraphPath, taskGraph);
