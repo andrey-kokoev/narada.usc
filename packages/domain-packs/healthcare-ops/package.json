@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-healthcare-ops",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for healthcare operations",
+  "main": "src/index.js",
+  "type": "module"
+}

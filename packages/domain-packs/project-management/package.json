@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-project-management",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for project management",
+  "main": "src/index.js",
+  "type": "module"
+}

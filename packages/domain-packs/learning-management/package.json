@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-learning-management",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for learning management, training, and assessment systems",
+  "main": "src/index.js",
+  "type": "module"
+}

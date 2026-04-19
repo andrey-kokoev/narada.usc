@@ -1,0 +1,70 @@
+export function detect(intent) {
+  const text = intent.toLowerCase();
+  const score =
+    (/\bcommunity\b/.test(text) ? 3 : 0) +
+    (/\bforum\b/.test(text) ? 3 : 0) +
+    (/\bmember community\b/.test(text) ? 3 : 0) +
+    (/\bmoderation\b/.test(text) ? 2 : 0) +
+    (/\bdiscussion\b/.test(text) ? 2 : 0) +
+    (/\bgroup\b/.test(text) ? 1 : 0) +
+    (/\bevent\b/.test(text) ? 1 : 0) +
+    (/\bsocial\b/.test(text) ? 1 : 0) +
+    (/\bmembership\b/.test(text) ? 1 : 0);
+  return score > 0 ? score : false;
+}
+
+export function refine(intent) {
+  return {
+    ambiguities: [
+      { layer: "ontology", description: "Member identity model (username, real name, profile, verification, pseudonymity)", governing: true },
+      { layer: "ontology", description: "Groups, spaces, or topics structure and how they are created and governed", governing: true },
+      { layer: "dynamics", description: "Posting and content model (threads, replies, reactions, media, rich text)", governing: true },
+      { layer: "normativity", description: "Moderation and trust/safety model (pre-moderation, post-moderation, automated, community-driven)", governing: true },
+      { layer: "dynamics", description: "Notification model (mentions, replies, digests, real-time, email, push)", governing: true },
+      { layer: "ontology", description: "Roles and permissions (member, moderator, admin, owner, custom roles)", governing: true },
+      { layer: "environment", description: "Events or live interactions (webinars, AMAs, live chat, scheduled discussions)", governing: true },
+      { layer: "normativity", description: "Reputation, badges, or gamification if any (points, levels, achievements, leaderboards)", governing: true },
+      { layer: "normativity", description: "Privacy and publicness (public, private, invite-only, unlisted, searchable)", governing: true },
+      { layer: "environment", description: "Reporting and analytics (engagement, growth, content health, moderation metrics)", governing: true },
+      { layer: "environment", description: "Integrations with CRM, billing, support, or marketing systems", governing: true },
+      { layer: "stopping", description: "MVP community boundary — what features are in scope for first release", governing: true },
+    ],
+    questions: [
+      { question: "What member identity model is required (real name, username, pseudonymous, verified)?", authority: "principal", blocking: true },
+      { question: "What group/space/topic structure is required?", authority: "principal", blocking: true },
+      { question: "What moderation model is required (pre, post, automated, community-driven)?", authority: "principal", blocking: true },
+      { question: "Is the community public, private, or invite-only?", authority: "principal", blocking: true },
+      { question: "What content types must members be able to post?", authority: "principal", blocking: false },
+      { question: "Are events or live interactions required?", authority: "principal", blocking: false },
+      { question: "Is reputation/gamification required?", authority: "principal", blocking: false },
+      { question: "What notification channels are required?", authority: "principal", blocking: false },
+      { question: "Must this integrate with CRM, billing, or support systems?", authority: "semantic", blocking: false },
+    ],
+    assumptions: [
+      { assumption: "Username-based identity with optional profile is acceptable for MVP", confidence: "medium", reversible: true },
+      { assumption: "A simple topic-based structure is sufficient for MVP", confidence: "medium", reversible: true },
+      { assumption: "Post-moderation with flagged content review is acceptable initially", confidence: "medium", reversible: true },
+      { assumption: "Text posts with basic reactions are the core MVP content types", confidence: "medium", reversible: true },
+    ],
+    suggested_closures: [
+      { decision: "Community platform construction will start with username identity, topic-based spaces, post-moderation, and text posts under a configurable privacy model.", rationale: "A focused content and moderation model reduces initial risk while preserving principal control over community norms and access.", authority: "principal" },
+    ],
+    seed_tasks: [
+      { id: "T1", title: "Define member identity and verification model", authority_locus: "principal", transformation: "Document identity fields, verification requirements, and pseudonymity policy.", evidence_requirement: "Member identity specification exists.", review_predicate: "Every identity field has a purpose and a privacy classification." },
+      { id: "T2", title: "Define group/space structure and governance", authority_locus: "principal", transformation: "Document how spaces are created, named, governed, and archived.", evidence_requirement: "Space governance document exists.", review_predicate: "Every space has an owner and moderation policy; no space is ungoverned." },
+      { id: "T3", title: "Define moderation and trust/safety policy", authority_locus: "principal", transformation: "Document moderation rules, escalation paths, automated filters, and appeal process.", evidence_requirement: "Moderation policy document exists.", review_predicate: "Every moderation action has a documented rule and an appeal path." },
+      { id: "T4", title: "Define posting and content model", authority_locus: "principal", transformation: "Document content types, formatting, media support, and posting rules.", evidence_requirement: "Content model specification exists.", review_predicate: "Every content type has a defined structure and moderation rule." },
+      { id: "T5", title: "Define privacy and access model", authority_locus: "principal", transformation: "Document public/private/invite settings and how they apply to spaces and content.", evidence_requirement: "Privacy and access model document exists.", review_predicate: "Every space has a clear visibility setting and access control." },
+      { id: "T6", title: "Define MVP community boundary", authority_locus: "principal", transformation: "Explicitly list features in MVP and what is out of scope.", evidence_requirement: "MVP scope document exists with explicit inclusions and exclusions.", review_predicate: "Scope is achievable and every excluded feature is consciously deferred." },
+    ],
+    residuals: [
+      { residual_id: "res-identity", class: "unresolved_principal_decision", description: "Member identity model is not defined.", blocking: true },
+      { residual_id: "res-spaces", class: "unresolved_principal_decision", description: "Group/space structure is not decided.", blocking: true },
+      { residual_id: "res-moderation", class: "unresolved_principal_decision", description: "Moderation model is not established.", blocking: true },
+      { residual_id: "res-privacy", class: "unresolved_principal_decision", description: "Privacy and publicness model is not decided.", blocking: true },
+      { residual_id: "res-content", class: "missing_policy", description: "Posting and content model is not defined.", blocking: false },
+      { residual_id: "res-events", class: "missing_effector", description: "Events or live interactions strategy is undefined.", blocking: false },
+      { residual_id: "res-gamification", class: "missing_policy", description: "Reputation or gamification policy is not decided.", blocking: false },
+    ],
+  };
+}

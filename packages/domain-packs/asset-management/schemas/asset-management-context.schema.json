@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/asset-management-context.schema.json",
+  "title": "Asset Management Domain Context",
+  "type": "object",
+  "required": ["domain", "asset_types", "tagging_method", "custody_model"],
+  "properties": {
+    "domain": { "const": "asset-management" },
+    "asset_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Asset types tracked in MVP"
+    },
+    "tagging_method": {
+      "type": "string",
+      "enum": ["barcode", "qr", "rfid", "serial", "asset-tag", "auto-generated"],
+      "description": "Asset identity and tagging method"
+    },
+    "custody_model": {
+      "type": "string",
+      "enum": ["person", "department", "location", "pool"],
+      "description": "How custody is assigned"
+    },
+    "check_out": {
+      "type": "boolean",
+      "description": "Whether check-out/check-in is required"
+    },
+    "maintenance": {
+      "type": "boolean",
+      "description": "Whether maintenance schedules are required"
+    },
+    "depreciation": {
+      "type": "boolean",
+      "description": "Whether depreciation tracking is required"
+    },
+    "inspections": {
+      "type": "boolean",
+      "description": "Whether inspections are required"
+    },
+    "audits": {
+      "type": "boolean",
+      "description": "Whether inventory audits are required"
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External system integrations"
+    },
+    "reporting": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Reporting and analytics features"
+    }
+  },
+  "additionalProperties": false
+}

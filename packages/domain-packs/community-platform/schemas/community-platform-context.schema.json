@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/community-platform-context.schema.json",
+  "title": "Community Platform Domain Context",
+  "type": "object",
+  "required": ["domain", "identity_model", "space_structure", "moderation_model", "privacy"],
+  "properties": {
+    "domain": { "const": "community-platform" },
+    "identity_model": {
+      "type": "string",
+      "enum": ["username", "real-name", "pseudonymous", "verified"],
+      "description": "Member identity model"
+    },
+    "space_structure": {
+      "type": "string",
+      "enum": ["topics", "groups", "spaces", "channels"],
+      "description": "Group/space/topic structure"
+    },
+    "moderation_model": {
+      "type": "string",
+      "enum": ["pre-moderation", "post-moderation", "automated", "community-driven"],
+      "description": "Moderation approach"
+    },
+    "privacy": {
+      "type": "string",
+      "enum": ["public", "private", "invite-only", "unlisted"],
+      "description": "Default community privacy model"
+    },
+    "content_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Content types members can post"
+    },
+    "events": {
+      "type": "boolean",
+      "description": "Whether events or live interactions are required"
+    },
+    "gamification": {
+      "type": "boolean",
+      "description": "Whether reputation/gamification is required"
+    },
+    "notifications": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Notification channels"
+    },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Community roles"
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External system integrations"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-real-estate",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for real estate operations",
+  "main": "src/index.js",
+  "type": "module"
+}

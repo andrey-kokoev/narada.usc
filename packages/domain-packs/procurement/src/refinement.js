@@ -1,0 +1,70 @@
+export function detect(intent) {
+  const text = intent.toLowerCase();
+  const score =
+    (/\bprocurement\b/.test(text) ? 3 : 0) +
+    (/\bpurchasing\b/.test(text) ? 3 : 0) +
+    (/\bpurchase order\b/.test(text) ? 2 : 0) +
+    (/\bvendor\b/.test(text) ? 2 : 0) +
+    (/\bsupplier\b/.test(text) ? 2 : 0) +
+    (/\bspend\b/.test(text) ? 2 : 0) +
+    (/\bapprovals?\b/.test(text) ? 1 : 0) +
+    (/\brequisition\b/.test(text) ? 1 : 0) +
+    (/\bsourcing\b/.test(text) ? 1 : 0);
+  return score > 0 ? score : false;
+}
+
+export function refine(intent) {
+  return {
+    ambiguities: [
+      { layer: "ontology", description: "Vendor model (approved vendor list, categories, ratings, contracts, performance)", governing: true },
+      { layer: "dynamics", description: "Requisition workflow (who can request, what information is required, catalog vs free-form)", governing: true },
+      { layer: "normativity", description: "Approvals and authority limits (dollar thresholds, dual approval, department-based, role-based)", governing: true },
+      { layer: "dynamics", description: "Purchase order model (manual, generated, integrated with ERP, numbering, terms)", governing: true },
+      { layer: "dynamics", description: "Receiving and matching (two-way, three-way, goods receipt, inspection, exceptions)", governing: true },
+      { layer: "ontology", description: "Budgets and cost centers (who owns, how allocated, how tracked, over-budget handling)", governing: true },
+      { layer: "environment", description: "Contracts and master agreements (storage, renewal, compliance, amendment workflow)", governing: true },
+      { layer: "environment", description: "Vendor onboarding and compliance (qualification, certifications, insurance, risk assessment)", governing: true },
+      { layer: "environment", description: "Integrations with inventory, accounting, ERP, or payment systems", governing: true },
+      { layer: "normativity", description: "Audit trail and compliance (who can see what, retention, regulatory requirements)", governing: true },
+      { layer: "dynamics", description: "Exceptions and emergency purchasing (bypass rules, after-the-fact approval, thresholds)", governing: true },
+      { layer: "stopping", description: "MVP process boundary — what procurement stages are in scope for first release", governing: true },
+    ],
+    questions: [
+      { question: "What is the requisition workflow (who requests, what info is required)?", authority: "principal", blocking: true },
+      { question: "What approval rules and authority limits apply?", authority: "principal", blocking: true },
+      { question: "Are purchase orders required, and how are they generated?", authority: "principal", blocking: true },
+      { question: "What receiving and matching model is required?", authority: "principal", blocking: false },
+      { question: "How are budgets and cost centers managed?", authority: "principal", blocking: false },
+      { question: "Are contracts and master agreements tracked?", authority: "principal", blocking: false },
+      { question: "What vendor onboarding and compliance requirements apply?", authority: "principal", blocking: false },
+      { question: "Must this integrate with accounting, ERP, or inventory systems?", authority: "semantic", blocking: false },
+      { question: "What are the emergency purchasing and exception rules?", authority: "principal", blocking: false },
+    ],
+    assumptions: [
+      { assumption: "A requisition → approval → PO workflow is acceptable for MVP", confidence: "medium", reversible: true },
+      { assumption: "Dollar-threshold approvals with single approver are sufficient initially", confidence: "medium", reversible: true },
+      { assumption: "Manual PO generation is acceptable for MVP", confidence: "medium", reversible: true },
+      { assumption: "Simple two-way matching (PO vs receipt) is sufficient initially", confidence: "medium", reversible: true },
+    ],
+    suggested_closures: [
+      { decision: "Procurement construction will start with requisition → approval → PO workflow using dollar-threshold approvals and manual PO generation.", rationale: "A conservative workflow with explicit approval gates preserves principal control over spend while allowing incremental automation.", authority: "principal" },
+    ],
+    seed_tasks: [
+      { id: "T1", title: "Define vendor model and approved vendor list", authority_locus: "principal", transformation: "Document vendor categories, approval criteria, and how the approved vendor list is maintained.", evidence_requirement: "Vendor model and AVL policy exist.", review_predicate: "Every vendor category has approval criteria; no vendor is approved without documented rationale." },
+      { id: "T2", title: "Define requisition workflow", authority_locus: "principal", transformation: "Document who can request, what information is required, and how requests are submitted.", evidence_requirement: "Requisition workflow document exists.", review_predicate: "Every requisition has required fields and a submitter; no request is ambiguous." },
+      { id: "T3", title: "Define approval rules and authority limits", authority_locus: "principal", transformation: "Document approval thresholds, who can approve at each level, and escalation rules.", evidence_requirement: "Approval matrix and authority limit document exist.", review_predicate: "Every spending level has an approver; no purchase lacks an approval path." },
+      { id: "T4", title: "Define purchase order model", authority_locus: "principal", transformation: "Document PO generation, numbering, terms, and how POs are sent to vendors.", evidence_requirement: "PO model specification exists.", review_predicate: "Every PO has required fields and a delivery method." },
+      { id: "T5", title: "Define receiving and matching policy", authority_locus: "principal", transformation: "Document receiving process, matching rules, and exception handling.", evidence_requirement: "Receiving and matching policy exists.", review_predicate: "Every receipt has a matching rule; exceptions have a documented resolution path." },
+      { id: "T6", title: "Define MVP procurement boundary", authority_locus: "principal", transformation: "Explicitly list procurement stages in MVP and what is out of scope.", evidence_requirement: "MVP scope document exists with explicit inclusions and exclusions.", review_predicate: "Scope is achievable and every excluded stage is consciously deferred." },
+    ],
+    residuals: [
+      { residual_id: "res-vendor", class: "unresolved_principal_decision", description: "Vendor model and approved vendor list are not defined.", blocking: true },
+      { residual_id: "res-requisition", class: "unresolved_principal_decision", description: "Requisition workflow is not established.", blocking: true },
+      { residual_id: "res-approval", class: "unresolved_principal_decision", description: "Approval rules and authority limits are not decided.", blocking: true },
+      { residual_id: "res-po", class: "missing_policy", description: "Purchase order model is not defined.", blocking: false },
+      { residual_id: "res-matching", class: "missing_policy", description: "Receiving and matching model is not established.", blocking: false },
+      { residual_id: "res-budget", class: "missing_policy", description: "Budget and cost center model is undefined.", blocking: false },
+      { residual_id: "res-emergency", class: "missing_policy", description: "Emergency purchasing and exception rules are undocumented.", blocking: false },
+    ],
+  };
+}

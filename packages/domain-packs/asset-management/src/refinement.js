@@ -1,0 +1,70 @@
+export function detect(intent) {
+  const text = intent.toLowerCase();
+  const score =
+    (/\basset management\b/.test(text) ? 3 : 0) +
+    (/\basset tracking\b/.test(text) ? 3 : 0) +
+    (/\binventory\b/.test(text) ? 2 : 0) +
+    (/\bequipment\b/.test(text) ? 2 : 0) +
+    (/\bfleet\b/.test(text) ? 2 : 0) +
+    (/\bit asset\b/.test(text) ? 2 : 0) +
+    (/\bmaintenance\b/.test(text) ? 1 : 0) +
+    (/\bdepreciation\b/.test(text) ? 1 : 0) +
+    (/\bcheck-out\b/.test(text) ? 1 : 0) +
+    (/\bcustody\b/.test(text) ? 1 : 0);
+  return score > 0 ? score : false;
+}
+
+export function refine(intent) {
+  return {
+    ambiguities: [
+      { layer: "ontology", description: "Asset types and categories (physical, digital, IT, fleet, equipment, facilities)", governing: true },
+      { layer: "ontology", description: "Asset identity and tagging (barcode, QR, RFID, serial, asset tag, auto-generated)", governing: true },
+      { layer: "dynamics", description: "Locations and custody chain (site, building, room, person, department, transfer workflow)", governing: true },
+      { layer: "dynamics", description: "Assignment, check-out, and check-in model (reservation, approval, duration, overdue)", governing: true },
+      { layer: "environment", description: "Maintenance schedules and work orders (preventive, corrective, vendor-managed, SLA)", governing: true },
+      { layer: "normativity", description: "Depreciation and lifecycle model (straight-line, usage-based, disposal, salvage)", governing: true },
+      { layer: "dynamics", description: "Inspections and condition tracking (frequency, criteria, pass/fail, remediation)", governing: true },
+      { layer: "dynamics", description: "Inventory audits and reconciliation (cycle counts, full audits, variance handling)", governing: true },
+      { layer: "environment", description: "Integrations with procurement, accounting, ITSM, or fleet management systems", governing: true },
+      { layer: "ontology", description: "Permissions and access control (who can view, assign, transfer, dispose, audit)", governing: true },
+      { layer: "environment", description: "Reporting and analytics (utilization, maintenance cost, depreciation, compliance)", governing: true },
+      { layer: "stopping", description: "MVP asset class boundary — what asset types are in scope for first release", governing: true },
+    ],
+    questions: [
+      { question: "What asset types must be tracked in MVP?", authority: "principal", blocking: true },
+      { question: "What identity and tagging method is required?", authority: "principal", blocking: true },
+      { question: "What assignment and custody model is required?", authority: "principal", blocking: true },
+      { question: "Are maintenance schedules and work orders required?", authority: "principal", blocking: false },
+      { question: "Is depreciation and lifecycle tracking required?", authority: "principal", blocking: false },
+      { question: "What inspection and audit model is required?", authority: "principal", blocking: false },
+      { question: "Must this integrate with procurement, accounting, or ITSM systems?", authority: "semantic", blocking: false },
+      { question: "What reporting and analytics are required?", authority: "principal", blocking: false },
+    ],
+    assumptions: [
+      { assumption: "IT equipment and physical devices are the core MVP asset types", confidence: "medium", reversible: true },
+      { assumption: "Barcode or QR tagging is sufficient for MVP", confidence: "medium", reversible: true },
+      { assumption: "Simple check-out/check-in with person-level custody is acceptable initially", confidence: "medium", reversible: true },
+      { assumption: "Preventive maintenance with simple schedules is sufficient for MVP", confidence: "medium", reversible: true },
+    ],
+    suggested_closures: [
+      { decision: "Asset management construction will start with IT equipment and physical devices using barcode/QR tagging, person-level custody, and simple preventive maintenance schedules.", rationale: "A focused asset class and conservative custody model reduce initial complexity while preserving principal control over asset assignment and lifecycle.", authority: "principal" },
+    ],
+    seed_tasks: [
+      { id: "T1", title: "Define asset types and categories", authority_locus: "principal", transformation: "Document all asset types, categories, and which are in MVP.", evidence_requirement: "Asset type taxonomy exists.", review_predicate: "Every asset type has a category and a defined lifecycle stage model." },
+      { id: "T2", title: "Define identity and tagging strategy", authority_locus: "principal", transformation: "Document tagging method, label format, and how asset IDs are generated.", evidence_requirement: "Tagging strategy document exists.", review_predicate: "Every asset has a unique, scannable identifier." },
+      { id: "T3", title: "Define custody and transfer workflow", authority_locus: "principal", transformation: "Document how assets are assigned, transferred, checked out, checked in, and returned.", evidence_requirement: "Custody workflow document exists.", review_predicate: "Every transfer has an authorized actor and a documented chain of custody." },
+      { id: "T4", title: "Define maintenance and work order model", authority_locus: "principal", transformation: "Document maintenance types, schedules, work order flow, and vendor involvement.", evidence_requirement: "Maintenance model specification exists.", review_predicate: "Every maintainable asset has a schedule and a responsible party." },
+      { id: "T5", title: "Define inspection and audit policy", authority_locus: "principal", transformation: "Document inspection frequency, criteria, and how audit variance is handled.", evidence_requirement: "Inspection and audit policy exists.", review_predicate: "Every asset type has an inspection frequency and a variance resolution path." },
+      { id: "T6", title: "Define MVP asset class boundary", authority_locus: "principal", transformation: "Explicitly list asset types in MVP and what is out of scope.", evidence_requirement: "MVP scope document exists with explicit inclusions and exclusions.", review_predicate: "Scope is achievable and every excluded asset type is consciously deferred." },
+    ],
+    residuals: [
+      { residual_id: "res-asset-types", class: "unresolved_principal_decision", description: "Asset types for MVP are not defined.", blocking: true },
+      { residual_id: "res-tagging", class: "unresolved_principal_decision", description: "Identity and tagging method is not decided.", blocking: true },
+      { residual_id: "res-custody", class: "unresolved_principal_decision", description: "Custody and transfer model is not established.", blocking: true },
+      { residual_id: "res-maintenance", class: "missing_policy", description: "Maintenance and work order model is undefined.", blocking: false },
+      { residual_id: "res-depreciation", class: "missing_policy", description: "Depreciation and lifecycle model is not decided.", blocking: false },
+      { residual_id: "res-inspection", class: "missing_policy", description: "Inspection and audit policy is undocumented.", blocking: false },
+      { residual_id: "res-integrations", class: "missing_effector", description: "System integrations are not defined.", blocking: false },
+    ],
+  };
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/domain-packs/cms-publishing-context.schema.json",
+  "title": "CMS Publishing Domain Context",
+  "type": "object",
+  "required": ["domain", "content_types", "workflow"],
+  "properties": {
+    "domain": { "const": "cms-publishing" },
+    "content_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Content types supported in MVP"
+    },
+    "workflow": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Editorial workflow stages (e.g., draft, review, publish)"
+    },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Editorial roles"
+    },
+    "permissions": {
+      "type": "string",
+      "enum": ["role-based", "attribute-based", "content-level", "site-level"],
+      "description": "Permissions model"
+    },
+    "versioning": {
+      "type": "string",
+      "enum": ["linear", "branching", "snapshots"],
+      "description": "Versioning model"
+    },
+    "media": {
+      "type": "object",
+      "properties": {
+        "types": { "type": "array", "items": { "type": "string" } },
+        "size_limit_mb": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "scheduling": {
+      "type": "boolean",
+      "description": "Whether scheduled publishing is required"
+    },
+    "localization": {
+      "type": "object",
+      "properties": {
+        "strategy": { "type": "string", "enum": ["separate-trees", "field-level", "translation-workflow"] },
+        "languages": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "search": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Search and discovery features"
+    },
+    "seo": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "SEO and distribution features"
+    },
+    "import_export": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Supported import/export formats"
+    }
+  },
+  "additionalProperties": false
+}

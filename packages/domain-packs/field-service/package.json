@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-field-service",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for field service and mobile operations",
+  "main": "src/index.js",
+  "type": "module"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-notifications-messaging",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for notifications and messaging",
+  "main": "src/index.js",
+  "type": "module"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@narada.usc/domain-pack-cms-publishing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "USC domain pack for CMS, publishing, and editorial workflow systems",
+  "main": "src/index.js",
+  "type": "module"
+}
