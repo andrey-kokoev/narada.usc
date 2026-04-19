@@ -33,6 +33,19 @@ New behavior should go through packages, not ad hoc scripts:
 - If review finds residual work, create or update a normal task file.
 - Keep private operational traces out of this public repository.
 
+## Authority Boundary
+
+`narada.usc` is a **deriver/compiler**, not an operator.
+
+Allowed authority classes in this repo:
+- `derive` — artifact generation (init, refine, plan, validate, cycle)
+- `propose` — structured proposals (domain-pack refinements, task graphs)
+
+Disallowed authority classes in this repo:
+- `claim`, `execute`, `resolve`, `confirm`, `admin` — these belong in Narada proper
+
+Do not add task claiming, execution, completion, rejection, blocking, or lifecycle loops to this repo.
+
 ## Public Boundary
 
 This repo may contain constructor code, reusable protocols, schemas, examples, and sanitized session patterns.

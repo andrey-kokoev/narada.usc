@@ -5,7 +5,7 @@ import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
-import { initRepo, createCycle, plan, nextTask, completeTask, rejectTask, blockTask, executeTask, runLoop } from "@narada.usc/compiler/src/index.js";
+import { initRepo, createCycle, plan } from "@narada.usc/compiler/src/index.js";
 import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 
@@ -112,134 +112,6 @@ async function run() {
       break;
     }
 
-    case "next": {
-      const target = args.target;
-      if (!target) die("Usage: usc next --target <path> [--claimant <id>] [--format json|md]");
-      const result = nextTask({ target, claimant: args.claimant || null });
-      if (args.format === "json") {
-        console.log(JSON.stringify(result, null, 2));
-      } else {
-        if (result.task) {
-          console.log(`Claimed task ${result.task.id}: ${result.task.title}`);
-        } else {
-          console.log("No runnable tasks available.");
-        }
-      }
-      break;
-    }
-
-    case "complete": {
-      const target = args.target;
-      const taskId = args.task;
-      const resultFile = args.result;
-      if (!target || !taskId || !resultFile) {
-        die("Usage: usc complete --target <path> --task <id> --result <file> --reviewer <id> [--claimant <id>] [--format json|md]");
-      }
-      const result = completeTask({ target, taskId, resultFile, claimant: args.claimant || null, reviewer: args.reviewer || null });
-      if (args.format === "json") {
-        console.log(JSON.stringify(result, null, 2));
-      } else {
-        console.log(`Completed task ${result.task.id}: ${result.task.title}`);
-      }
-      break;
-    }
-
-    case "reject": {
-      const target = args.target;
-      const taskId = args.task;
-      const reason = args.reason;
-      if (!target || !taskId || !reason) {
-        die("Usage: usc reject --target <path> --task <id> --reason <text> [--reviewer <id>] [--format json|md]");
-      }
-      const result = rejectTask({ target, taskId, reason, reviewer: args.reviewer || null });
-      if (args.format === "json") {
-        console.log(JSON.stringify(result, null, 2));
-      } else {
-        console.log(`Rejected task ${result.task.id}: ${result.task.title}`);
-      }
-      break;
-    }
-
-    case "block": {
-      const target = args.target;
-      const taskId = args.task;
-      const reason = args.reason;
-      const until = args.until;
-      if (!target || !taskId || !reason || !until) {
-        die("Usage: usc block --target <path> --task <id> --reason <text> --until <text> [--format json|md]");
-      }
-      const result = blockTask({ target, taskId, reason, until });
-      if (args.format === "json") {
-        console.log(JSON.stringify(result, null, 2));
-      } else {
-        console.log(`Blocked task ${result.task.id}: ${result.task.title}`);
-      }
-      break;
-    }
-
-    case "loop": {
-      const target = args.target;
-      const executor = args.executor;
-      if (!target || !executor) {
-        die("Usage: usc loop --target <path> --executor <name> [--max-steps <n>] [--dry-run] [--format json|md]");
-      }
-      const maxSteps = args["max-steps"] ? parseInt(args["max-steps"], 10) : undefined;
-      const result = await runLoop({
-        target,
-        executorName: executor,
-        maxSteps,
-        dryRun: args["dry-run"] === true || args["dry-run"] === "true",
-      });
-      if (args.format === "json") {
-        console.log(JSON.stringify(result, null, 2));
-      } else {
-        console.log(`Loop completed: ${result.totalSteps} step(s)`);
-        for (const step of result.steps) {
-          if (step.action === "stop") {
-            console.log(`  Step ${step.step}: stopped — ${step.reason}`);
-          } else if (step.action === "execute_error") {
-            console.log(`  Step ${step.step}: error on ${step.task} — ${step.error}`);
-          } else {
-            console.log(`  Step ${step.step}: ${step.task} — ${step.title} (${step.executor})`);
-            if (step.dryRun) console.log(`    [DRY RUN]`);
-            if (step.artifactPath) console.log(`    Artifact: ${step.artifactPath}`);
-          }
-        }
-      }
-      break;
-    }
-
-    case "execute": {
-      const target = args.target;
-      const taskId = args.task;
-      const executor = args.executor;
-      if (!target || !taskId || !executor) {
-        die("Usage: usc execute --target <path> --task <id> --executor <name> [--dry-run] [--format json|md]");
-      }
-      const result = await executeTask({
-        target,
-        taskId,
-        executorName: executor,
-        dryRun: args["dry-run"] === true || args["dry-run"] === "true",
-      });
-      if (args.format === "json") {
-        console.log(JSON.stringify(result, null, 2));
-      } else {
-        if (result.dryRun) {
-          console.log(`[DRY RUN] Would execute task ${result.task.id} (${result.task.title}) with executor '${result.executor}'`);
-        } else {
-          console.log(`Executed task ${result.task.id} (${result.task.title}) with executor '${result.executor}'`);
-          if (result.result && result.result.artifactPath) {
-            console.log(`Artifact: ${result.result.artifactPath}`);
-          }
-          if (result.result && result.result.stdout) {
-            console.log(result.result.stdout);
-          }
-        }
-      }
-      break;
-    }
-
     case "refine": {
       const intent = args.intent;
       if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md] [--force]");
@@ -314,16 +186,12 @@ Commands:
   validate                          Validate examples and USC repos
   validate --app <path>             Validate an external USC repo
   init <path> --name <name>         Initialize a USC-governed construction repo
-  cycle --intent <text>             Open a construction cycle in an existing repo
+  cycle --intent <text>             Open a construction cycle/checkpoint in an existing repo
   plan --target <path>              Convert refinement into task graph
-  next --target <path>              Claim the first runnable task
-  complete --target <path>          Complete a claimed task
-  reject --target <path>            Reject a task with reason
-  block --target <path>             Block a task with reason and unblock condition
-  execute --target <path>           Execute a claimed task via an executor adapter
-  loop --target <path>              Bounded constructor loop (next -> execute)
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
-  refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
+
+USC is a compiler and artifact generator, not an operator.
+Task claiming, execution, completion, and lifecycle governance belong in Narada proper.
 `);
       process.exit(1);
   }

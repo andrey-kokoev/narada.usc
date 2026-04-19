@@ -21,7 +21,7 @@ For a compact system diagram, see [docs/system.md](docs/system.md).
 
 | Package | Purpose |
 |---------|---------|
-| `packages/cli` | Executable entrypoint (`usc validate`, `usc init`, `usc cycle`, `usc refine`) |
+| `packages/cli` | Executable entrypoint (`usc validate`, `usc init`, `usc cycle`, `usc plan`, `usc refine`) |
 | `packages/core` | Construction model, schema registry, and validator |
 | `packages/compiler` | Artifact generation (session init, app init, templates, intent refinement) |
 | `packages/policies` | Admissibility policy definitions and examples |
@@ -77,6 +77,18 @@ Options:
 - `--name <cycle-name>` — cycle name (defaults to timestamp)
 - `--force` — overwrite an existing cycle
 
+### Plan
+
+Convert a refinement into a task graph inside an existing USC repo:
+
+```bash
+pnpm usc -- plan --target ../narada.usc.my-system
+```
+
+Options:
+- `--from <path>` — use a specific refinement file instead of `usc/refinement.json`
+- `--force` — overwrite an existing task graph
+
 ### Refine Intent
 
 Transform raw principal intent into decision-relevant ambiguity, questions, and construction artifacts:
@@ -114,6 +126,22 @@ pnpm --silent usc -- refine --target ../narada.usc.my-app --intent "I want ERP s
 ## Future: Compile Target
 
 The constructor will eventually compile USC-governed app repos into runnable operations. Narada is the intended runtime target, but it is not required — USC can be practiced with any durable task system.
+
+## Authority Boundary
+
+`narada.usc` is a **deriver/compiler**, not an operator.
+
+| Authority Class | Allowed in USC? | Examples |
+|-----------------|-----------------|----------|
+| `derive` | ✅ Yes | `init`, `refine`, `plan`, `validate`, `cycle` |
+| `propose` | ✅ Yes | domain-pack refinements, task graph proposals |
+| `claim` | ❌ No | task claiming belongs in Narada proper |
+| `execute` | ❌ No | task execution belongs in Narada proper |
+| `resolve` | ❌ No | completion/rejection/blocking belongs in Narada proper |
+| `confirm` | ❌ No | external effect confirmation belongs in Narada proper |
+| `admin` | ❌ No | requires explicit operator/admin posture in Narada proper |
+
+USC produces artifacts (repos, refinements, task graphs, cycles). Narada proper governs their execution.
 
 ## Boundaries
 
