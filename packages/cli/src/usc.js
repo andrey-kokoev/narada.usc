@@ -5,7 +5,7 @@ import { join } from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { validateAll } from "@narada.usc/core/src/validator.js";
-import { initRepo, createCycle, plan, nextTask, completeTask, rejectTask, blockTask } from "@narada.usc/compiler/src/index.js";
+import { initRepo, createCycle, plan, nextTask, completeTask, rejectTask, blockTask, executeTask } from "@narada.usc/compiler/src/index.js";
 import { refineIntent } from "@narada.usc/compiler/src/refine-intent.js";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 
@@ -177,6 +177,37 @@ async function run() {
       break;
     }
 
+    case "execute": {
+      const target = args.target;
+      const taskId = args.task;
+      const executor = args.executor;
+      if (!target || !taskId || !executor) {
+        die("Usage: usc execute --target <path> --task <id> --executor <name> [--dry-run] [--format json|md]");
+      }
+      const result = await executeTask({
+        target,
+        taskId,
+        executorName: executor,
+        dryRun: args["dry-run"] === true || args["dry-run"] === "true",
+      });
+      if (args.format === "json") {
+        console.log(JSON.stringify(result, null, 2));
+      } else {
+        if (result.dryRun) {
+          console.log(`[DRY RUN] Would execute task ${result.task.id} (${result.task.title}) with executor '${result.executor}'`);
+        } else {
+          console.log(`Executed task ${result.task.id} (${result.task.title}) with executor '${result.executor}'`);
+          if (result.result && result.result.artifactPath) {
+            console.log(`Artifact: ${result.result.artifactPath}`);
+          }
+          if (result.result && result.result.stdout) {
+            console.log(result.result.stdout);
+          }
+        }
+      }
+      break;
+    }
+
     case "refine": {
       const intent = args.intent;
       if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md] [--force]");
@@ -257,6 +288,7 @@ Commands:
   complete --target <path>          Complete a claimed task
   reject --target <path>            Reject a task with reason
   block --target <path>             Block a task with reason and unblock condition
+  execute --target <path>           Execute a claimed task via an executor adapter
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
   refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
 `);
