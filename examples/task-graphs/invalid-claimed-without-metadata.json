@@ -1,0 +1,14 @@
+{
+  "$schema": "../../packages/core/schemas/task-graph.schema.json",
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Claimed without metadata",
+      "authority_locus": "execution",
+      "transformation": "This task is claimed but has no claim object.",
+      "evidence_requirement": "None",
+      "review_predicate": "None",
+      "status": "claimed"
+    }
+  ]
+}

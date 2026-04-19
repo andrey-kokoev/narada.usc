@@ -1,0 +1,9 @@
+{
+  "$schema": "../../packages/core/schemas/task-graph.schema.json",
+  "schema_version": "1.0.0",
+  "app_id": "test-app",
+  "created_at": "2026-04-13T00:00:00.000Z",
+  "updated_at": "2026-04-13T00:00:00.000Z",
+  "tasks": [],
+  "edges": []
+}

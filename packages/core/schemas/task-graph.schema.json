@@ -3,9 +3,13 @@
   "$id": "https://narada2.dev/schemas/usc/task-graph.schema.json",
   "title": "USC Task Graph",
   "type": "object",
-  "required": ["tasks", "edges"],
+  "required": ["tasks"],
   "properties": {
     "$schema": { "type": "string" },
+    "schema_version": { "type": "string" },
+    "app_id": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
     "tasks": {
       "type": "array",
       "items": { "$ref": "./task.schema.json" }

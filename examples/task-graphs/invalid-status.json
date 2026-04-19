@@ -1,0 +1,14 @@
+{
+  "$schema": "../../packages/core/schemas/task-graph.schema.json",
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Bad status task",
+      "authority_locus": "execution",
+      "transformation": "This task has an invalid status.",
+      "evidence_requirement": "None",
+      "review_predicate": "None",
+      "status": "foo"
+    }
+  ]
+}

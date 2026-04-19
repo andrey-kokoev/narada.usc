@@ -39,6 +39,25 @@ function validateDocument(ajv, dataPath, schemaId, name) {
   };
 }
 
+function validateTaskGraphSemantics(data, name) {
+  const errors = [];
+  const taskIds = new Set((data.tasks || []).map((t) => t.id));
+
+  for (const task of data.tasks || []) {
+    const deps = [...(task.depends_on || []), ...(task.dependencies || [])];
+    for (const depId of deps) {
+      if (!taskIds.has(depId)) {
+        errors.push(`task/${task.id}: missing dependency '${depId}'`);
+      }
+    }
+  }
+
+  if (errors.length > 0) {
+    return { name, valid: false, errors };
+  }
+  return { name, valid: true, errors: [] };
+}
+
 function validateAll(options = {}) {
   const ajv = createAjv();
   const rootDir = options.rootDir || join(pkgDir, "..", "..");
@@ -59,6 +78,66 @@ function validateAll(options = {}) {
     const result = validateDocument(ajv, ex.path, ex.schema, ex.name);
     results.push(result);
     if (!result.valid) allPassed = false;
+  }
+
+  // Task graph examples
+  const taskGraphsDir = join(rootDir, "examples", "task-graphs");
+  if (existsSync(taskGraphsDir)) {
+    // Valid examples
+    const validFiles = ["valid-empty.json", "valid-with-tasks.json"];
+    for (const file of validFiles) {
+      const path = join(taskGraphsDir, file);
+      if (!existsSync(path)) continue;
+      const schemaResult = validateDocument(ajv, path, "https://narada2.dev/schemas/usc/task-graph.schema.json", `task-graphs/${file}`);
+      results.push(schemaResult);
+      if (!schemaResult.valid) allPassed = false;
+
+      const data = JSON.parse(readFileSync(path, "utf8"));
+      const semanticResult = validateTaskGraphSemantics(data, `task-graphs/${file} (semantic)`);
+      results.push(semanticResult);
+      if (!semanticResult.valid) allPassed = false;
+    }
+
+    // Invalid examples (should fail)
+    const invalidFiles = [
+      { file: "invalid-status.json", expectFail: true },
+      { file: "invalid-claimed-without-metadata.json", expectFail: true },
+      { file: "invalid-completed-without-result.json", expectFail: true },
+      { file: "invalid-missing-dependency.json", expectFail: true },
+    ];
+    for (const { file, expectFail } of invalidFiles) {
+      const path = join(taskGraphsDir, file);
+      if (!existsSync(path)) continue;
+      const data = JSON.parse(readFileSync(path, "utf8"));
+      const schemaResult = validateDocument(ajv, path, "https://narada2.dev/schemas/usc/task-graph.schema.json", `task-graphs/${file}`);
+      const semanticResult = validateTaskGraphSemantics(data, `task-graphs/${file} (semantic)`);
+
+      // For missing-dependency, we expect semantic failure; for others, schema failure
+      let failed = false;
+      let errors = [];
+      if (!schemaResult.valid) {
+        failed = true;
+        errors = schemaResult.errors;
+      }
+      if (!semanticResult.valid) {
+        failed = true;
+        errors = errors.concat(semanticResult.errors);
+      }
+
+      if (expectFail) {
+        if (failed) {
+          results.push({ name: `task-graphs/${file} (expected failure)`, valid: true, errors: [] });
+        } else {
+          results.push({ name: `task-graphs/${file} (expected failure)`, valid: false, errors: ["expected validation to fail, but it passed"] });
+          allPassed = false;
+        }
+      } else {
+        results.push(schemaResult);
+        if (!schemaResult.valid) allPassed = false;
+        results.push(semanticResult);
+        if (!semanticResult.valid) allPassed = false;
+      }
+    }
   }
 
   // Refinement examples
@@ -126,6 +205,10 @@ function validateAll(options = {}) {
       const result = validateDocument(ajv, tgPath, "https://narada2.dev/schemas/usc/task-graph.schema.json", `sessions/${sessionName}/task-graph`);
       results.push(result);
       if (!result.valid) allPassed = false;
+      const data = JSON.parse(readFileSync(tgPath, "utf8"));
+      const semResult = validateTaskGraphSemantics(data, `sessions/${sessionName}/task-graph (semantic)`);
+      results.push(semResult);
+      if (!semResult.valid) allPassed = false;
     }
   }
 
@@ -144,10 +227,14 @@ function validateAll(options = {}) {
       const result = validateDocument(ajv, tgPath, "https://narada2.dev/schemas/usc/task-graph.schema.json", `app/${appName}/usc/task-graph`);
       results.push(result);
       if (!result.valid) allPassed = false;
+      const data = JSON.parse(readFileSync(tgPath, "utf8"));
+      const semResult = validateTaskGraphSemantics(data, `app/${appName}/usc/task-graph (semantic)`);
+      results.push(semResult);
+      if (!semResult.valid) allPassed = false;
     }
   }
 
   return { results, allPassed };
 }
 
-export { validateAll };
+export { validateAll, validateTaskGraphSemantics };

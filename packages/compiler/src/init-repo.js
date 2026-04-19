@@ -142,17 +142,23 @@ pnpm usc -- validate --app ${targetDir}
     writeFileSync(join(uscDir, file), rendered);
   }
 
+  const now = new Date().toISOString();
   const taskGraph = {
     $schema: "https://narada2.dev/schemas/usc/task-graph.schema.json",
+    schema_version: "1.0.0",
+    app_id: name,
+    created_at: now,
+    updated_at: now,
     tasks: [
       {
         id: "T1",
         title: `Initial task for ${name}`,
         authority_locus: "principal",
-        transformation: "Define the first executable transformation for this app.",
+        transformation: "Define the first executable transformation for this repo.",
         evidence_requirement: "Artifacts exist and demonstrate the transformation.",
         review_predicate: "A reviewer can verify the transformation from the evidence alone.",
-        status: "open",
+        status: "pending",
+        depends_on: [],
       },
     ],
     edges: [],

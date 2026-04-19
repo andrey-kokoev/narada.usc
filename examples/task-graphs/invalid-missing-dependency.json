@@ -1,0 +1,15 @@
+{
+  "$schema": "../../packages/core/schemas/task-graph.schema.json",
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Task with missing dependency",
+      "authority_locus": "execution",
+      "transformation": "This task depends on a non-existent task.",
+      "evidence_requirement": "None",
+      "review_predicate": "None",
+      "status": "pending",
+      "depends_on": ["T99"]
+    }
+  ]
+}
