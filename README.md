@@ -104,6 +104,8 @@ Write refinement into an app repo:
 pnpm usc:refine -- --target ../narada.usc.my-app --intent "I want ERP system" --domain erp --format json
 ```
 
+`refine --target` refuses to overwrite existing `usc/refinement.json` or `usc/refinement.md` unless `--force` is provided.
+
 `refine` does not implement the system. It surfaces hidden arbitrariness and produces first construction artifacts. Domain packs provide reusable construction grammar for common problem families without inventing app-specific decisions.
 
 ## Future: Compile Target

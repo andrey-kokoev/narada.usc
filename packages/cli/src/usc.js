@@ -128,11 +128,12 @@ async function run() {
 
     case "refine": {
       const intent = args.intent;
-      if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md]");
+      if (!intent) die("Usage: usc refine --intent <text> [--target <path>] [--domain <domain>] [--cis] [--format json|md] [--force]");
       const domain = args.domain || null;
       const format = args.format || "md";
       const target = args.target;
       const useCis = args.cis === true || args.cis === "true";
+      const force = args.force === true || args.force === "true";
 
       const refinement = await refineIntent(intent, domain);
 
@@ -166,15 +167,25 @@ async function run() {
       if (target) {
         const targetDir = target.startsWith("/") ? target : join(process.cwd(), target);
         const uscDir = join(targetDir, "usc");
+
+        const refinementPath = join(uscDir, "refinement.json");
+        const refinementMdPath = join(uscDir, "refinement.md");
+
+        const existingFiles = [];
+        if (existsSync(refinementPath)) existingFiles.push(refinementPath);
+        if (existsSync(refinementMdPath)) existingFiles.push(refinementMdPath);
+
+        if (existingFiles.length > 0 && !force) {
+          die(`Refuse to overwrite existing refinement artifact(s): ${existingFiles.join(", ")}\nUse --force to overwrite.`);
+        }
+
         if (!existsSync(uscDir)) {
           mkdirSync(uscDir, { recursive: true });
         }
 
-        const refinementPath = join(uscDir, "refinement.json");
         writeFileSync(refinementPath, JSON.stringify(refinement, null, 2));
         console.log(`\nRefinement written to ${refinementPath}`);
 
-        const refinementMdPath = join(uscDir, "refinement.md");
         const mdContent = [`# Intent Refinement: ${intent}`, ``, `**Detected Domain:** ${refinement.detected_domain}`, ``, `## Ambiguities`, ...refinement.ambiguities.map(a => `- **${a.layer}**: ${a.description}${a.governing ? " (governing)" : ""}`), ``, `## Questions`, ...refinement.questions.map(q => `- **${q.authority}**: ${q.question}${q.blocking ? " (blocking)" : ""}`), ``, `## Assumptions`, ...refinement.assumptions.map(a => `- ${a.assumption} (confidence: ${a.confidence})`), ``, `## Seed Tasks`, ...refinement.seed_tasks.map(t => `- **${t.id}**: ${t.title} — ${t.transformation}`), ``, `## Residuals`, ...refinement.residuals.map(r => `- **${r.residual_id}**: ${r.description} (${r.blocking ? "blocking" : "non-blocking"})`), ``].join("\n");
         writeFileSync(refinementMdPath, mdContent);
         console.log(`Refinement markdown written to ${refinementMdPath}`);
@@ -192,6 +203,7 @@ Commands:
   list-sessions                     List existing sessions
   init-app --name <name> --target <path>  Create a new app repo
   refine --intent <text>            Refine raw intent into ambiguity, questions, tasks
+  refine --target refuses to overwrite existing refinement artifacts unless --force is provided.
 `);
       process.exit(1);
   }
