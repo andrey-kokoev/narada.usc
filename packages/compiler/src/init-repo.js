@@ -112,6 +112,10 @@ This is a USC-governed construction repo. Use \`usc/\` artifacts for constructio
 The durable construction state lives in \`usc/construction-state.json\`.
 Task and dependency graph lives in \`usc/task-graph.json\`.
 
+## Escalation Protocol
+
+When a task requires a choice not already determined by code, docs, contracts, or task text, follow the escalation protocol in \`usc/question-escalation.md\`.
+
 ## Validation
 
 From the substrate repo:
@@ -132,6 +136,7 @@ pnpm usc -- validate --app ${targetDir}
     "review.md",
     "residual.md",
     "closure-record.md",
+    "question-escalation.md",
   ];
 
   for (const file of templateFiles) {

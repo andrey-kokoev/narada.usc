@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://narada2.dev/schemas/usc/escalation.schema.json",
+  "title": "USC Escalation Record",
+  "description": "Machine-readable record of a task escalation and its resolution.",
+  "type": "object",
+  "required": ["escalation_id", "task_id", "status", "raised_at"],
+  "properties": {
+    "escalation_id": {
+      "type": "string",
+      "description": "Unique identifier for this escalation record."
+    },
+    "task_id": {
+      "type": "string",
+      "description": "ID of the task that raised the escalation."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "decided", "superseded", "withdrawn"],
+      "description": "Current status of the escalation."
+    },
+    "raised_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp when the escalation was recorded."
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp when the escalation was resolved."
+    },
+    "question": {
+      "type": "string",
+      "description": "What specifically is unknown or arbitrary?"
+    },
+    "why_blocked": {
+      "type": "string",
+      "description": "Why the worker cannot proceed without a decision."
+    },
+    "options": {
+      "type": "array",
+      "description": "Options considered by the worker.",
+      "items": {
+        "type": "object",
+        "required": ["label", "description"],
+        "properties": {
+          "label": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "recommendation": {
+      "type": "string",
+      "description": "Worker's recommendation and rationale."
+    },
+    "current_state": {
+      "type": "string",
+      "description": "What has been done so far."
+    },
+    "decision": {
+      "type": "string",
+      "description": "The recorded decision that resolved the escalation."
+    },
+    "decided_by": {
+      "type": "string",
+      "description": "Who or what made the decision (e.g., principal, architect, user)."
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "authority_boundary_ambiguity",
+        "semantic_conflict",
+        "live_external_mutation",
+        "secret_private_data_ambiguity",
+        "product_decision",
+        "broad_scope_expansion",
+        "verification_ambiguity",
+        "dishonest_completion_risk",
+        "irreversible_migration",
+        "other"
+      ],
+      "description": "Category of escalation trigger."
+    }
+  },
+  "additionalProperties": false
+}
